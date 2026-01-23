@@ -90,7 +90,7 @@ export default function Home() {
 
                     <div className="search-form">
                         <div className="form-group">
-                            <input ref={searchInputRef} className="form-control" type="text" value="" onChange={(e) => setSearchResultsFunc(e.target.value)} placeholder="Search here..." autoComplete="off" disabled={loading} />
+                            <input className="form-control alt" type="button" value="Search here..." onClick={() => navigate('/search')} />
                             <span className='search-icon'><i className="fa-solid fa-search"></i></span>
                         </div>
                     </div>

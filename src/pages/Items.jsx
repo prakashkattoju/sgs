@@ -23,7 +23,6 @@ export default function Items() {
     const [itemLoading, setItemLoading] = useState(false);
 
     const headerRef = useRef(null);
-    const searchInputRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
 
     const [showConfirm, setShowConfirm] = useState(false);
@@ -70,8 +69,6 @@ export default function Items() {
         fetchitems();
     }, [fetchcategory, cat_id, scat_id]);
 
-    console.log(items)
-
     const logoutAccount = () => {
         dispatch(logOut()); // Dispatch the logout action to clear user state
         dispatch(setUserDetails({
@@ -86,10 +83,6 @@ export default function Items() {
         document.activeElement?.blur();
         setShowConfirm(false);
     };
-
-    const setSearchResultsFunc = (text) => {
-
-    }
 
     const backBtn = () => {
         navigate('/')
@@ -110,11 +103,11 @@ export default function Items() {
                 </div>
 
                 <div className='search-area d-flex gap-2 align-items-center justify-content-between'>
-                    <button className='icon-btn' onClick={backBtn}><i className="fa-solid fa-arrow-left"></i></button>
+                    <button className='icon-btn-s' onClick={backBtn}><i className="fa-solid fa-arrow-left"></i></button>
 
                     <div className="search-form">
                         <div className="form-group">
-                            <input ref={searchInputRef} className="form-control" type="text" value="" onChange={(e) => setSearchResultsFunc(e.target.value)} placeholder="Search here..." autoComplete="off" disabled={loading} />
+                            <input className="form-control alt" type="button" value="Search here..." onClick={() => navigate('/search')} />
                             <span className='search-icon'><i className="fa-solid fa-search"></i></span>
                         </div>
                     </div>
@@ -147,7 +140,7 @@ export default function Items() {
                     <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 134) : (height + 70)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                             <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
-                                {loading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
+                                {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
                                     <div className='item-inner'>
                                         <div className="meta">
                                             <h2 className="skeleton"></h2>
