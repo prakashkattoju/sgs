@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { GetCategoryByID, GetItems } from '../services/Productsservices';
+import { addToCart, incrementQuantity, decrementQuantity } from '../store/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserDetails } from '../store/userSlice';
 import { logOut } from '../store/authSlice';
@@ -13,6 +14,9 @@ import priceDisplay from '../util/priceDisplay';
 export default function Items() {
 
     const cart = useSelector((state) => state.cart.cart);
+
+    //console.log("cart", cart)
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { slug, cat_id, scat_id } = useParams();
@@ -24,7 +28,6 @@ export default function Items() {
 
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
-
     const [showConfirm, setShowConfirm] = useState(false);
 
     useEffect(() => {
@@ -68,6 +71,33 @@ export default function Items() {
         fetchcategory();
         fetchitems();
     }, [fetchcategory, cat_id, scat_id]);
+
+    const checkForAdd = (item_id) => {
+        const found = cart.some(el => el.item_id === item_id);
+        return found;
+    }
+    const getQuantity = (item_id) => {
+        const qty = cart.find((el) => el.item_id === item_id);
+        return qty.quantity;
+    }
+
+    const getCartQuantity = () => {
+        return cart.reduce(total => total + 1, 0);
+    };
+
+    const getCartAmount = () => {
+        return priceDisplay(cart.reduce((total, item) => total + item.price * item.quantity, 0));
+    }
+
+    const addOptToCart = (opt) => {
+        dispatch(addToCart(opt));
+    }
+    const decrement = (item_id) => {
+        dispatch(decrementQuantity(item_id));
+    }
+    const increment = (item_id) => {
+        dispatch(incrementQuantity(item_id));
+    }
 
     const logoutAccount = () => {
         dispatch(logOut()); // Dispatch the logout action to clear user state
@@ -118,7 +148,7 @@ export default function Items() {
             <div className='items-container'>
                 <h2>Buy "{category}" Items</h2>
                 <div className='items-container-inner'>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 134) : (height + 70)}px)` }} className="list scroll">
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 126) : (height + 70)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                             <div className="item-list sidenav-list">
                                 {loading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
@@ -137,7 +167,7 @@ export default function Items() {
                             </div>
                         </PerfectScrollbar>
                     </div>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 134) : (height + 70)}px)` }} className="list scroll">
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 126) : (height + 70)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                             <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
                                 {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
@@ -145,15 +175,31 @@ export default function Items() {
                                         <div className="meta">
                                             <h2 className="skeleton"></h2>
                                         </div>
+                                        <div className='price skeleton'></div>
+                                        <div className="meta" style={{ marginTop: 'auto' }}>
+                                            <div className="cart-action skeleton"></div>
+                                        </div>
                                     </div>
                                 </div>)) : items?.length > 0 ? items?.map((item, index) => <div key={index} className="item">
                                     <div className='item-inner'>
                                         <div className="meta">
                                             <h2>{item.item}</h2>
                                         </div>
-                                        <div className='price'>{priceDisplay(parseInt(item.price))}</div>
-                                        <div className="meta" style={{marginTop:'auto'}}>
-                                            <div className="cart-action"><button className="btnAddAction init">Add <i className="fa-solid fa-plus"></i></button></div>
+                                        <div className='price'>1Kg - {priceDisplay(parseInt(item.price))}</div>
+                                        <div className="meta" style={{ marginTop: 'auto' }}>
+                                            <div className="cart-action">
+                                                {checkForAdd(parseInt(item.item_id)) ?
+                                                    (<div className="opt">
+                                                        <button className="minus" onClick={() => decrement(parseInt(item.item_id))}><i className="fa-solid fa-minus"></i></button>
+                                                        <div className="qty">{getQuantity(parseInt(item.item_id))}Kg</div>
+                                                        <button className="plus" onClick={() => increment(parseInt(item.item_id))}><i className="fa-solid fa-plus"></i></button>
+                                                    </div>) :
+                                                    <button className="btnAddAction init" onClick={() => addOptToCart({
+                                                        'item_id': parseInt(item.item_id),
+                                                        'title': item.item,
+                                                        'price': parseInt(item.price),
+                                                    })}>Add 1Kg</button>}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>) : <h4 className='text-center'>No Items Found</h4>}
@@ -168,7 +214,6 @@ export default function Items() {
                     <button className="btn toggle" onClick={() => navigate("/cart", { replace: true })}>Continue</button>
                 </div>
             </div>}
-
             <ConfirmModal
                 show={showConfirm}
                 title="Exit!"

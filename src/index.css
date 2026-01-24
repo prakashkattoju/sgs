@@ -734,6 +734,29 @@ h4 {
     justify-content: space-between;
 }
 
+.list .item-list.cart-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.list .item-list.cart-list .item{
+    width: 100%;
+    border-bottom: 1px dotted #194f2d;
+    padding-bottom: 10px;
+}
+.list .item-list.cart-list .item h2{
+    text-align: left;
+}
+.list .item-list.cart-list .item .meta .cart-action{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+
 .dashboard .list .item-list .item .meta {
     width: calc(100% - 50px);
     flex-direction: row;
@@ -809,7 +832,12 @@ h4 {
     cursor: pointer;
     text-transform: uppercase;
 }
-
+.list .item-list .item .meta .cart-action .opt button.minus {
+    border-radius: 3px 0 0 3px;
+}
+.list .item-list .item .meta .cart-action .opt button.plus {
+    border-radius: 0 3px 3px 0;
+}
 .list .item-list .item .meta .cart-action .opt button.edit {
     background: transparent;
     color: #194f2d;
@@ -829,8 +857,11 @@ h4 {
 
 .list .item-list .item .meta .cart-action .opt {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
+    border: 1px solid #194f2d;
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .list.cart-list .item-list .item .meta .cart-action .opt {
@@ -843,7 +874,7 @@ h4 {
 
 .list .item-list .item .meta .cart-action .opt .btnAddAction,
 .list .item-list .item .meta .cart-action .opt .qty {
-    width: 30px;
+    width: 50px;
     text-align: center;
 }
 
@@ -1042,7 +1073,7 @@ form.list button:hover {
     left: 0;
     padding: 10px;
     background-color: #194f2d;
-    color: #212121;
+    color: #FFFFFF;
     border-top: 2px solid;
     z-index: 9;
 }

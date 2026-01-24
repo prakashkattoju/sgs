@@ -25,11 +25,11 @@ export default function Bill() {
     };
 
     const getCartAmount = () => {
-        return priceDisplay(cart.reduce((total, item) => total + item.unit_price * item.quantity, 0));
+        return priceDisplay(cart.reduce((total, item) => total + item.price * item.quantity, 0));
     }
 
     const getCartItemsAmount = (item) => {
-        return priceDisplay(item.unit_price * item.quantity);
+        return priceDisplay(item.price * item.quantity);
     }
 
     const onClose = () => {
@@ -54,7 +54,7 @@ export default function Bill() {
                     <tr><th className='pid'>#</th><th className='pname'>Items</th><th>Qty</th><th>I.Rs.</th><th>Rs.</th></tr>
                 </thead>
                 <tbody>
-                    {cart.map((item, index) => <tr key={index}><td className='pid'>{item.product_id}</td><td className='pname'>{item.title}</td><td>{getQuantity(parseInt(item.product_id))}</td><td>{priceDisplay(parseInt(item.unit_price)).replace("₹", "")}</td><td>{getCartItemsAmount(item).replace("₹", "")}</td></tr>)}
+                    {cart.map((item, index) => <tr key={index}><td className='pid'>{item.product_id}</td><td className='pname'>{item.title}</td><td>{getQuantity(parseInt(item.product_id))}</td><td>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td>{getCartItemsAmount(item).replace("₹", "")}</td></tr>)}
                     <tr><td className='sep' colSpan={5}></td></tr>
                     <tr><td colSpan={2}>Items Total</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
                     <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td>{getCartAmount().replace("₹", "")}</td></tr>

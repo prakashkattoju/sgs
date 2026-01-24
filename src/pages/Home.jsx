@@ -7,6 +7,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import ConfirmModal from '../components/ConfirmModal';
+import priceDisplay from '../util/priceDisplay';
 
 export default function Home() {
 
@@ -54,6 +55,14 @@ export default function Home() {
         fetchcategories();
     }, [fetchcategories]);
 
+
+    const getCartQuantity = () => {
+        return cart.reduce(total => total + 1, 0);
+    };
+    const getCartAmount = () => {
+        return priceDisplay(cart.reduce((total, item) => total + item.price * item.quantity, 0));
+    }
+
     const logoutAccount = () => {
         dispatch(logOut()); // Dispatch the logout action to clear user state
         dispatch(setUserDetails({
@@ -100,7 +109,7 @@ export default function Home() {
             </header>
             <div className='items-container'>
                 <h2>Shop by Category</h2>
-                <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 134) : (height + 70)}px)` }} className="list scroll">
+                <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 126) : (height + 70)}px)` }} className="list scroll">
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                         <div className="item-list">
                             {loading ? Array.from({ length: 9 }).map((_, i) => (<div key={i} className="item">

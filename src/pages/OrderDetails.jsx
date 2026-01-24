@@ -39,7 +39,7 @@ export default function OrderDetails() {
                         <tr><th className='pid'>#</th><th className='pname'>Items</th><th>Qty</th><th>I.Rs.</th><th>Rs.</th></tr>
                     </thead>
                     <tbody>
-                        {orderDetails.items?.map((item, index) => <tr key={index}><td className='pid'>{item.product_id}</td><td className='pname'>{item.title}</td><td>{item.quantity}</td><td>{item.unit_price}</td><td>{item.quantity * item.unit_price}</td></tr>)}
+                        {orderDetails.items?.map((item, index) => <tr key={index}><td className='pid'>{item.product_id}</td><td className='pname'>{item.title}</td><td>{item.quantity}</td><td>{item.price}</td><td>{item.quantity * item.price}</td></tr>)}
                         <tr><td className='sep' colSpan={5}></td></tr>
                         <tr><td colSpan={2}>Items Total</td><td>{orderDetails.total_quantity}</td><td colSpan={2}></td></tr>
                         <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td>{orderDetails.total_price}</td></tr>
