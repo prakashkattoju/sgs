@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import priceDisplay from '../util/priceDisplay';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart } from '../store/cartSlice';
+import { removeFromCart, decrementQuantity, incrementQuantity} from '../store/cartSlice';
 import { setUserDetails } from '../store/userSlice';
 import { logOut } from '../store/authSlice';
 //import { verifyCartItems } from '../store/cartThunks';
