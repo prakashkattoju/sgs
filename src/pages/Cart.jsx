@@ -91,6 +91,12 @@ export default function Cart() {
     const getCartItemsAmount = (item) => {
         return priceDisplay(item.price * item.quantity);
     }
+    const decrement = (product_id) => {
+        dispatch(decrementQuantity(product_id));
+    }
+    const increment = (product_id) => {
+        dispatch(incrementQuantity(product_id));
+    }
     const remove = (item_id) => {
         dispatch(removeFromCart(item_id));
     }
