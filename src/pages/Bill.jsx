@@ -15,13 +15,13 @@ export default function Bill() {
 
     const { token_num } = location.state || 0;
 
-    const getQuantity = (product_id) => {
-        const qty = cart.find((el) => el.product_id === product_id);
+    const getQuantity = (item_id) => {
+        const qty = cart.find((el) => el.item_id === item_id);
         return qty.quantity;
     }
 
     const getCartQuantity = () => {
-        return cart.reduce((total, item) => total + item.quantity, 0);
+        return cart.reduce(total => total + 1, 0);
     };
 
     const getCartAmount = () => {
@@ -51,10 +51,10 @@ export default function Bill() {
                     <tr><th className='pb-0' colSpan={2}>Name</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{user.fullname}</th></tr>
                     <tr><th className='pb-0' colSpan={2}>Mobile Number</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{user.mobile}</th></tr>
                     <tr><th colSpan={5} className='sep pb-0'></th></tr>
-                    <tr><th className='pid'>#</th><th className='pname'>Items</th><th>Qty</th><th>I.Rs.</th><th>Rs.</th></tr>
+                    <tr><th className='pid'>#</th><th className='pname'>Items</th><th>&nbsp;</th><th>I.Rs.</th><th>Rs.</th></tr>
                 </thead>
                 <tbody>
-                    {cart.map((item, index) => <tr key={index}><td className='pid'>{item.product_id}</td><td className='pname'>{item.title}</td><td>{getQuantity(parseInt(item.product_id))}</td><td>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td>{getCartItemsAmount(item).replace("₹", "")}</td></tr>)}
+                    {cart.map((item, index) => <tr key={index}><td className='pid'>{item.item_id}</td><td className='pname'>{item.title}</td><td>{getQuantity(parseInt(item.item_id))} Kg</td><td>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td>{getCartItemsAmount(item).replace("₹", "")}</td></tr>)}
                     <tr><td className='sep' colSpan={5}></td></tr>
                     <tr><td colSpan={2}>Items Total</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
                     <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td>{getCartAmount().replace("₹", "")}</td></tr>

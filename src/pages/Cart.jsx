@@ -105,7 +105,7 @@ export default function Cart() {
         setLoading(true)
         const cartdata = {
             total_quantity: getCartQuantity(),
-            total_price: cart.reduce((total, item) => total + item.price * item.quantity, 0),
+            total_price: cart.reduce((total, item) => total + item.price * 1, 0),
             items: cart
         };
         try {
@@ -201,7 +201,7 @@ export default function Cart() {
         {cart.length > 0 && <div className="cart-summary-badge">
             <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
             <div className="continue">
-                <button className="btn toggle" onClick={() => navigate("/cart", { replace: true })}>Continue</button>
+                <button className="btn" onClick={() => setShowPromptModal(true)}>Submit</button>
             </div>
         </div>}
         <div
