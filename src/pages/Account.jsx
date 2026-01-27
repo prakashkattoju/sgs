@@ -2,6 +2,9 @@ import { useState, useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { GetOrders } from '../services/Billservices';
 import { useNavigate, useLocation } from "react-router-dom";
+import { setUserDetails } from '../store/userSlice';
+import { logOut } from '../store/authSlice';
+import ConfirmModal from '../components/ConfirmModal';
 import priceDisplay from '../util/priceDisplay';
 import { format } from 'date-fns'
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -15,6 +18,7 @@ export default function Account() {
     const [loading, setLoading] = useState(false);
     const [orders, setOrders] = useState([])
     const user = useSelector((state) => state.user);
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
@@ -66,16 +70,31 @@ export default function Account() {
         );
     };
 
+    const logoutAccount = () => {
+        dispatch(logOut()); // Dispatch the logout action to clear user state
+        dispatch(setUserDetails({
+            fullname: null,
+            mobile: null
+        }))
+        navigate("/", { replace: true }); // Redirect the user to the login page after logging out
+        window.location.reload(true);
+    };
+
+    const handleCancel = () => {
+        document.activeElement?.blur();
+        setShowConfirm(false);
+    };
+
     return (
         <>
-            <div ref={headerRef} className='bill-details' style={{ paddingBottom: 0 }}>
+            <header ref={headerRef} className='bill-details' style={{ paddingBottom: 0 }}>
                 <button type="button" className="btn-close" onClick={onClose}></button>
                 <h2 className='text-start'>Hello, {user.fullname ? user.fullname : 'User'}</h2>
                 <h4 className='text-start'><span><i className="fa-solid fa-mobile-screen"></i> {user.mobile}</span></h4>
                 <hr />
-                <h4 className='text-start'>Your Orders</h4>
-            </div>
-            {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <>
+                {/* <h4 className='text-start'>Your Orders</h4> */}
+            </header>
+            {/* loading ? <div className="list"><div className='loading'>Loading...</div></div> : <>
                 <div style={{ height: `calc(100dvh - ${height + 15}px)` }} className="list scroll">{orders.length > 0 ?
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className="item-list" style={{ paddingTop: 0 }}>{
                         orders.map((item, index) => {
@@ -93,7 +112,7 @@ export default function Account() {
                                         <div className="meta-inner" style={{ fontWeight: 500 }}>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20 }}>
                                                 <div>Order # {item.token_num}</div>
-                                                {/* <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div> */}
+                                                <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
                                             </div>
                                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
                                                 <div className="price">{priceDisplay(parseInt(item.total_price))}</div>
@@ -105,7 +124,16 @@ export default function Account() {
                             </div>
                         })}
                     </PerfectScrollbar> : <h4 className='text-center'>You haven't placed any orders yet.</h4>}
-                </div></>}
+                </div></> */}
+            <ConfirmModal
+                show={showConfirm}
+                title="Exit!"
+                message={`Are you sure you want to exit?`}
+                onConfirm={() => logoutAccount()}
+                onConfirmLabel="Yes"
+                onCancel={handleCancel}
+            />
+
         </>
     )
 }

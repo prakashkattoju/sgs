@@ -6,6 +6,7 @@ import { decodeToken } from 'react-jwt';
 import { logOut } from '../store/authSlice';
 import { GetUserByID } from '../services/Userservices';
 import AlertModal from './AlertModal';
+import BottomNavi from './BottomNavi';
 
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const dispatch = useDispatch();
@@ -108,6 +109,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
         <article className="page">
           <div className="entry-content">
             {children}
+            <BottomNavi />
           </div>
         </article>
       </main>

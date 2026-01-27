@@ -3,7 +3,6 @@ import priceDisplay from '../util/priceDisplay';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearCart } from '../store/cartSlice';
 import { useNavigate, useLocation } from "react-router-dom";
-import { TbDashboardFilled } from 'react-icons/tb';
 
 export default function Bill() {
     const dispatch = useDispatch()
@@ -15,21 +14,12 @@ export default function Bill() {
 
     const { token_num } = location.state || 0;
 
-    const getQuantity = (item_id) => {
-        const qty = cart.find((el) => el.item_id === item_id);
-        return qty.quantity;
-    }
-
     const getCartQuantity = () => {
         return cart.reduce(total => total + 1, 0);
     };
 
     const getCartAmount = () => {
-        return priceDisplay(cart.reduce((total, item) => total + item.price * item.quantity, 0));
-    }
-
-    const getCartItemsAmount = (item) => {
-        return priceDisplay(item.price * item.quantity);
+        return priceDisplay(cart.reduce((total, item) => total + item.totalPrice * 1, 0));
     }
 
     const onClose = () => {
@@ -41,7 +31,7 @@ export default function Bill() {
         <div className='bill-details'>
             <button type="button" className="btn-close" onClick={onClose}></button>
             <h2>Order Details</h2>
-            <h4>Please show order details to counter</h4>
+            <h4>Note: Total amount is estimated.</h4>
             <table>
                 <thead>
                     <tr className='token'><th className='pb-0' colSpan={2}>Token No</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{token_num}</th></tr>
@@ -54,14 +44,14 @@ export default function Bill() {
                     <tr><th className='pid'>#</th><th className='pname'>Items</th><th>&nbsp;</th><th>I.Rs.</th><th>Rs.</th></tr>
                 </thead>
                 <tbody>
-                    {cart.map((item, index) => <tr key={index}><td className='pid'>{item.item_id}</td><td className='pname'>{item.title}</td><td>{getQuantity(parseInt(item.item_id))} Kg</td><td>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td>{getCartItemsAmount(item).replace("₹", "")}</td></tr>)}
+                    {cart.map((item, index) => <tr key={index}><td className='pid'>{item.item_id}</td><td className='pname'>{item.title}</td><td>{item.itemUnitValue} {item.itemUnit}</td><td>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td>{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</td></tr>)}
                     <tr><td className='sep' colSpan={5}></td></tr>
-                    <tr><td colSpan={2}>Items Total</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
+                    <tr><td colSpan={2}>No. of Items</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
                     <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td>{getCartAmount().replace("₹", "")}</td></tr>
                     <tr><td className='sep' colSpan={5}></td></tr>
-                    <tr><td colSpan={2}>Total Amount</td><td colSpan={2}></td><td>{getCartAmount().replace("₹", "")}</td></tr>
+                    <tr><td colSpan={3}>Estimated Total Amount</td><td colSpan={1}></td><td>{getCartAmount().replace("₹", "")}</td></tr>
                     <tr><td className='sep' colSpan={5}></td></tr>
-                    <tr><td colSpan={5}><h4 className='pt-4 text-center'>*** THANK YOU - VISIT AGAIN ***</h4></td></tr>
+                    <tr><td colSpan={5}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr>
                 </tbody>
             </table>
         </div>

@@ -1,15 +1,14 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
 import { GetCategoryByID, GetItems } from '../services/Productsservices';
-import { addToCart, incrementQuantity, decrementQuantity } from '../store/cartSlice';
+import { addToCart, removeFromCart } from '../store/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUserDetails } from '../store/userSlice';
-import { logOut } from '../store/authSlice';
 import { useNavigate, useParams } from "react-router-dom";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import ConfirmModal from '../components/ConfirmModal';
 import priceDisplay from '../util/priceDisplay';
-
+import Header from '../components/Header';
+import Units from '../components/Units';
+import ItemCartCal from '../components/ItemCartCal';
 
 export default function Items() {
 
@@ -28,7 +27,10 @@ export default function Items() {
 
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
-    const [showConfirm, setShowConfirm] = useState(false);
+    const [AddToCartModalIndex, setAddToCartModalIndex] = useState(null)
+
+    const [itemUnit, setItemUnit] = useState('')
+    const [itemUnitValue, setItemUnitValue] = useState(null)
 
     useEffect(() => {
         const updateHeight = () => {
@@ -86,69 +88,57 @@ export default function Items() {
     };
 
     const getCartAmount = () => {
-        return priceDisplay(cart.reduce((total, item) => total + item.price * item.quantity, 0));
+        return priceDisplay(cart.reduce((total, item) => total + item.totalPrice * 1, 0));
     }
 
-    const addOptToCart = (opt) => {
-        dispatch(addToCart(opt));
-    }
-    const decrement = (item_id) => {
-        dispatch(decrementQuantity(item_id));
-    }
-    const increment = (item_id) => {
-        dispatch(incrementQuantity(item_id));
-    }
-
-    const logoutAccount = () => {
-        dispatch(logOut()); // Dispatch the logout action to clear user state
-        dispatch(setUserDetails({
-            fullname: null,
-            mobile: null
-        }))
-        navigate("/", { replace: true }); // Redirect the user to the login page after logging out
-        window.location.reload(true);
+    const calculatePrice = (pricePerKg, weight, unit = 'g') => {
+        const weightInKg = unit === 'kg' ? weight : weight / 1000;
+        return weightInKg * pricePerKg;
     };
 
-    const handleCancel = () => {
+    const addToCartModalOpen = (item) => {
+        const unit = item.unit === 'g' ? 'kg' : item.unit === 'ml' ? 'ltr' : 'pkt'
+        setItemUnit(unit)
+        setAddToCartModalIndex(item.item_id);
+    };
+
+    const addOptToCart = (item) => {
+
+        const itemTotal = item.unit === 'g' ? calculatePrice(item.price, itemUnitValue, itemUnit) : itemUnitValue * item.price;
+
+        const cartItem = {
+            'item_id': parseInt(item.item_id),
+            'title': item.item,
+            'price': parseInt(item.price),
+            'totalPrice': parseInt(itemTotal),
+            'itemUnit': itemUnit,
+            'itemUnitValue': itemUnitValue,
+        }
+        console.log("cartItem", cartItem)
+        dispatch(addToCart(cartItem))
+        handleAddToCartModalCancel()
+    }
+    const remove = (item_id) => {
+        dispatch(removeFromCart(item_id));
+        setItemUnit('')
+        setItemUnitValue(null)
+    }
+
+    const handleAddToCartModalCancel = () => {
+        setItemUnit('')
+        setItemUnitValue(null)
         document.activeElement?.blur();
-        setShowConfirm(false);
+        setAddToCartModalIndex(null);
     };
-
-    const backBtn = () => {
-        navigate('/')
-    }
 
     const { category, sub_cats } = categoryItem
 
     return (
         <>
-            <header ref={headerRef} className="site-header">
-
-                <div className='site-header-top d-flex gap-3 align-items-center justify-content-start'>
-                    <img src='/icon.jpg' alt='' />
-                    <div>
-                        <h1>SIRI GENERAL STORES</h1>
-                        <div className='d-flex gap-3 align-items-end justify-content-start'><h3><i className="fa-solid fa-location-dot"></i> KAKINADA</h3><h3><i className="fa-solid fa-mobile-screen"></i> 9343343434</h3></div>
-                    </div>
-                </div>
-
-                <div className='search-area d-flex gap-2 align-items-center justify-content-between'>
-                    <button className='icon-btn-s' onClick={backBtn}><i className="fa-solid fa-arrow-left"></i></button>
-
-                    <div className="search-form">
-                        <div className="form-group">
-                            <input className="form-control alt" type="button" value="Search here..." onClick={() => navigate('/search')} />
-                            <span className='search-icon'><i className="fa-solid fa-search"></i></span>
-                        </div>
-                    </div>
-
-                    <button className='icon-btn-s' onClick={() => setShowConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
-                </div>
-            </header>
+            <Header headerRef={headerRef} title={category ? `Buy "${category}" Items` : 'Buy Items'} />
             <div className='items-container'>
-                <h2>Buy "{category}" Items</h2>
-                <div className='items-container-inner'>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 126) : (height + 70)}px)` }} className="list scroll">
+                <div className='items-container-inner' style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }}>
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                             <div className="item-list sidenav-list">
                                 {loading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
@@ -167,7 +157,7 @@ export default function Items() {
                             </div>
                         </PerfectScrollbar>
                     </div>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 126) : (height + 70)}px)` }} className="list scroll">
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                             <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
                                 {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
@@ -182,23 +172,42 @@ export default function Items() {
                                     </div>
                                 </div>)) : items?.length > 0 ? items?.map((item, index) => <div key={index} className="item">
                                     <div className='item-inner'>
+                                        <Units unit={item.unit} base_unit={item.base_unit} />
                                         <div className="meta">
                                             <h2>{item.item}</h2>
                                         </div>
-                                        <div className='price'>1Kg - {priceDisplay(parseInt(item.price))}</div>
-                                        <div className="meta" style={{ marginTop: 'auto' }}>
+                                        <div className='price'>{priceDisplay(parseInt(item.price))}</div>
+                                        <div className="meta add-to-cart-meta">
                                             <div className="cart-action">
                                                 {checkForAdd(parseInt(item.item_id)) ?
-                                                    (<div className="opt">
-                                                        <button className="minus" onClick={() => decrement(parseInt(item.item_id))}><i className="fa-solid fa-minus"></i></button>
-                                                        <div className="qty">{getQuantity(parseInt(item.item_id))}Kg</div>
-                                                        <button className="plus" onClick={() => increment(parseInt(item.item_id))}><i className="fa-solid fa-plus"></i></button>
+                                                    (<div>
+                                                        <button className="btnAddAction init secondary" onClick={() => remove(item.item_id)}><i className="fa-solid fa-trash-can"></i></button>
                                                     </div>) :
-                                                    <button className="btnAddAction init" onClick={() => addOptToCart({
-                                                        'item_id': parseInt(item.item_id),
-                                                        'title': item.item,
-                                                        'price': parseInt(item.price),
-                                                    })}>Add 1Kg</button>}
+                                                    <>
+                                                        <button className="btnAddAction init" onClick={() => addToCartModalOpen(item)}><i className="fa-solid fa-plus"></i></button>
+                                                        <div
+                                                            className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
+                                                            id={`AddToCartModal${index}`}
+                                                            tabIndex="-1"
+                                                        >
+                                                            <div className="modal-dialog">
+                                                                <div className="modal-content">
+                                                                    <div className="modal-header">
+                                                                        <h4 className="modal-title text-start small">Select {item.unit === 'g' ? 'kg / g' : item.unit === 'ml' ? 'ltr / ml' : 'pkt'}, and enter value for {item.item}</h4>
+                                                                        <button type="button" className="btn-close small" onClick={handleAddToCartModalCancel}></button>
+                                                                    </div>
+                                                                    <div className="modal-body">
+                                                                        <div className='d-flex align-items-center gap-2'>
+                                                                            <ItemCartCal itemUnit={itemUnit} setItemUnit={setItemUnit} setItemUnitValue={setItemUnitValue} />
+
+                                                                            <button className="btn" onClick={() => addOptToCart(item)}><i className="fa-solid fa-plus"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </>
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -208,20 +217,10 @@ export default function Items() {
                     </div>
                 </div>
             </div>
-            {cart.length > 0 && <div className="cart-summary-badge">
+            {cart.length > 0 && <div className="cart-summary-badge" onClick={() => navigate("/cart", { replace: true })}>
                 <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
-                <div className="continue">
-                    <button className="btn toggle" onClick={() => navigate("/cart", { replace: true })}>Continue</button>
-                </div>
+                <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
             </div>}
-            <ConfirmModal
-                show={showConfirm}
-                title="Exit!"
-                message={`Are you sure you want to exit?`}
-                onConfirm={() => logoutAccount()}
-                onConfirmLabel="Yes"
-                onCancel={handleCancel}
-            />
         </>
     )
 }

@@ -3,18 +3,17 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import priceDisplay from '../util/priceDisplay';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart, decrementQuantity, incrementQuantity} from '../store/cartSlice';
+import { removeFromCart} from '../store/cartSlice';
 import { setUserDetails } from '../store/userSlice';
-import { logOut } from '../store/authSlice';
 //import { verifyCartItems } from '../store/cartThunks';
 import { useNavigate, Link } from "react-router-dom";
 import { decodeToken } from 'react-jwt';
 import { CreateBill } from '../services/Billservices';
 import { UpdateUserName } from '../services/Userservices';
-import ConfirmModal from '../components/ConfirmModal';
 import { FaSpinner } from "react-icons/fa";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
+import Header from '../components/Header';
 
 export default function Cart() {
     const user = useSelector((state) => state.user);
@@ -30,8 +29,7 @@ export default function Cart() {
 
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
-    const [showConfirm, setShowConfirm] = useState(false);
-
+    
     useEffect(() => {
         const updateHeight = () => {
             if (headerRef.current) {
@@ -85,18 +83,9 @@ export default function Cart() {
     };
 
     const getCartAmount = () => {
-        return priceDisplay(cart.reduce((total, item) => total + item.price * item.quantity, 0));
+        return priceDisplay(cart.reduce((total, item) => total + item.totalPrice * 1, 0));
     }
 
-    const getCartItemsAmount = (item) => {
-        return priceDisplay(item.price * item.quantity);
-    }
-    const decrement = (product_id) => {
-        dispatch(decrementQuantity(product_id));
-    }
-    const increment = (product_id) => {
-        dispatch(incrementQuantity(product_id));
-    }
     const remove = (item_id) => {
         dispatch(removeFromCart(item_id));
     }
@@ -125,47 +114,8 @@ export default function Cart() {
         }
     }
 
-    const setSearchResultsFunc = (text) => {
-        if (text !== '') {
-            navigate('/', { state: { queryString: text } })
-        }
-    }
-
-    const logoutAccount = () => {
-        dispatch(logOut()); // Dispatch the logout action to clear user state
-        dispatch(setUserDetails({
-            fullname: null,
-            mobile: null
-        }))
-        navigate("/", { replace: true }); // Redirect the user to the login page after logging out
-        window.location.reload(true);
-    };
-
-    const handleExitCancel = () => {
-        document.activeElement?.blur();
-        setShowConfirm(false);
-    };
-
     return (<>
-        <header ref={headerRef} className="site-header">
-            <div className='site-header-top d-flex gap-3 align-items-center justify-content-start'>
-                <img src='/icon.jpg' alt='' />
-                <div>
-                    <h1>SIRI GENERAL STORES</h1>
-                    <div className='d-flex gap-3 align-items-end justify-content-start'><h3><i className="fa-solid fa-location-dot"></i> KAKINADA</h3><h3><i className="fa-solid fa-mobile-screen"></i> 9343343434</h3></div>
-                </div>
-            </div>
-            <div className='search-area d-flex gap-2 align-items-center justify-content-between'>
-                <button className='icon-btn-s' onClick={backBtn}><i className="fa-solid fa-arrow-left"></i></button>
-                <div className="search-form">
-                    <div className="form-group">
-                        <input className="form-control alt" type="button" value="Search here..." onClick={() => navigate('/search')} />
-                        <span className='search-icon'><i className="fa-solid fa-search"></i></span>
-                    </div>
-                </div>
-                <button className='icon-btn-s' onClick={() => setShowConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
-            </div>
-        </header>
+        <Header headerRef={headerRef} title="Cart" />
         <div className='items-container'>
             <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 89) : (height + 30)}px)` }} className="list scroll">
                 <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
@@ -181,12 +131,16 @@ export default function Cart() {
                                                 <span className="itemid"># {item.item_id}</span>
                                             </div>
                                             <div className="cart-action">
-                                                <div className="opt">
+                                                {/* <div className="opt">
                                                     <button className="minus" onClick={() => decrement(item.item_id)}><i className="fa-solid fa-minus"></i></button>
-                                                    <div className="qty">{getQuantity(parseInt(item.item_id))}Kg</div>
+                                                    <div className="qty">{getQuantity(parseInt(item.item_id))} Kg</div>
                                                     <button className="plus" onClick={() => increment(item.item_id)}><i className="fa-solid fa-plus"></i></button>
+                                                </div> */}
+                                                <div className="opt">
+                                                    <div className="qty">{item.itemUnitValue}</div>
+                                                    <button className="plus">{item.itemUnit}</button>
                                                 </div>
-                                                <div className="price">{priceDisplay(parseInt(item.price) * item.quantity).replace("₹", "")}</div>
+                                                <div className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
                                             </div>
                                             <button className='remove-item' onClick={() => remove(item.item_id)}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg></button>
                                         </div>
@@ -204,11 +158,9 @@ export default function Cart() {
                 </PerfectScrollbar>
             </div>
         </div>
-        {cart.length > 0 && <div className="cart-summary-badge">
+        {cart.length > 0 && <div className="cart-summary-badge" onClick={() => setShowPromptModal(true)}>
             <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
-            <div className="continue">
-                <button className="btn" onClick={() => setShowPromptModal(true)}>Submit</button>
-            </div>
+            <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
         </div>}
         <div
             className={`dfc-modal modal fade ${showPromptModal ? "show d-flex" : ""}`}
@@ -260,14 +212,6 @@ export default function Cart() {
                     </div>}
             </div>
         </div>
-        <ConfirmModal
-            show={showConfirm}
-            title="Exit!"
-            message={`Are you sure you want to exit?`}
-            onConfirm={() => logoutAccount()}
-            onConfirmLabel="Yes"
-            onCancel={handleExitCancel}
-        />
     </>
     )
 }
