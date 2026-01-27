@@ -11,7 +11,7 @@ const Header = ({ headerRef, title }) => {
                 </div>
                 <button style={{ marginLeft: 'auto' }} className='icon-btn-s' onClick={() => navigate('/search-items')}><i className="fa-solid fa-search"></i></button>
             </div>
-            <div className='search-area'><h2 className='text-start'>{title}</h2></div>
+            <div className='search-area'><h2>{title}</h2></div>
             <hr />
         </header>
     )

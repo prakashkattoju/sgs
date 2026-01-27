@@ -211,7 +211,7 @@ export default function Items() {
                                             </div>
                                         </div>
                                     </div>
-                                </div>) : <h4 className='text-center'>No Items Found</h4>}
+                                </div>) : <h2 className='no-data'>No Items Found</h2>}
                             </div>
                         </PerfectScrollbar>
                     </div>

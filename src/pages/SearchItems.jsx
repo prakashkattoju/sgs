@@ -158,13 +158,13 @@ export default function SearchItems() {
                         </div>
                     </div>
                 </div>
-                <div className='search-area'><h3 style={{fontSize: 20}} className='text-start'>{query.length > 0 ? 'Search Results' : 'Recently Ordered Items'}</h3></div>
+                <div className='search-area'><h2>{query.length > 0 ? 'Search Results' : 'Recently Ordered Items'}</h2></div>
                 <hr />
             </header>
             <div className='items-container search-items-container'>
                 <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
-                        <div className={`item-list ${items.length > 0 ? 'products-list' : 'products-list'}`}>
+                        <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
                             {itemLoading ? Array.from({ length: 8 }).map((_, i) => (<div key={i} className="item">
                                 <div className='item-inner'>
                                     <div className='unit skeleton'></div>
@@ -217,7 +217,7 @@ export default function SearchItems() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>) : <h4 className='text-center'>No {query.length > 0 ? 'Search' : 'Recently Ordered'} Items Found</h4>}
+                            </div>) : <h2 className='no-data'>No {query.length > 0 ? 'Search' : 'Recently Ordered'} Items Found</h2>}
                         </div>
                     </PerfectScrollbar>
                 </div>
