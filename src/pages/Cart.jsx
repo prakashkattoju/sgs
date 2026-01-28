@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import priceDisplay from '../util/priceDisplay';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart} from '../store/cartSlice';
+import { removeFromCart, clearCart } from '../store/cartSlice';
 import { setUserDetails } from '../store/userSlice';
 //import { verifyCartItems } from '../store/cartThunks';
 import { useNavigate, Link } from "react-router-dom";
@@ -22,6 +22,7 @@ export default function Cart() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     //const [removedItems, setRemovedItems] = useState([])
+    const [tempCart, setTempCart] = useState(cart)
     const decodedToken = decodeToken(token);
     const user_id = decodedToken?.user_id;
     const [loading, setLoading] = useState(false);
@@ -42,10 +43,6 @@ export default function Cart() {
 
         return () => window.removeEventListener("resize", updateHeight);
     }, []);
-
-    const backBtn = () => {
-        navigate('/')
-    }
 
     // Formik initialization
     const formik = useFormik({
@@ -72,11 +69,6 @@ export default function Cart() {
             }
         },
     });
-
-    const getQuantity = (item_id) => {
-        const qty = cart.find((el) => el.item_id === item_id);
-        return qty.quantity;
-    }
 
     const getCartQuantity = () => {
         return cart.reduce(total => total + 1, 0);
@@ -107,7 +99,8 @@ export default function Cart() {
             const data = await CreateBill(cartdata);
             if (data.status) {
                 //handleCancel();
-                navigate('/bill', { state: { token_num: data.token_num } })
+                dispatch(clearCart());
+                navigate('/bill', { state: { token_num: data.token_num, cart: tempCart } })
             }
         } catch (error) {
             console.error("Error", error.message)

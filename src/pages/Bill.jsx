@@ -1,18 +1,13 @@
-import { useState } from 'react'
 import priceDisplay from '../util/priceDisplay';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearCart } from '../store/cartSlice';
+import { useSelector } from 'react-redux';
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Bill() {
-    const dispatch = useDispatch()
     const location = useLocation();
-    const cart = useSelector((state) => state.cart.cart);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
     const user = useSelector((state) => state.user);
 
-    const { token_num } = location.state || 0;
+    const { token_num, cart } = location.state || 0;
 
     const getCartQuantity = () => {
         return cart.reduce(total => total + 1, 0);
@@ -23,7 +18,6 @@ export default function Bill() {
     }
 
     const onClose = () => {
-        dispatch(clearCart());
         navigate('/')
     }
 
