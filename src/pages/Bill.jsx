@@ -31,7 +31,6 @@ export default function Bill() {
         <div className='bill-details'>
             <button type="button" className="btn-close" onClick={onClose}></button>
             <h2>Order Details</h2>
-            <h4>Note: Total amount is estimated.</h4>
             <table>
                 <thead>
                     <tr className='token'><th className='pb-0' colSpan={2}>Token No</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{token_num}</th></tr>
@@ -49,7 +48,9 @@ export default function Bill() {
                     <tr><td colSpan={2}>No. of Items</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
                     <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td>{getCartAmount().replace("₹", "")}</td></tr>
                     <tr><td className='sep' colSpan={5}></td></tr>
-                    <tr><td colSpan={3}>Estimated Total Amount</td><td colSpan={1}></td><td>{getCartAmount().replace("₹", "")}</td></tr>
+                    <tr><td colSpan={3}>Total Amount</td><td colSpan={1}></td><td>{getCartAmount().replace("₹", "")}</td></tr>
+                    <tr><td className='sep' colSpan={5}></td></tr>
+                    <tr><td style={{color:'red'}} colSpan={5}>Note: Total amount is estimated.</td></tr>
                     <tr><td className='sep' colSpan={5}></td></tr>
                     <tr><td colSpan={5}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr>
                 </tbody>

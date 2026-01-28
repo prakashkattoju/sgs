@@ -29,8 +29,8 @@ export default function Items() {
     const [height, setHeaderHeight] = useState(0);
     const [AddToCartModalIndex, setAddToCartModalIndex] = useState(null)
 
-    const [itemUnit, setItemUnit] = useState('')
-    const [itemUnitValue, setItemUnitValue] = useState(null)
+    const [itemUnitValue1, setItemUnitValue1] = useState(0)
+    const [itemUnitValue2, setItemUnitValue2] = useState(0)
 
     useEffect(() => {
         const updateHeight = () => {
@@ -78,10 +78,6 @@ export default function Items() {
         const found = cart.some(el => el.item_id === item_id);
         return found;
     }
-    const getQuantity = (item_id) => {
-        const qty = cart.find((el) => el.item_id === item_id);
-        return qty.quantity;
-    }
 
     const getCartQuantity = () => {
         return cart.reduce(total => total + 1, 0);
@@ -91,20 +87,19 @@ export default function Items() {
         return priceDisplay(cart.reduce((total, item) => total + item.totalPrice * 1, 0));
     }
 
-    const calculatePrice = (pricePerKg, weight, unit = 'g') => {
-        const weightInKg = unit === 'kg' ? weight : weight / 1000;
-        return weightInKg * pricePerKg;
-    };
-
     const addToCartModalOpen = (item) => {
-        const unit = item.unit === 'g' ? 'kg' : item.unit === 'ml' ? 'ltr' : 'pkt'
-        setItemUnit(unit)
         setAddToCartModalIndex(item.item_id);
     };
 
     const addOptToCart = (item) => {
 
-        const itemTotal = item.unit === 'g' ? calculatePrice(item.price, itemUnitValue, itemUnit) : itemUnitValue * item.price;
+        const itemUnit = item.unit === 'kg' ? itemUnitValue1 + itemUnitValue2 >= 1000 ? 'kg' : 'g' : item.unit === 'ltr' ? itemUnitValue1 + itemUnitValue2 >= 1000 ? 'ltr' : 'ml' : 'pkt'
+
+        const itemUnitValue = item.unit === 'kg' || item.unit === 'ltr' ? (itemUnitValue1 + itemUnitValue2) / 1000 : (itemUnitValue1 + itemUnitValue2)
+
+        //const itemTotal = item.unit === 'kg' || item.unit === 'ltr' ? calculatePrice(item.price, itemUnitValue, itemUnit) : itemUnitValue * item.price;
+
+        const itemTotal = itemUnitValue * item.price;
 
         const cartItem = {
             'item_id': parseInt(item.item_id),
@@ -120,13 +115,13 @@ export default function Items() {
     }
     const remove = (item_id) => {
         dispatch(removeFromCart(item_id));
-        setItemUnit('')
-        setItemUnitValue(null)
+        setItemUnitValue1(0)
+        setItemUnitValue2(0)
     }
 
     const handleAddToCartModalCancel = () => {
-        setItemUnit('')
-        setItemUnitValue(null)
+        setItemUnitValue1(0)
+        setItemUnitValue2(0)
         document.activeElement?.blur();
         setAddToCartModalIndex(null);
     };
@@ -181,10 +176,10 @@ export default function Items() {
                                             <div className="cart-action">
                                                 {checkForAdd(parseInt(item.item_id)) ?
                                                     (<div>
-                                                        <button className="btnAddAction init secondary" onClick={() => remove(item.item_id)}><i className="fa-solid fa-trash-can"></i></button>
+                                                        <button className="btnAddAction init secondary" onClick={() => remove(item.item_id)}><span>Remove</span><i className="fa-solid fa-trash-can"></i></button>
                                                     </div>) :
                                                     <>
-                                                        <button className="btnAddAction init" onClick={() => addToCartModalOpen(item)}><i className="fa-solid fa-plus"></i></button>
+                                                        <button className="btnAddAction init" onClick={() => addToCartModalOpen(item)}><span>Add</span><i className="fa-solid fa-plus"></i></button>
                                                         <div
                                                             className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
                                                             id={`AddToCartModal${index}`}
@@ -193,15 +188,16 @@ export default function Items() {
                                                             <div className="modal-dialog">
                                                                 <div className="modal-content">
                                                                     <div className="modal-header">
-                                                                        <h4 className="modal-title text-start small">Select {item.unit === 'g' ? 'kg / g' : item.unit === 'ml' ? 'ltr / ml' : 'pkt'}, and enter value for {item.item}</h4>
-                                                                        <button type="button" className="btn-close small" onClick={handleAddToCartModalCancel}></button>
+                                                                        <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg & grams' : item.unit === 'ltr' ? 'ltr & ml' : 'pkt'} values for {item.item}</h4>
                                                                     </div>
                                                                     <div className="modal-body">
-                                                                        <div className='d-flex align-items-center gap-2'>
-                                                                            <ItemCartCal itemUnit={itemUnit} setItemUnit={setItemUnit} setItemUnitValue={setItemUnitValue} />
-
-                                                                            <button className="btn" onClick={() => addOptToCart(item)}><i className="fa-solid fa-plus"></i></button>
+                                                                        <div className='d-flex flex-column align-items-center justify-content-between gap-2'>
+                                                                            <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
                                                                         </div>
+                                                                    </div>
+                                                                    <div className="modal-footer justify-content-center">
+                                                                        <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
+                                                                        <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span> <i className="fa-solid fa-plus"></i></button>
                                                                     </div>
                                                                 </div>
                                                             </div>

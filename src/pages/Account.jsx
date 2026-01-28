@@ -87,13 +87,12 @@ export default function Account() {
 
     return (
         <>
-            <header ref={headerRef} className='bill-details' style={{ paddingBottom: 0 }}>
-                <button type="button" className="btn-close" onClick={onClose}></button>
-                <h2 className='text-start'>Hello, {user.fullname ? user.fullname : 'User'}</h2>
-                <h4 className='text-start'><span><i className="fa-solid fa-mobile-screen"></i> {user.mobile}</span></h4>
-                <hr />
-                {/* <h4 className='text-start'>Your Orders</h4> */}
-            </header>
+            <header ref={headerRef} className="site-header">
+            <div className='site-header-top d-flex gap-2 align-items-center justify-content-start'>
+                <h1>Hello, {user.fullname ? user.fullname : 'User'}</h1>
+            </div>
+            <hr />
+        </header>
             {/* loading ? <div className="list"><div className='loading'>Loading...</div></div> : <>
                 <div style={{ height: `calc(100dvh - ${height + 15}px)` }} className="list scroll">{orders.length > 0 ?
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className="item-list" style={{ paddingTop: 0 }}>{

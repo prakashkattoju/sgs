@@ -13,6 +13,7 @@ import Account from "./pages/Account";
 import OrderDetails from "./pages/OrderDetails";
 import Items from "./pages/Items";
 import SearchItems from "./pages/SearchItems";
+import OrderAgain from "./pages/OrderAgain";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
       <Route path="/" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Home /></ProtectedRoute> : <Login />} />
       <Route path="/items/:slug/:cat_id/:scat_id" element={<ProtectedRoute allowedRoles={["user"]}><Items /></ProtectedRoute>} />
       <Route path="/search-items" element={<ProtectedRoute allowedRoles={["user"]}><SearchItems /></ProtectedRoute>} />
+      <Route path="/order-again" element={<ProtectedRoute allowedRoles={["user"]}><OrderAgain /></ProtectedRoute>} />
       <Route path="/cart" element={<ProtectedRoute allowedRoles={["user"]}><Cart /></ProtectedRoute>} />
       <Route path="/bill" element={<ProtectedRoute allowedRoles={["user"]}><Bill /> </ProtectedRoute>} />
       <Route path="/account" element={<ProtectedRoute allowedRoles={["user"]}><Account /> </ProtectedRoute>} />

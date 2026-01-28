@@ -9,8 +9,9 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import priceDisplay from '../util/priceDisplay';
 import Units from '../components/Units';
 import ItemCartCal from '../components/ItemCartCal';
+import Header from '../components/Header';
 
-export default function SearchItems() {
+export default function OrderAgain() {
 
     const cart = useSelector((state) => state.cart.cart);
     const user = useSelector((state) => state.user);
@@ -18,8 +19,7 @@ export default function SearchItems() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [query, setQuery] = useState("");
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState([])
     const [itemLoading, setItemLoading] = useState(false);
 
     const headerRef = useRef(null);
@@ -42,30 +42,25 @@ export default function SearchItems() {
         return () => window.removeEventListener("resize", updateHeight);
     }, []);
 
-    const fetchitems = useCallback(async () => {
-        setItemLoading(true)
+    const fetchOrders = useCallback(async () => {
+        const searchData = {
+            mobile: user.mobile,
+            search: "yes"
+        }
         try {
-            const itemsdata = await GetSearchItems(query);
-            setItems(itemsdata)
+            setItemLoading(true)
+            const res = await GetOrders(searchData);
+            setItems(res);
         } catch (error) {
-            console.error("Failed to fetch items:", error);
+            console.error("Failed to fetch orders:", error);
         } finally {
             setItemLoading(false)
         }
-    }, [query]);
+    }, [user.mobile]);
 
     useEffect(() => {
-        if (!query.trim()) {
-            setItems([])
-            return;
-        }
-
-        const timer = setTimeout(() => {
-            fetchitems()
-        }, 400);
-
-        return () => clearTimeout(timer);
-    }, [fetchitems, query]);
+        fetchOrders();
+    }, [fetchOrders, user.mobile]);
 
     const checkForAdd = (item_id) => {
         const found = cart.some(el => el.item_id === item_id);
@@ -121,17 +116,7 @@ export default function SearchItems() {
 
     return (
         <>
-            <header ref={headerRef} style={{ paddingBottom: 0 }}>
-                <div className='search-area'>
-                    <div className="search-form">
-                        <div className="form-group">
-                            <input className="form-control alt" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search here..." />
-                            <span className='search-icon'><i className="fa-solid fa-search"></i></span>
-                        </div>
-                    </div>
-                </div>
-                <hr />
-            </header>
+            <Header headerRef={headerRef} title="Recently Ordered Items" />
             <div className='items-container search-items-container'>
                 <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
@@ -189,7 +174,7 @@ export default function SearchItems() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>) : <h2 className='no-data'>No Search Result Items Found</h2>}
+                            </div>) : <h2 className='no-data'>No Recently Ordered Items Found</h2>}
                         </div>
                     </PerfectScrollbar>
                 </div>
