@@ -27,7 +27,7 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
                     value={value1}
                     onValueChange={(e) => setHandleValue1(e.value)}
                     useGrouping={false}
-                    placeholder={itemUnit === 'kg' ? 'Enter kgs' : itemUnit === 'ltr' ? 'Enter ltrs' : 'Enter pkts'}
+                    placeholder={itemUnit === 'kg' ? 'Enter kgs' : itemUnit === 'ltr' ? 'Enter ltrs' : itemUnit === 'unit' ? 'Enter units' : 'Enter pkts'}
                     showButtons
                     buttonLayout="horizontal"
                     incrementButtonIcon="fa-solid fa-plus"
@@ -35,7 +35,7 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
                     step={1}
                     min={0}
                 />
-                <span className="unit-placeholder">{itemUnit === 'kg' ? 'kg' : itemUnit === 'ltr' ? 'ltr' : 'pkt'}</span>
+                <span className="unit-placeholder">{itemUnit === 'kg' ? 'kg' : itemUnit === 'ltr' ? 'ltr' : itemUnit === 'unit' ? 'unit' : 'pkt'}</span>
             </div>
             {itemUnit === 'kg' || itemUnit === 'ltr' ? <div className='unit-input'><InputNumber
                 value={value2}

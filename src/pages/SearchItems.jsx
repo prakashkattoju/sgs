@@ -86,7 +86,7 @@ export default function SearchItems() {
 
     const addOptToCart = (item) => {
 
-        const itemUnit = item.unit === 'kg' ? itemUnitValue1 + itemUnitValue2 >= 1000 ? 'kg' : 'g' : item.unit === 'ltr' ? itemUnitValue1 + itemUnitValue2 >= 1000 ? 'ltr' : 'ml' : 'pkt'
+        const itemUnit = item.unit === 'kg' ? itemUnitValue1 + itemUnitValue2 >= 1000 ? 'kg' : 'g' : item.unit === 'ltr' ? itemUnitValue1 + itemUnitValue2 >= 1000 ? 'ltr' : 'ml' : item.unit === 'unit' ? 'unit' : 'pkt'
 
         const itemUnitValue = item.unit === 'kg' || item.unit === 'ltr' ? (itemUnitValue1 + itemUnitValue2) / 1000 : (itemUnitValue1 + itemUnitValue2)
 
@@ -175,7 +175,7 @@ export default function SearchItems() {
                                                         <div className="modal-dialog">
                                                             <div className="modal-content">
                                                                 <div className="modal-header">
-                                                                    <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : 'pkt'} values for<br/>{item.item}</h4>
+                                                                    <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values for<br/>{item.item}</h4>
                                                                 </div>
                                                                 <div className="modal-body">
                                                                     <div className='d-flex flex-column align-items-center justify-content-between gap-2'>
