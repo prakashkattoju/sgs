@@ -1,23 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import priceDisplay from '../util/priceDisplay';
-import { format } from 'date-fns'
-import { ChangeOrderStatus } from '../services/Billservices';
-import AlertModal from '../components/AlertModal';
-import { FaSpinner } from "react-icons/fa";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 
 export default function OrderDetails() {
     const location = useLocation();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
-    const [orderDetails, setOrderDetails] = useState(location.state ? location.state : [])
-    const [loading, setLoading] = useState(false);
-    const [showAlert, setShowAlert] = useState({
-        title: null,
-        message: null,
-        show: false
-    });
+    
+    const { token_num, total_quantity, total_price, items: orderDetails } = location.state || 0;
+
+    const getCartQuantity = () => {
+        return orderDetails.reduce(total => total + 1, 0);
+    };
+
+    const getCartAmount = () => {
+        return priceDisplay(orderDetails.reduce((total, item) => total + item.totalPrice * 1, 0));
+    }
+
+    const headerRef = useRef(null);
+    const [height, setHeaderHeight] = useState(0);
+
+    useEffect(() => {
+        const updateHeight = () => {
+            if (headerRef.current) {
+                setHeaderHeight(headerRef.current.offsetHeight);
+            }
+        };
+
+        updateHeight();
+        window.addEventListener("resize", updateHeight);
+
+        return () => window.removeEventListener("resize", updateHeight);
+    }, []);
 
     const onClose = () => {
         navigate(-1);
@@ -25,28 +42,43 @@ export default function OrderDetails() {
 
     return (
         <>
-            <div id="orderDetails" className="bill-details">
-                <button type="button" className="btn-close" onClick={onClose}></button>
-                <h2 className='text-start'>Hello, {user.fullname ? user.fullname : 'User'}</h2>
-                <h4 className='text-start'><span><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="currentColor"><path d="M280-40q-33 0-56.5-23.5T200-120v-720q0-33 23.5-56.5T280-920h400q33 0 56.5 23.5T760-840v124q18 7 29 22t11 34v80q0 19-11 34t-29 22v404q0 33-23.5 56.5T680-40H280Zm0-80h400v-720H280v720Zm0 0v-720 720Zm200-600q17 0 28.5-11.5T520-760q0-17-11.5-28.5T480-800q-17 0-28.5 11.5T440-760q0 17 11.5 28.5T480-720Z" /></svg> {user.mobile}</span></h4>
+            <header ref={headerRef} className="site-header">
+                <div className='search-area d-flex gap-3 align-items-center justify-content-start'>
+                    <button className='icon-btn' onClick={onClose}><i className="fa-solid fa-arrow-left"></i></button>
+                    <div>
+                        <h1>Order No: {token_num}</h1>
+                        <p>{total_quantity} item(s) ordered</p>
+                    </div>
+                </div>
                 <hr />
-                <table>
-                    <thead>
-                        <tr className='token'><th className='pb-0' colSpan={2}>Token No</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{orderDetails.token_num}</th></tr>
-                        <tr><th colSpan={5} className='sep pb-0'></th></tr>
-                        <tr><th className='pb-0' colSpan={2}>Date</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{format(new Date(orderDetails.dcreated_on), 'dd-MM-yyyy')}</th></tr>
-                        <tr><th colSpan={5} className='sep pb-0'></th></tr>
-                        <tr><th className='pid'>#</th><th className='pname'>Items</th><th>Qty</th><th>I.Rs.</th><th>Rs.</th></tr>
-                    </thead>
-                    <tbody>
-                        {orderDetails.items?.map((item, index) => <tr key={index}><td className='pid'>{item.product_id}</td><td className='pname'>{item.title}</td><td>{item.quantity}</td><td>{item.price}</td><td>{item.quantity * item.price}</td></tr>)}
-                        <tr><td className='sep' colSpan={5}></td></tr>
-                        <tr><td colSpan={2}>Items Total</td><td>{orderDetails.total_quantity}</td><td colSpan={2}></td></tr>
-                        <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td>{orderDetails.total_price}</td></tr>
-                        <tr><td className='sep' colSpan={5}></td></tr>
-                        <tr><td colSpan={2}>Total Amount</td><td className='text-end' colSpan={3}>{priceDisplay(orderDetails.total_price)}</td></tr>
-                    </tbody>
-                </table>
+            </header>
+            <div style={{ height: `calc(100dvh - ${height + 81}px)` }} className="list scroll">
+                <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
+                    <div className='bill-details'>
+                        <table>
+                            <thead>
+                                <tr><th className='pb-0' colSpan={2}>Date</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{new Date().toLocaleDateString('en-IN')}</th></tr>
+                                {/* <tr><th colSpan={5} className='sep pb-0'></th></tr>
+                                <tr><th className='pb-0' colSpan={2}>Name</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{user.fullname}</th></tr>
+                                <tr><th className='pb-0' colSpan={2}>Mobile Number</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{user.mobile}</th></tr> */}
+                                <tr><th colSpan={5} className='sep pb-0'></th></tr>
+                                <tr><th colSpan={2} className='pname'>Items</th><th>&nbsp;</th><th style={{textAlign:'center'}}>I.Rs.</th><th style={{textAlign:'center'}}>Rs.</th></tr>
+                            </thead>
+                            <tbody>
+                                {orderDetails.map((item, index) => <tr key={index}><td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnitValue} {item.itemUnit}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</td></tr>)}
+                                <tr><td className='sep' colSpan={5}></td></tr>
+                                <tr><td colSpan={2}>No. of Items</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
+                                <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td style={{textAlign:'right'}}>{getCartAmount().replace("₹", "")}</td></tr>
+                                <tr><td className='sep' colSpan={5}></td></tr>
+                                <tr><td colSpan={3}>Total Amount</td><td colSpan={1}></td><td style={{textAlign:'right'}}>{getCartAmount().replace("₹", "")}</td></tr>
+                                <tr><td className='sep' colSpan={5}></td></tr>
+                                <tr><td style={{ color: 'red' }} colSpan={5}>Note: Total amount is estimated.</td></tr>
+                                <tr><td className='sep' colSpan={5}></td></tr>
+                                {/* <tr><td colSpan={5}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr> */}
+                            </tbody>
+                        </table>
+                    </div>
+                </PerfectScrollbar>
             </div>
             {/* <AlertModal
                 show={showAlert.show}

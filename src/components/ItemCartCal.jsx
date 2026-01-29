@@ -10,7 +10,7 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
 
     const setHandleValue1 = (value) => {
         setValue1(value);
-        setItemUnitValue1(itemUnit === 'kg' || itemUnit === 'ltr' ? value*1000 : value)
+        setItemUnitValue1(itemUnit === 'kg' || itemUnit === 'ltr' ? value * 1000 : value)
     }
 
     const setHandleValue2 = (value) => {
@@ -28,6 +28,12 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
                     onValueChange={(e) => setHandleValue1(e.value)}
                     useGrouping={false}
                     placeholder={itemUnit === 'kg' ? 'Enter kgs' : itemUnit === 'ltr' ? 'Enter ltrs' : 'Enter pkts'}
+                    showButtons
+                    buttonLayout="horizontal"
+                    incrementButtonIcon="fa-solid fa-plus"
+                    decrementButtonIcon="fa-solid fa-minus"
+                    step={1}
+                    min={0}
                 />
                 <span className="unit-placeholder">{itemUnit === 'kg' ? 'kg' : itemUnit === 'ltr' ? 'ltr' : 'pkt'}</span>
             </div>
@@ -36,6 +42,12 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
                 onValueChange={(e) => setHandleValue2(e.value)}
                 useGrouping={false}
                 placeholder={itemUnit === 'kg' ? 'Enter grams' : itemUnit === 'ltr' && 'Enter ml'}
+                showButtons
+                buttonLayout="horizontal"
+                incrementButtonIcon="fa-solid fa-plus"
+                decrementButtonIcon="fa-solid fa-minus"
+                step={50}
+                min={0}
             /><span className="unit-placeholder">{itemUnit === 'kg' ? 'g' : itemUnit === 'ltr' && 'ml'}</span>
             </div> : <input type='hidden' value={value2} />}
 

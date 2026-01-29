@@ -88,42 +88,49 @@ export default function Account() {
     return (
         <>
             <header ref={headerRef} className="site-header">
-            <div className='site-header-top d-flex gap-2 align-items-center justify-content-start'>
-                <h1>Hello, {user.fullname ? user.fullname : 'User'}</h1>
-            </div>
-            <hr />
-        </header>
-            {/* loading ? <div className="list"><div className='loading'>Loading...</div></div> : <>
-                <div style={{ height: `calc(100dvh - ${height + 15}px)` }} className="list scroll">{orders.length > 0 ?
-                    <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className="item-list" style={{ paddingTop: 0 }}>{
-                        orders.map((item, index) => {
-                            const data = item.items;
-                            const titles = data.map(item => item.title);
-                            const visibleTitles = titles.slice(0, 2);
-                            const remainingCount = titles.length - visibleTitles.length;
+                <div className='search-area d-flex gap-3 align-items-center justify-content-start'>
+                    <button className='icon-btn' onClick={onClose}><i className="fa-solid fa-arrow-left"></i></button>
+                    <div>
+                        <h1>Hello, {user.fullname ? user.fullname : 'User'}</h1>
+                        <p><i className="fa-solid fa-mobile-screen"></i> {user.mobile}</p>
+                    </div>
+                    <button style={{ marginLeft: 'auto' }} className='icon-btn' onClick={() => setShowConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
+                </div>
+                <hr />
+            </header>
+            {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container'>
+                <div style={{ height: `calc(100dvh - ${height + 26}px)` }} className="list scroll">{orders.length > 0 ?
+                    <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
+                        <div className="item-list orders-list">
+                            {orders.map((item, index) => {
+                                const data = item.items;
+                                const titles = data.map(item => item.title);
+                                const visibleTitles = titles.slice(0, 2);
+                                const remainingCount = titles.length - visibleTitles.length;
 
-                            return <div key={index} className="item" onClick={() => navigate('/order-details', { state: item })}>
-                                <div className='item-inner'>
-                                    <div className="meta">
-                                        <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20, marginBottom: 10 }}><span>{visibleTitles.map((title, index) => (
-                                            <span className='items-more-title' key={index}>{title}{index < visibleTitles.length - 1 ? ',' : ''}&nbsp;</span>
-                                        ))} {remainingCount > 0 && (<span> +{remainingCount} more</span>)}</span></h2>
-                                        <div className="meta-inner" style={{ fontWeight: 500 }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20 }}>
-                                                <div>Order # {item.token_num}</div>
-                                                <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
-                                            </div>
-                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
-                                                <div className="price">{priceDisplay(parseInt(item.total_price))}</div>
-                                                <div>{StatusChip({ status: item.status })}</div>
+                                return <div key={index} className="item" onClick={() => navigate('/order-details', { state: item })}>
+                                    <div className='item-inner'>
+                                        <div className="meta">
+                                            <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20, marginBottom: 10 }}><span>{visibleTitles.map((title, index) => (
+                                                <span className='items-more-title' key={index}>{title}{index < visibleTitles.length - 1 ? ',' : ''}&nbsp;</span>
+                                            ))} {remainingCount > 0 && (<span> +{remainingCount} more</span>)}</span></h2>
+                                            <div className="meta-inner" style={{ fontWeight: 500 }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20 }}>
+                                                    <div>Order # {item.token_num}</div>
+                                                    <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
+                                                    <div className="price">{priceDisplay(parseInt(item.total_price))}</div>
+                                                    <div>{StatusChip({ status: item.status })}</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        })}
+                            })}
+                        </div>
                     </PerfectScrollbar> : <h4 className='text-center'>You haven't placed any orders yet.</h4>}
-                </div></> */}
+                </div></div>}
             <ConfirmModal
                 show={showConfirm}
                 title="Exit!"

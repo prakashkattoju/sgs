@@ -130,10 +130,10 @@ export default function Items() {
 
     return (
         <>
-            <Header headerRef={headerRef} title={category ? `Buy "${category}" Items` : 'Buy Items'} />
+            <Header headerRef={headerRef} title={category ? `Buy "${category}" Items` : 'Buy Items'} subtitle={`${items.length} item(s)`} />
             <div className='items-container'>
-                <div className='items-container-inner' style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }}>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
+                <div className='items-container-inner' style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 30)}px)` }}>
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 30)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                             <div className="item-list sidenav-list">
                                 {loading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
@@ -152,7 +152,7 @@ export default function Items() {
                             </div>
                         </PerfectScrollbar>
                     </div>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 30)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                             <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
                                 {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
@@ -188,7 +188,7 @@ export default function Items() {
                                                             <div className="modal-dialog">
                                                                 <div className="modal-content">
                                                                     <div className="modal-header">
-                                                                        <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg & grams' : item.unit === 'ltr' ? 'ltr & ml' : 'pkt'} values for {item.item}</h4>
+                                                                        <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : 'pkt'} values for<br/>{item.item}</h4>
                                                                     </div>
                                                                     <div className="modal-body">
                                                                         <div className='d-flex flex-column align-items-center justify-content-between gap-2'>

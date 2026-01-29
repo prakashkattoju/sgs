@@ -108,7 +108,7 @@ export default function Cart() {
     }
 
     return (<>
-        <Header headerRef={headerRef} title="Cart" />
+        <Header headerRef={headerRef} title="Cart" subtitle={`${cart.length} item(s) in cart`}/>
         <div className='items-container'>
             <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 89) : (height + 30)}px)` }} className="list scroll">
                 <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>

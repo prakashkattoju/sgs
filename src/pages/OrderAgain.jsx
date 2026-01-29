@@ -116,9 +116,9 @@ export default function OrderAgain() {
 
     return (
         <>
-            <Header headerRef={headerRef} title="Recently Ordered Items" />
+            <Header headerRef={headerRef} title="Order Again" subtitle={`${items.length} item(s) recently ordered`} />
             <div className='items-container search-items-container'>
-                <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
+                <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 30)}px)` }} className="list scroll">
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                         <div className={`item-list ${items.length > 0 ? 'products-list col-3' : 'empty-list'}`}>
                             {itemLoading ? Array.from({ length: 8 }).map((_, i) => (<div key={i} className="item">
@@ -155,7 +155,7 @@ export default function OrderAgain() {
                                                         <div className="modal-dialog">
                                                             <div className="modal-content">
                                                                 <div className="modal-header">
-                                                                    <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg & grams' : item.unit === 'ltr' ? 'ltr & ml' : 'pkt'} values for {item.item}</h4>
+                                                                    <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : 'pkt'} values for<br/>{item.item}</h4>
                                                                 </div>
                                                                 <div className="modal-body">
                                                                     <div className='d-flex flex-column align-items-center justify-content-between gap-2'>

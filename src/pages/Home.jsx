@@ -62,7 +62,7 @@ export default function Home() {
 
     return (
         <>
-            <Header headerRef={headerRef} title="Shop by Category" />
+            <Header headerRef={headerRef} title="" />
             <div className='items-container'>
                 <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 71) : (height + 21)}px)` }} className="list scroll">
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
