@@ -64,7 +64,7 @@ export default function Home() {
         <>
             <Header headerRef={headerRef} title="" />
             <div className='items-container'>
-                <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 30)}px)` }} className="list scroll">
+                <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 21)}px)` }} className="list scroll">
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                         <div className="item-list">
                             {loading ? Array.from({ length: 9 }).map((_, i) => (<div key={i} className="item">
