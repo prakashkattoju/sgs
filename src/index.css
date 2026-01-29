@@ -939,7 +939,7 @@ hr {
 
 .list .item-list .item .meta .cart-action .btnAddAction,
 .list .item-list .item .meta .cart-action .opt button:not(.remove-item) {
-    width: 28px;
+    width: 40px;
     border: 0;
     padding: 5px;
     border-radius: 3px;
@@ -967,7 +967,7 @@ hr {
 }
 
 .list .item-list .item .meta .cart-action .opt button.plus {
-    border-radius: 0 3px 3px 0;
+    border-radius: 0;
 }
 
 .list .item-list .item .meta .cart-action .opt button.edit {
@@ -1061,7 +1061,7 @@ form.list .form-group select.form-control {
 }
 
 .modal-body .p-inputnumber {
-    height: 50px;
+    height: 40px;
     position: relative;
     border: 1px solid #194f2d;
     border-radius: 3px;
@@ -1081,8 +1081,7 @@ form.list .form-group select.form-control {
 
 .modal-body .p-inputnumber .p-inputnumber-button {
     width: 50px;
-    height: 50px;
-    align-content: center;
+    height: 40px;
     border: 0;
     padding: 5px;
     background: #194f2d;
@@ -1108,13 +1107,12 @@ form.list .form-group select.form-control {
     top: 0;
     left: -58px;
     width: 50px;
-    height: 50px;
+    height: 40px;
     align-content: center;
     border: 0;
     padding: 5px;
     border-radius: 3px;
-    background: #194f2d;
-    color: #dff3e6;
+    color: #194f2d;
     font-size: 16px;
     font-weight: 600;
 }
@@ -1270,7 +1268,7 @@ form.list button:hover {
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    bottom: 63px;
+    bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -1503,7 +1501,8 @@ form.list button:hover {
     position: fixed;
     bottom: 0;
     width: 100%;
-    padding: 10px 5px;
+    height: 54px;
+    padding: 6px 5px;
     display: flex;
     align-items: center;
     justify-content: space-around;

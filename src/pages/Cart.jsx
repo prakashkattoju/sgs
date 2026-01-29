@@ -110,7 +110,7 @@ export default function Cart() {
     return (<>
         <Header headerRef={headerRef} title="Cart" subtitle={`${cart.length} item(s) in cart`}/>
         <div className='items-container'>
-            <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 89) : (height + 30)}px)` }} className="list scroll">
+            <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 30)}px)` }} className="list scroll">
                 <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                     <div className={`item-list ${cart.length > 0 ? 'cart-list' : 'empty-list'}`}>
                         {cart?.length > 0 && cart.map((item, index) =>
