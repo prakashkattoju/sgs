@@ -153,7 +153,7 @@ export default function Items() {
                         </PerfectScrollbar>
                     </div>
                     <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 21)}px)` }} className="list scroll">
-                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
+                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter bg'>
                             <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
                                 {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
                                     <div className='item-inner'>

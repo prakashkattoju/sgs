@@ -723,6 +723,9 @@ hr {
 .scrollbar-container.alter {
     background-color: transparent;
 }
+.scrollbar-container.alter.bg{
+    background-color: #efefef;
+}
 
 .list .item-list .item {
     position: relative;
