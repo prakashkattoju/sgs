@@ -155,7 +155,7 @@ export default function OrderAgain() {
                                                         <div className="modal-dialog">
                                                             <div className="modal-content">
                                                                 <div className="modal-header">
-                                                                    <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values for<br/>{item.item}</h4>
+                                                                    <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values for<br />{item.item}</h4>
                                                                 </div>
                                                                 <div className="modal-body">
                                                                     <div className='d-flex flex-column align-items-center justify-content-between gap-2'>

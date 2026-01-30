@@ -91,15 +91,18 @@ export default function Account() {
                 <div className='search-area d-flex gap-3 align-items-center justify-content-start'>
                     <button className='icon-btn' onClick={onClose}><i className="fa-solid fa-arrow-left"></i></button>
                     <div>
-                        <h1>Hello, {user.fullname ? user.fullname : 'User'}</h1>
-                        <p><i className="fa-solid fa-mobile-screen"></i> {user.mobile}</p>
+                        <h1><small>Hello,</small> {user.fullname ? user.fullname : 'User'}</h1>
+                        <p>{`You have ${orders.length} order(s)`}</p>
                     </div>
+                    {/* <button style={{marginBottom: 'auto'}} className='btn'>
+                        <i className="fa-solid fa-edit"></i>
+                    </button> */}
                     <button style={{ marginLeft: 'auto' }} className='icon-btn' onClick={() => setShowConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </div>
                 <hr />
             </header>
-            {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container'>
-                <div style={{ height: `calc(100dvh - ${height + 26}px)` }} className="list scroll">{orders.length > 0 ?
+            {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container search-items-container'>
+                <div style={{ height: `calc(100dvh - ${height + 21}px)` }} className="list scroll">{orders.length > 0 ?
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                         <div className="item-list orders-list">
                             {orders.map((item, index) => {

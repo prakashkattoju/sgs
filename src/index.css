@@ -704,7 +704,7 @@ hr {
     gap: 10px;
     height: 100%;
     background-color: #ffffff;
-    padding: 8px 15px 0 5px;
+    padding: 0 12px 0 8px;
 }
 
 .list .item-list.orders-list .item {
@@ -793,7 +793,7 @@ hr {
     height: 100%;
     gap: 14px;
     align-items: flex-start;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
 .list .item-list .item-inner .units {
@@ -843,6 +843,15 @@ hr {
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
+}
+
+.list .item-list .item .meta.unit-price{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;;
+    column-gap: 5px;
+    width: 100%;
 }
 
 .list .item-list .item .meta.add-to-cart-meta {

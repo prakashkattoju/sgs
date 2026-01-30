@@ -92,7 +92,7 @@ export default function Cart() {
         setLoading(true)
         const cartdata = {
             total_quantity: getCartQuantity(),
-            total_price: cart.reduce((total, item) => total + item.price * 1, 0),
+            total_price: cart.reduce((total, item) => total + item.totalPrice * 1, 0),
             items: cart
         };
         try {
