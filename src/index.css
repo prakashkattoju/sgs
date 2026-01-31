@@ -1084,7 +1084,7 @@ form.list .form-group select.form-control {
 }
 
 .modal-body .p-inputnumber {
-    height: 33px;
+    height: 35px;
     position: relative;
     border: 1px solid #194f2d;
     border-radius: 3px;
@@ -1097,14 +1097,14 @@ form.list .form-group select.form-control {
     font-size: 16px;
     font-weight: 600;
     padding: 6px 10px;
-    width: 98px;
+    width: 94px;
     cursor: none;
     pointer-events: none;
 }
 
 .modal-body .p-inputnumber .p-inputnumber-button {
-    width: 33px;
-    height: 33px;
+    width: 35px;
+    height: 35px;
     border: 0;
     padding: 5px;
     background: #194f2d;
@@ -1130,8 +1130,8 @@ form.list .form-group select.form-control {
     position: absolute;
     top: 0;
     left: -40px;
-    width: 33px;
-    height: 33px;
+    width: 35px;
+    height: 35px;
     align-content: center;
     border: 0;
     padding: 5px;

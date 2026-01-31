@@ -21,7 +21,7 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
     }
 
     return (
-        <div className='d-flex flex-column align-items-stretch justify-content-between gap-2'>
+        <div className='d-flex flex-column align-items-stretch justify-content-between gap-3'>
             <div className='unit-input'>
                 <InputNumber
                     value={value1}
