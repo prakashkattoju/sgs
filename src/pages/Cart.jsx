@@ -115,7 +115,7 @@ export default function Cart() {
                     <div className={`item-list ${cart.length > 0 ? 'cart-list' : 'empty-list'}`}>
                         {cart?.length > 0 && cart.map((item, index) =>
                             <div key={index} className="item">
-                                <div className='item-inner'>
+                                <div style={{padding: 0}} className='item-inner'>
                                     <div className="meta">
                                         <h2>{item.title}</h2>
                                         <div className="meta-inner">
@@ -133,7 +133,7 @@ export default function Cart() {
                                                     <div className="qty">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue}</div>
                                                     <button className="plus">{item.itemUnit}</button>
                                                 </div>
-                                                <div className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
+                                                <div style={{margin: 0}} className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
                                             </div>
                                             <button className='remove-item' onClick={() => remove(item.item_id)}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg></button>
                                         </div>
