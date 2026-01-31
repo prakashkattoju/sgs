@@ -667,18 +667,14 @@ hr {
 .list .item-list.sidenav-list {
     display: flex;
     flex-direction: column;
-    padding: 5px 10px 5px 5px;
+    padding: 0 10px 0 10px;
     height: 100%;
-    border: 1px solid #e3e3e3;
 }
 
 .list .item-list.products-list {
     grid-template-columns: repeat(auto-fill, minmax(114px, 1fr));
-    padding: 5px 10px 5px 5px;
+    padding: 0 10px 0 0;
     align-items: stretch;
-    background-color: #efefef;
-    border: 1px solid #e3e3e3;
-    border-left: 0;
 }
 
 .list .item-list.empty-list {
@@ -1979,9 +1975,11 @@ input:checked+.slider::before {
 }
 
 .icon-btn-cart {
+    font-size: 12px;
     line-height: 1;
-    border: 0;
-    padding: .35rem .45rem !important;
+    font-weight: 500;
+    border: 1px solid;
+    padding: .25rem .35rem !important;
     align-content: center;
     border-radius: 4px;
 }

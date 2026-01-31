@@ -131,7 +131,7 @@ export default function Items() {
     return (
         <>
             <Header headerRef={headerRef} title={category ? `Buy "${category}" Items` : 'Buy Items'} subtitle={`${items.length} item(s)`} />
-            <div className='items-container'>
+            <div className='items-container search-items-container'>
                 <div className='items-container-inner' style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 21)}px)` }}>
                     <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 21)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
@@ -153,7 +153,7 @@ export default function Items() {
                         </PerfectScrollbar>
                     </div>
                     <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 21)}px)` }} className="list scroll">
-                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter bg'>
+                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                             <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
                                 {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
                                     <div className='item-inner'>
@@ -169,14 +169,14 @@ export default function Items() {
                                     items?.length > 0 ? items?.map((item, index) =>
                                         <div key={index} className="item">
                                             <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? remove(item.item_id) : addToCartModalOpen(item)}>
-                                                <div className='w-100 d-flex align-items-center justify-content-between'>
-                                                    <Units unit={item.unit} base_unit={item.base_unit} />
-                                                    {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'><i className="fa-solid fa-plus"></i></button>}
-                                                </div>
                                                 <div className="meta">
                                                     <h2>{item.item}</h2>
                                                 </div>
                                                 <div className='price'>{priceDisplay(parseInt(item.price))}</div>
+                                                <div className='w-100 d-flex align-items-center justify-content-between'>
+                                                    <Units unit={item.unit} base_unit={item.base_unit} />
+                                                    {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'>ADD</button>}
+                                                </div>
                                             </div>
 
                                             {!checkForAdd(parseInt(item.item_id)) &&
