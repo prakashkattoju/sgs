@@ -65,7 +65,7 @@ export default function OrderDetails() {
                                 <tr><th colSpan={2} className='pname'>Items</th><th>&nbsp;</th><th style={{textAlign:'center'}}>I.Rs.</th><th style={{textAlign:'center'}}>Rs.</th></tr>
                             </thead>
                             <tbody>
-                                {orderDetails.map((item, index) => <tr key={index}><td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {item.itemUnit}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</td></tr>)}
+                                {orderDetails.map((item, index) => <tr key={index}><td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</td></tr>)}
                                 <tr><td className='sep' colSpan={5}></td></tr>
                                 <tr><td colSpan={2}>No. of Items</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
                                 <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td style={{textAlign:'right'}}>{getCartAmount().replace("₹", "")}</td></tr>

@@ -147,7 +147,7 @@ export default function Cart() {
                                                 </div> */}
                                                 <div className="opt">
                                                     <div className="qty">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue}</div>
-                                                    <button className="plus">{item.itemUnit}</button>
+                                                    <button className="plus">{`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}</button>
                                                 </div>
                                                 <div style={{ margin: 0 }} className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
                                             </div>

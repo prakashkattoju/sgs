@@ -8,7 +8,7 @@ export default function Units({ item_id, unit, base_unit }) {
     const item = cart.find(el => el.item_id == item_id);
 
     if(item) 
-        return <div className="units text-start">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {item.itemUnit}<br />{priceDisplay(item.totalPrice)} </div>;
+        return <div className="units text-start">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}<br />{priceDisplay(item.totalPrice)} </div>;
 
     switch (unit) {
         case 'kg':
