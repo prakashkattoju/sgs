@@ -1979,17 +1979,15 @@ input:checked+.slider::before {
 }
 
 .icon-btn-cart {
-    font-size: 12px;
     line-height: 1;
-    font-weight: 600;
     border: 0;
-    padding: .225rem !important;
+    padding: .35rem .45rem !important;
     align-content: center;
     border-radius: 4px;
 }
 
 .icon-btn-cart i {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .icon-btn-cart.add {

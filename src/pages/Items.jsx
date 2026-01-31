@@ -171,7 +171,7 @@ export default function Items() {
                                             <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? remove(item.item_id) : addToCartModalOpen(item)}>
                                                 <div className='w-100 d-flex align-items-center justify-content-between'>
                                                     <Units unit={item.unit} base_unit={item.base_unit} />
-                                                    {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i> Remove</button> : <button className='icon-btn-cart add'>Add <i className="fa-solid fa-plus"></i></button>}
+                                                    {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'><i className="fa-solid fa-plus"></i></button>}
                                                 </div>
                                                 <div className="meta">
                                                     <h2>{item.item}</h2>
