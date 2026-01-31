@@ -9,6 +9,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import priceDisplay from '../util/priceDisplay';
 import Units from '../components/Units';
 import ItemCartCal from '../components/ItemCartCal';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function SearchItems() {
 
@@ -28,6 +29,12 @@ export default function SearchItems() {
 
     const [itemUnitValue1, setItemUnitValue1] = useState(0)
     const [itemUnitValue2, setItemUnitValue2] = useState(0)
+
+    const [confirm, setConfirm] = useState({
+        status: false,
+        item_id: null,
+        item_name: null
+    });
 
     useEffect(() => {
         const updateHeight = () => {
@@ -110,6 +117,7 @@ export default function SearchItems() {
         dispatch(removeFromCart(item_id));
         setItemUnitValue1(0)
         setItemUnitValue2(0)
+        handleCancel()
     }
 
     const handleAddToCartModalCancel = () => {
@@ -122,6 +130,15 @@ export default function SearchItems() {
     const onClose = () => {
         navigate(-1);
     }
+
+    const handleCancel = () => {
+        document.activeElement?.blur();
+        setConfirm({
+            status: false,
+            item_id: null,
+            item_name: null
+        });
+    };
 
     return (
         <>
@@ -153,13 +170,17 @@ export default function SearchItems() {
                                     </div>
                                 </div>
                             </div>)) : items?.length > 0 ? items?.map((item, index) => <div key={index} className="item">
-                                <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? remove(item.item_id) : addToCartModalOpen(item)}>
+                                <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? setConfirm({
+                                    status: true,
+                                    item_id: item.item_id,
+                                    item_name: item.item
+                                }) : addToCartModalOpen(item)}>
                                     <div className="meta">
                                         <h2>{item.item}</h2>
                                     </div>
                                     <div className='price'>{priceDisplay(parseInt(item.price))}</div>
                                     <div className='w-100 d-flex align-items-center justify-content-between'>
-                                        <Units unit={item.unit} base_unit={item.base_unit} />
+                                        <Units item_id={item.item_id} unit={item.unit} base_unit={item.base_unit} />
                                         {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'>ADD</button>}
                                     </div>
                                 </div>
@@ -196,6 +217,14 @@ export default function SearchItems() {
                 <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
                 <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
             </div>}
+            <ConfirmModal
+                show={confirm.status}
+                title="Remove Item"
+                message={`Are you sure you want to remove "${confirm.item_name}" from order?`}
+                onConfirm={() => remove(confirm.item_id)}
+                onConfirmLabel="Yes"
+                onCancel={handleCancel}
+            />
         </>
     )
 }

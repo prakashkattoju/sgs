@@ -142,7 +142,6 @@ export default function Account() {
                 onConfirmLabel="Yes"
                 onCancel={handleCancel}
             />
-
         </>
     )
 }

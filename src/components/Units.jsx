@@ -1,4 +1,15 @@
-export default function Units({ unit, base_unit }) {
+import { useSelector } from 'react-redux';
+import priceDisplay from '../util/priceDisplay';
+
+export default function Units({ item_id, unit, base_unit }) {
+
+    const cart = useSelector((state) => state.cart.cart);
+
+    const item = cart.find(el => el.item_id == item_id);
+
+    if(item) 
+        return <div className="units text-start">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {item.itemUnit}<br />{priceDisplay(item.totalPrice)} </div>;
+
     switch (unit) {
         case 'kg':
             return <div className="units">{base_unit == 1000 ? '1 kg' : `${base_unit} g`}</div>;

@@ -14,6 +14,7 @@ import { FaSpinner } from "react-icons/fa";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import Header from '../components/Header';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function Cart() {
     const user = useSelector((state) => state.user);
@@ -27,10 +28,15 @@ export default function Cart() {
     const user_id = decodedToken?.user_id;
     const [loading, setLoading] = useState(false);
     const [showPromptModal, setShowPromptModal] = useState(false)
+    const [confirm, setConfirm] = useState({
+        status: false,
+        item_id: null,
+        item_name: null
+    });
 
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
-    
+
     useEffect(() => {
         const updateHeight = () => {
             if (headerRef.current) {
@@ -80,11 +86,21 @@ export default function Cart() {
 
     const remove = (item_id) => {
         dispatch(removeFromCart(item_id));
+        handleConfirmCancel()
     }
 
     const handleCancel = () => {
         document.activeElement?.blur();
         setShowPromptModal(false);
+    };
+
+    const handleConfirmCancel = () => {
+        document.activeElement?.blur();
+        setConfirm({
+            status: false,
+            item_id: null,
+            item_name: null
+        });
     };
 
     const handleConfirmSubmit = async () => {
@@ -108,14 +124,14 @@ export default function Cart() {
     }
 
     return (<>
-        <Header headerRef={headerRef} title="Cart" subtitle={`${cart.length} item(s) in cart`}/>
+        <Header headerRef={headerRef} title="Cart" subtitle={`${cart.length} item(s) in cart`} />
         <div className='items-container search-items-container'>
             <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 80) : (height + 21)}px)` }} className="list scroll">
                 <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                     <div className={`item-list ${cart.length > 0 ? 'cart-list' : 'empty-list'}`}>
                         {cart?.length > 0 && cart.map((item, index) =>
                             <div key={index} className="item">
-                                <div style={{padding: 0}} className='item-inner'>
+                                <div style={{ padding: 0 }} className='item-inner'>
                                     <div className="meta">
                                         <h2>{item.title}</h2>
                                         <div className="meta-inner">
@@ -133,9 +149,13 @@ export default function Cart() {
                                                     <div className="qty">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue}</div>
                                                     <button className="plus">{item.itemUnit}</button>
                                                 </div>
-                                                <div style={{margin: 0}} className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
+                                                <div style={{ margin: 0 }} className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
                                             </div>
-                                            <button className='remove-item' onClick={() => remove(item.item_id)}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg></button>
+                                            <button className='remove-item' onClick={() => setConfirm({
+                                                status: true,
+                                                item_id: item.item_id,
+                                                item_name: item.title
+                                            })}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg></button>
                                         </div>
                                     </div>
                                 </div>
@@ -205,6 +225,14 @@ export default function Cart() {
                     </div>}
             </div>
         </div>
+        <ConfirmModal
+            show={confirm.status}
+            title="Remove Item"
+            message={`Are you sure you want to remove "${confirm.item_name}" from cart?`}
+            onConfirm={() => remove(confirm.item_id)}
+            onConfirmLabel="Yes"
+            onCancel={handleConfirmCancel}
+        />
     </>
     )
 }
