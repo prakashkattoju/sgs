@@ -75,7 +75,7 @@ export default function Items() {
     }, [fetchcategory, cat_id, scat_id]);
 
     const checkForAdd = (item_id) => {
-        const found = cart.some(el => el.item_id === item_id);
+        const found = cart.some(el => el.item_id == item_id);
         return found;
     }
 
@@ -165,49 +165,44 @@ export default function Items() {
                                             <div className="cart-action skeleton"></div>
                                         </div>
                                     </div>
-                                </div>)) : items?.length > 0 ? items?.map((item, index) => <div key={index} className="item">
-                                    <div className='item-inner'>
-                                        <Units unit={item.unit} base_unit={item.base_unit} />
-                                        <div className="meta">
-                                            <h2>{item.item}</h2>
-                                        </div>
-                                        <div className='price'>{priceDisplay(parseInt(item.price))}</div>
-                                        <div className="meta add-to-cart-meta">
-                                            <div className="cart-action">
-                                                {checkForAdd(parseInt(item.item_id)) ?
-                                                    (<div>
-                                                        <button className="btnAddAction init secondary" onClick={() => remove(item.item_id)}><span>Remove</span><i className="fa-solid fa-trash-can"></i></button>
-                                                    </div>) :
-                                                    <>
-                                                        <button className="btnAddAction init" onClick={() => addToCartModalOpen(item)}><span>Add</span><i className="fa-solid fa-plus"></i></button>
-                                                        <div
-                                                            className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
-                                                            id={`AddToCartModal${index}`}
-                                                            tabIndex="-1"
-                                                        >
-                                                            <div className="modal-dialog">
-                                                                <div className="modal-content">
-                                                                    <div className="modal-header">
-                                                                        <h4 className="modal-title small">Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values for<br />{item.item}</h4>
-                                                                    </div>
-                                                                    <div className="modal-body">
-                                                                        <div className='d-flex flex-column align-items-center justify-content-between gap-2'>
-                                                                            <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="modal-footer justify-content-center">
-                                                                        <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
-                                                                        <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span> <i className="fa-solid fa-plus"></i></button>
-                                                                    </div>
+                                </div>)) :
+                                    items?.length > 0 ? items?.map((item, index) =>
+                                        <div key={index} className="item">
+                                            <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? remove(item.item_id) : addToCartModalOpen(item)}>
+                                                <div className='w-100 d-flex align-items-center justify-content-between'>
+                                                    <Units unit={item.unit} base_unit={item.base_unit} />
+                                                    {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i> Remove</button> : <button className='icon-btn-cart add'>Add <i className="fa-solid fa-plus"></i></button>}
+                                                </div>
+                                                <div className="meta">
+                                                    <h2>{item.item}</h2>
+                                                </div>
+                                                <div className='price'>{priceDisplay(parseInt(item.price))}</div>
+                                            </div>
+
+                                            {!checkForAdd(parseInt(item.item_id)) &&
+                                                <div
+                                                    className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
+                                                    id={`AddToCartModal${index}`}
+                                                    tabIndex="-1"
+                                                >
+                                                    <div className="modal-dialog">
+                                                        <div className="modal-content">
+                                                            <div className="modal-header">
+                                                                <h4 className="modal-title small"><span>{item.item}</span>Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values</h4>
+                                                            </div>
+                                                            <div className="modal-body">
+                                                                <div className='d-flex flex-column align-items-center justify-content-between gap-2'>
+                                                                    <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
                                                                 </div>
                                                             </div>
+                                                            <div className="modal-footer justify-content-center">
+                                                                <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
+                                                                <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span> <i className="fa-solid fa-plus"></i></button>
+                                                            </div>
                                                         </div>
-                                                    </>
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>) : <h2 className='no-data'>No Items Found</h2>}
+                                                    </div>
+                                                </div>}
+                                        </div>) : <h2 className='no-data'>No Items Found</h2>}
                             </div>
                         </PerfectScrollbar>
                     </div>
