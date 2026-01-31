@@ -112,9 +112,9 @@ export default function Account() {
                                 const remainingCount = titles.length - visibleTitles.length;
 
                                 return <div key={index} className="item" onClick={() => navigate('/order-details', { state: item })}>
-                                    <div className='item-inner'>
+                                    <div style={{padding: 0}} className='item-inner'>
                                         <div className="meta">
-                                            <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20, marginBottom: 10 }}><span>{visibleTitles.map((title, index) => (
+                                            <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20, marginBottom: 5 }}><span>{visibleTitles.map((title, index) => (
                                                 <span className='items-more-title' key={index}>{title}{index < visibleTitles.length - 1 ? ',' : ''}&nbsp;</span>
                                             ))} {remainingCount > 0 && (<span> +{remainingCount} more</span>)}</span></h2>
                                             <div className="meta-inner" style={{ fontWeight: 500 }}>
@@ -123,7 +123,7 @@ export default function Account() {
                                                     <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
                                                 </div>
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
-                                                    <div className="price">{priceDisplay(parseInt(item.total_price))}</div>
+                                                    <div style={{margin:0}} className="price">{priceDisplay(parseInt(item.total_price))}</div>
                                                     <div>{StatusChip({ status: item.status })}</div>
                                                 </div>
                                             </div>

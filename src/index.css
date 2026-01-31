@@ -802,6 +802,9 @@ hr {
     justify-content: flex-start;
 }
 
+.list .item-list.sidenav-list .item-inner {
+    padding: 0;
+}
 .list .item-list .item-inner .units {
     font-size: 10px;
     border-radius: 5px;
