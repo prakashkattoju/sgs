@@ -99,7 +99,6 @@ export default function Account() {
                     </button> */}
                     <button style={{ marginLeft: 'auto' }} className='icon-btn' onClick={() => setShowConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </div>
-                <hr />
             </header>
             {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container search-items-container'>
                 <div style={{ height: `calc(100dvh - ${height + 21}px)` }} className="list scroll">{orders.length > 0 ?

@@ -50,7 +50,6 @@ export default function Bill() {
                         <p>{getCartQuantity()} item(s) ordered</p>
                     </div>
                 </div>
-                <hr />
             </header>
             <div style={{ height: `calc(100dvh - ${height + 81}px)` }} className="list scroll">
                 <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>

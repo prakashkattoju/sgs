@@ -22,7 +22,6 @@ const Header = ({ headerRef, title, subtitle }) => {
                     </div>
                 </div>
             }
-            <hr />
         </header>
     )
 }
