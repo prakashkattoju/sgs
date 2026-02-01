@@ -21,8 +21,9 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
     }
 
     return (
-        <div className='d-flex flex-column align-items-stretch justify-content-between gap-3'>
+        <div className='d-flex align-items-center justify-content-center gap-3 mb-3'>
             <div className='unit-input'>
+                <label className="unit-placeholder">{itemUnit === 'kg' ? 'kg' : itemUnit === 'ltr' ? 'ltr' : itemUnit === 'unit' ? 'unit' : 'pkt'}</label>
                 <InputNumber
                     value={value1}
                     onValueChange={(e) => setHandleValue1(e.value)}
@@ -35,21 +36,24 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
                     step={1}
                     min={0}
                 />
-                <span className="unit-placeholder">{itemUnit === 'kg' ? 'kg' : itemUnit === 'ltr' ? 'ltr' : itemUnit === 'unit' ? 'unit' : 'pkt'}</span>
+
             </div>
-            {itemUnit === 'kg' || itemUnit === 'ltr' ? <div className='unit-input'><InputNumber
-                value={value2}
-                onValueChange={(e) => setHandleValue2(e.value)}
-                useGrouping={false}
-                placeholder={itemUnit === 'kg' ? 'Enter grams' : itemUnit === 'ltr' && 'Enter ml'}
-                showButtons
-                buttonLayout="horizontal"
-                incrementButtonIcon="fa-solid fa-plus"
-                decrementButtonIcon="fa-solid fa-minus"
-                step={50}
-                min={0}
-            /><span className="unit-placeholder">{itemUnit === 'kg' ? 'g' : itemUnit === 'ltr' && 'ml'}</span>
-            </div> : <input type='hidden' value={value2} />}
+            {itemUnit === 'kg' || itemUnit === 'ltr' ?
+                <div className='unit-input'>
+                    <label className="unit-placeholder">{itemUnit === 'kg' ? 'g' : itemUnit === 'ltr' && 'ml'}</label>
+                    <InputNumber
+                        value={value2}
+                        onValueChange={(e) => setHandleValue2(e.value)}
+                        useGrouping={false}
+                        placeholder={itemUnit === 'kg' ? 'Enter grams' : itemUnit === 'ltr' && 'Enter ml'}
+                        showButtons
+                        buttonLayout="horizontal"
+                        incrementButtonIcon="fa-solid fa-plus"
+                        decrementButtonIcon="fa-solid fa-minus"
+                        step={50}
+                        min={0}
+                    />
+                </div> : <input type='hidden' value={value2} />}
 
         </div>
     )

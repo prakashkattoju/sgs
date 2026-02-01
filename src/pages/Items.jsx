@@ -212,13 +212,11 @@ export default function Items() {
                                                                 <h4 className="modal-title small"><span>{item.item}</span>Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values</h4>
                                                             </div>
                                                             <div className="modal-body">
-                                                                <div className='d-flex flex-column align-items-center justify-content-between gap-2'>
-                                                                    <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
-                                                                </div>
+                                                                <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
                                                             </div>
-                                                            <div className="modal-footer justify-content-center">
+                                                            <div className="modal-footer align-items-center justify-content-center gap-3">
                                                                 <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
-                                                                <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span> <i className="fa-solid fa-plus"></i></button>
+                                                                <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span></button>
                                                             </div>
                                                         </div>
                                                     </div>
