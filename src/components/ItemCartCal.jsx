@@ -21,9 +21,9 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
     }
 
     return (
-        <div className='d-flex align-items-center justify-content-center gap-3 mb-3'>
+        <div className='d-flex flex-column align-items-center justify-content-center gap-3'>
             <div className='unit-input'>
-                <label className="unit-placeholder">{itemUnit === 'kg' ? 'kg' : itemUnit === 'ltr' ? 'ltr' : itemUnit === 'unit' ? 'unit' : 'pkt'}</label>
+                <label className="unit-placeholder">{itemUnit === 'kg' ? 'Kg' : itemUnit === 'ltr' ? 'Ltr' : itemUnit === 'unit' ? 'Unit' : 'PKT'}</label>
                 <InputNumber
                     value={value1}
                     onValueChange={(e) => setHandleValue1(e.value)}
@@ -40,7 +40,7 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
             </div>
             {itemUnit === 'kg' || itemUnit === 'ltr' ?
                 <div className='unit-input'>
-                    <label className="unit-placeholder">{itemUnit === 'kg' ? 'g' : itemUnit === 'ltr' && 'ml'}</label>
+                    <label className="unit-placeholder">{itemUnit === 'kg' ? 'G' : itemUnit === 'ltr' && 'ML'}</label>
                     <InputNumber
                         value={value2}
                         onValueChange={(e) => setHandleValue2(e.value)}

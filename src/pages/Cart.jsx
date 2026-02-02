@@ -137,18 +137,9 @@ export default function Cart() {
                                         <div className="meta-inner">
                                             <div className="meta-info">
                                                 <div className="price">{priceDisplay(parseInt(item.price)).replace("₹", "")}</div>
-                                                <span className="itemid"># {item.item_id}</span>
                                             </div>
                                             <div className="cart-action">
-                                                {/* <div className="opt">
-                                                    <button className="minus" onClick={() => decrement(item.item_id)}><i className="fa-solid fa-minus"></i></button>
-                                                    <div className="qty">{getQuantity(parseInt(item.item_id))} Kg</div>
-                                                    <button className="plus" onClick={() => increment(item.item_id)}><i className="fa-solid fa-plus"></i></button>
-                                                </div> */}
-                                                <div className="opt">
-                                                    <div className="qty">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue}</div>
-                                                    <button className="plus">{`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}</button>
-                                                </div>
+                                                <div className="qty">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}</div>
                                                 <div style={{ margin: 0 }} className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
                                             </div>
                                             <button className='remove-item' onClick={() => setConfirm({

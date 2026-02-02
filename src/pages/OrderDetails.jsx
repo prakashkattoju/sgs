@@ -51,7 +51,7 @@ export default function OrderDetails() {
                     </div>
                 </div>
             </header>
-            <div style={{ height: `calc(100dvh - ${height + 81}px)` }} className="list scroll">
+            <div style={{ height: `calc(100dvh - ${height + 54}px)` }} className="list scroll">
                 <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                     <div className='bill-details'>
                         <table>
@@ -72,8 +72,8 @@ export default function OrderDetails() {
                                 <tr><td colSpan={3}>Total Amount</td><td colSpan={1}></td><td style={{textAlign:'right'}}>{getCartAmount().replace("₹", "")}</td></tr>
                                 <tr><td className='sep' colSpan={5}></td></tr>
                                 <tr><td style={{ color: 'red' }} colSpan={5}>Note: Total amount is estimated.</td></tr>
-                                <tr><td className='sep' colSpan={5}></td></tr>
-                                {/* <tr><td colSpan={5}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr> */}
+                                {/* <tr><td className='sep' colSpan={5}></td></tr>
+                                <tr><td colSpan={5}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr> */}
                             </tbody>
                         </table>
                     </div>

@@ -51,7 +51,7 @@ export default function Bill() {
                     </div>
                 </div>
             </header>
-            <div style={{ height: `calc(100dvh - ${height + 81}px)` }} className="list scroll">
+            <div style={{ height: `calc(100dvh - ${height + 54}px)` }} className="list scroll">
                 <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                     <div className='bill-details'>
                         <table>
