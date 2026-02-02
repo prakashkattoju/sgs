@@ -148,9 +148,9 @@ export default function Items() {
     return (
         <>
             <Header headerRef={headerRef} title={category ? `Buy "${category}" Items` : 'Buy Items'} subtitle={`${items.length} item(s)`} />
-            <div className='items-container search-items-container'>
+            <div className='items-container'>
                 <div className='items-container-inner'>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 74) : (height + 14)}px)` }} className="list scroll">
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 51) : (height - 8)}px)` }} className="list scroll bg-white">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                             <div className="item-list sidenav-list">
                                 {loading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
@@ -169,7 +169,7 @@ export default function Items() {
                             </div>
                         </PerfectScrollbar>
                     </div>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 74) : (height + 14)}px)` }} className="list scroll">
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 51) : (height - 8)}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                             <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
                                 {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">

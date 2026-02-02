@@ -101,7 +101,7 @@ export default function Account() {
                 </div>
             </header>
             {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container search-items-container'>
-                <div style={{ height: `calc(100dvh - ${height + 21}px)` }} className="list scroll">{orders.length > 0 ?
+                <div style={{ height: `calc(100dvh - ${height + 2}px)` }} className="list scroll">{orders.length > 0 ?
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                         <div className="item-list orders-list">
                             {orders.map((item, index) => {
