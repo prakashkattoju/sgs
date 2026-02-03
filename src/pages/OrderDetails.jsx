@@ -9,7 +9,7 @@ export default function OrderDetails() {
     const location = useLocation();
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
-    
+
     const { token_num, total_quantity, total_price, items: orderDetails } = location.state || 0;
 
     const getCartQuantity = () => {
@@ -51,35 +51,36 @@ export default function OrderDetails() {
                     </div>
                 </div>
             </header>
-            <div style={{ height: `calc(100dvh - ${height + 54}px)` }} className="list scroll">
-                <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
-                    <div className='bill-details'>
-                        <table>
-                            <thead>
-                                <tr><th className='pb-0' colSpan={2}>Date</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{new Date().toLocaleDateString('en-IN')}</th></tr>
-                                {/* <tr><th colSpan={5} className='sep pb-0'></th></tr>
+            <main className='site-main no-bg'>
+                <div style={{ height: `calc(100dvh - ${height + 54}px)` }} className="list scroll">
+                    <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
+                        <div className='bill-details'>
+                            <table>
+                                <thead>
+                                    <tr><th className='pb-0' colSpan={2}>Date</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{new Date().toLocaleDateString('en-IN')}</th></tr>
+                                    {/* <tr><th colSpan={5} className='sep pb-0'></th></tr>
                                 <tr><th className='pb-0' colSpan={2}>Name</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{user.fullname}</th></tr>
                                 <tr><th className='pb-0' colSpan={2}>Mobile Number</th><th className='pb-0'>:</th><th className='pb-0' colSpan={2}>{user.mobile}</th></tr> */}
-                                <tr><th colSpan={5} className='sep pb-0'></th></tr>
-                                <tr><th colSpan={2} className='pname'>Items</th><th>&nbsp;</th><th style={{textAlign:'center'}}>I.Rs.</th><th style={{textAlign:'center'}}>Rs.</th></tr>
-                            </thead>
-                            <tbody>
-                                {orderDetails.map((item, index) => <tr key={index}><td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td style={{textAlign:'right'}}>{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</td></tr>)}
-                                <tr><td className='sep' colSpan={5}></td></tr>
-                                <tr><td colSpan={2}>No. of Items</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
-                                <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td style={{textAlign:'right'}}>{getCartAmount().replace("₹", "")}</td></tr>
-                                <tr><td className='sep' colSpan={5}></td></tr>
-                                <tr><td colSpan={3}>Total Amount</td><td colSpan={1}></td><td style={{textAlign:'right'}}>{getCartAmount().replace("₹", "")}</td></tr>
-                                <tr><td className='sep' colSpan={5}></td></tr>
-                                <tr><td style={{ color: 'red' }} colSpan={5}>Note: Total amount is estimated.</td></tr>
-                                {/* <tr><td className='sep' colSpan={5}></td></tr>
+                                    <tr><th colSpan={5} className='sep pb-0'></th></tr>
+                                    <tr><th colSpan={2} className='pname'>Items</th><th>&nbsp;</th><th style={{ textAlign: 'center' }}>I.Rs.</th><th style={{ textAlign: 'center' }}>Rs.</th></tr>
+                                </thead>
+                                <tbody>
+                                    {orderDetails.map((item, index) => <tr key={index}><td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}</td><td style={{ textAlign: 'right' }}>{priceDisplay(parseInt(item.price)).replace("₹", "")}</td><td style={{ textAlign: 'right' }}>{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</td></tr>)}
+                                    <tr><td className='sep' colSpan={5}></td></tr>
+                                    <tr><td colSpan={2}>No. of Items</td><td>{getCartQuantity()}</td><td colSpan={2}></td></tr>
+                                    <tr><td colSpan={2}>Amount</td><td colSpan={2}></td><td style={{ textAlign: 'right' }}>{getCartAmount().replace("₹", "")}</td></tr>
+                                    <tr><td className='sep' colSpan={5}></td></tr>
+                                    <tr><td colSpan={3}>Total Amount</td><td colSpan={1}></td><td style={{ textAlign: 'right' }}>{getCartAmount().replace("₹", "")}</td></tr>
+                                    <tr><td className='sep' colSpan={5}></td></tr>
+                                    <tr><td style={{ color: 'red' }} colSpan={5}>Note: Total amount is estimated.</td></tr>
+                                    {/* <tr><td className='sep' colSpan={5}></td></tr>
                                 <tr><td colSpan={5}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr> */}
-                            </tbody>
-                        </table>
-                    </div>
-                </PerfectScrollbar>
-            </div>
-            {/* <AlertModal
+                                </tbody>
+                            </table>
+                        </div>
+                    </PerfectScrollbar>
+                </div>
+                {/* <AlertModal
                 show={showAlert.show}
                 title={showAlert.title}
                 message={showAlert.message}
@@ -87,6 +88,7 @@ export default function OrderDetails() {
                     navigate('/', { state: orderDetails.dcreated_on })
                 }}
             /> */}
+            </main>
         </>
     )
 }

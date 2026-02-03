@@ -148,97 +148,99 @@ export default function Items() {
     return (
         <>
             <Header headerRef={headerRef} title={category ? `Buy "${category}" Items` : 'Buy Items'} subtitle={`${items.length} item(s)`} />
-            <div className='items-container'>
-                <div className='items-container-inner'>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 51) : (height - 8)}px)` }} className="list scroll bg-white">
-                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
-                            <div className="item-list sidenav-list">
-                                {loading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
-                                    <div className='item-inner'>
-                                        <div className="meta">
-                                            <h2 className="skeleton"></h2>
-                                        </div>
-                                    </div>
-                                </div>)) : sub_cats?.length > 0 && sub_cats?.map((item, index) => <div key={index} className="item" role='button' onClick={() => navigate(`/items/${slug}/${cat_id}/${item.scat_id}`)}>
-                                    <div className='item-inner'>
-                                        <div className="meta">
-                                            <h2 className={item.scat_id == scat_id ? "active" : ""}>{item.scategory}</h2>
-                                        </div>
-                                    </div>
-                                </div>)}
-                            </div>
-                        </PerfectScrollbar>
-                    </div>
-                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 51) : (height - 8)}px)` }} className="list scroll">
-                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
-                            <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
-                                {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
-                                    <div className='item-inner'>
-                                        <div className="meta">
-                                            <h2 className="skeleton"></h2>
-                                        </div>
-                                        <div className='price skeleton'></div>
-                                        <div className="meta" style={{ marginTop: 'auto' }}>
-                                            <div className="cart-action skeleton"></div>
-                                        </div>
-                                    </div>
-                                </div>)) :
-                                    items?.length > 0 ? items?.map((item, index) =>
-                                        <div key={index} className="item">
-                                            <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? setConfirm({
-                                                status: true,
-                                                item_id: item.item_id,
-                                                item_name: item.item
-                                            }) : addToCartModalOpen(item)}>
-                                                <div className="meta">
-                                                    <h2>{item.item}</h2>
-                                                </div>
-                                                <div className='price'>{priceDisplay(parseInt(item.price))}</div>
-                                                <div className='w-100 d-flex align-items-center justify-content-between'>
-                                                    <Units item_id={item.item_id} unit={item.unit} base_unit={item.base_unit} />
-                                                    {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'>ADD</button>}
-                                                </div>
+            <main className='site-main'>
+                <div className='items-container'>
+                    <div className='items-container-inner'>
+                        <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 51) : (height - 8)}px)` }} className="list scroll bg-white">
+                            <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
+                                <div className="item-list sidenav-list">
+                                    {loading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
+                                        <div className='item-inner'>
+                                            <div className="meta">
+                                                <h2 className="skeleton"></h2>
                                             </div>
+                                        </div>
+                                    </div>)) : sub_cats?.length > 0 && sub_cats?.map((item, index) => <div key={index} className="item" role='button' onClick={() => navigate(`/items/${slug}/${cat_id}/${item.scat_id}`)}>
+                                        <div className='item-inner'>
+                                            <div className="meta">
+                                                <h2 className={item.scat_id == scat_id ? "active" : ""}>{item.scategory}</h2>
+                                            </div>
+                                        </div>
+                                    </div>)}
+                                </div>
+                            </PerfectScrollbar>
+                        </div>
+                        <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 51) : (height - 8)}px)` }} className="list scroll">
+                            <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
+                                <div className={`item-list ${items.length > 0 ? 'products-list' : 'empty-list'}`}>
+                                    {itemLoading ? Array.from({ length: 6 }).map((_, i) => (<div key={i} className="item">
+                                        <div className='item-inner'>
+                                            <div className="meta">
+                                                <h2 className="skeleton"></h2>
+                                            </div>
+                                            <div className='price skeleton'></div>
+                                            <div className="meta" style={{ marginTop: 'auto' }}>
+                                                <div className="cart-action skeleton"></div>
+                                            </div>
+                                        </div>
+                                    </div>)) :
+                                        items?.length > 0 ? items?.map((item, index) =>
+                                            <div key={index} className="item">
+                                                <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? setConfirm({
+                                                    status: true,
+                                                    item_id: item.item_id,
+                                                    item_name: item.item
+                                                }) : addToCartModalOpen(item)}>
+                                                    <div className="meta">
+                                                        <h2>{item.item}</h2>
+                                                    </div>
+                                                    <div className='price'>{priceDisplay(parseInt(item.price))}</div>
+                                                    <div className='w-100 d-flex align-items-center justify-content-between'>
+                                                        <Units item_id={item.item_id} unit={item.unit} base_unit={item.base_unit} />
+                                                        {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'>ADD</button>}
+                                                    </div>
+                                                </div>
 
-                                            {!checkForAdd(parseInt(item.item_id)) &&
-                                                <div
-                                                    className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
-                                                    id={`AddToCartModal${index}`}
-                                                    tabIndex="-1"
-                                                >
-                                                    <div className="modal-dialog">
-                                                        <div className="modal-content">
-                                                            <div className="modal-header">
-                                                                <h4 className="modal-title small"><span>{item.item}</span>Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values</h4>
-                                                            </div>
-                                                            <div className="modal-body">
-                                                                <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
-                                                            </div>
-                                                            <div className="modal-footer align-items-center justify-content-center gap-3">
-                                                                <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
-                                                                <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span></button>
+                                                {!checkForAdd(parseInt(item.item_id)) &&
+                                                    <div
+                                                        className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
+                                                        id={`AddToCartModal${index}`}
+                                                        tabIndex="-1"
+                                                    >
+                                                        <div className="modal-dialog">
+                                                            <div className="modal-content">
+                                                                <div className="modal-header">
+                                                                    <h4 className="modal-title small"><span>{item.item}</span>Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values</h4>
+                                                                </div>
+                                                                <div className="modal-body">
+                                                                    <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
+                                                                </div>
+                                                                <div className="modal-footer align-items-center justify-content-center gap-3">
+                                                                    <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
+                                                                    <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span></button>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>}
-                                        </div>) : <h2 className='no-data'>No Items Found</h2>}
-                            </div>
-                        </PerfectScrollbar>
+                                                    </div>}
+                                            </div>) : <h2 className='no-data'>No Items Found</h2>}
+                                </div>
+                            </PerfectScrollbar>
+                        </div>
                     </div>
                 </div>
-            </div>
-            {cart.length > 0 && <div className="cart-summary-badge" onClick={() => navigate("/cart", { replace: true })}>
-                <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
-                <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
-            </div>}
-            <ConfirmModal
-                show={confirm.status}
-                title="Remove Item"
-                message={`Are you sure you want to remove "${confirm.item_name}" from order?`}
-                onConfirm={() => remove(confirm.item_id)}
-                onConfirmLabel="Yes"
-                onCancel={handleCancel}
-            />
+                {cart.length > 0 && <div className="cart-summary-badge" onClick={() => navigate("/cart", { replace: true })}>
+                    <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
+                    <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
+                </div>}
+                <ConfirmModal
+                    show={confirm.status}
+                    title="Remove Item"
+                    message={`Are you sure you want to remove "${confirm.item_name}" from order?`}
+                    onConfirm={() => remove(confirm.item_id)}
+                    onConfirmLabel="Yes"
+                    onCancel={handleCancel}
+                />
+            </main>
         </>
     )
 }

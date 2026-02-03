@@ -134,75 +134,77 @@ export default function OrderAgain() {
     return (
         <>
             <Header headerRef={headerRef} title="Order Again" subtitle={`${items.length} item(s) recently ordered`} />
-            <div className='items-container search-items-container'>
-                <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 64) : (height + 2)}px)` }} className="list scroll">
-                    <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
-                        <div className={`item-list ${items.length > 0 ? 'products-list col-3' : 'empty-list'}`}>
-                            {itemLoading ? Array.from({ length: 8 }).map((_, i) => (<div key={i} className="item">
-                                <div className='item-inner'>
-                                    <div className='unit skeleton'></div>
-                                    <div className="meta">
-                                        <h2 className="skeleton"></h2>
+            <main className='site-main'>
+                <div className='items-container search-items-container'>
+                    <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 64) : (height + 2)}px)` }} className="list scroll">
+                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
+                            <div className={`item-list ${items.length > 0 ? 'products-list col-3' : 'empty-list'}`}>
+                                {itemLoading ? Array.from({ length: 8 }).map((_, i) => (<div key={i} className="item">
+                                    <div className='item-inner'>
+                                        <div className='unit skeleton'></div>
+                                        <div className="meta">
+                                            <h2 className="skeleton"></h2>
+                                        </div>
+                                        <div className='price skeleton'></div>
+                                        <div className="meta" style={{ marginTop: 'auto' }}>
+                                            <div className="cart-action skeleton"></div>
+                                        </div>
                                     </div>
-                                    <div className='price skeleton'></div>
-                                    <div className="meta" style={{ marginTop: 'auto' }}>
-                                        <div className="cart-action skeleton"></div>
+                                </div>)) : items?.length > 0 ? items?.map((item, index) => <div key={index} className="item">
+                                    <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? setConfirm({
+                                        status: true,
+                                        item_id: item.item_id,
+                                        item_name: item.item
+                                    }) : addToCartModalOpen(item)}>
+                                        <div className="meta">
+                                            <h2>{item.item}</h2>
+                                        </div>
+                                        <div className='price'>{priceDisplay(parseInt(item.price))}</div>
+                                        <div className='w-100 d-flex align-items-center justify-content-between'>
+                                            <Units item_id={item.item_id} unit={item.unit} base_unit={item.base_unit} />
+                                            {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'>ADD</button>}
+                                        </div>
                                     </div>
-                                </div>
-                            </div>)) : items?.length > 0 ? items?.map((item, index) => <div key={index} className="item">
-                                <div className='item-inner' role='button' onClick={() => checkForAdd(parseInt(item.item_id)) ? setConfirm({
-                                    status: true,
-                                    item_id: item.item_id,
-                                    item_name: item.item
-                                }) : addToCartModalOpen(item)}>
-                                    <div className="meta">
-                                        <h2>{item.item}</h2>
-                                    </div>
-                                    <div className='price'>{priceDisplay(parseInt(item.price))}</div>
-                                    <div className='w-100 d-flex align-items-center justify-content-between'>
-                                        <Units item_id={item.item_id} unit={item.unit} base_unit={item.base_unit} />
-                                        {checkForAdd(parseInt(item.item_id)) ? <button className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button className='icon-btn-cart add'>ADD</button>}
-                                    </div>
-                                </div>
 
-                                {!checkForAdd(parseInt(item.item_id)) &&
-                                    <div
-                                        className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
-                                        id={`AddToCartModal${index}`}
-                                        tabIndex="-1"
-                                    >
-                                        <div className="modal-dialog">
-                                            <div className="modal-content">
-                                                <div className="modal-header">
-                                                    <h4 className="modal-title small"><span>{item.item}</span>Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values</h4>
-                                                </div>
-                                                <div className="modal-body">
-                                                    <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
-                                                </div>
-                                                <div className="modal-footer align-items-center justify-content-center gap-3">
-                                                    <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
-                                                    <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span></button>
+                                    {!checkForAdd(parseInt(item.item_id)) &&
+                                        <div
+                                            className={`dfc-modal modal fade ${AddToCartModalIndex === item.item_id ? "show d-flex" : ""}`}
+                                            id={`AddToCartModal${index}`}
+                                            tabIndex="-1"
+                                        >
+                                            <div className="modal-dialog">
+                                                <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h4 className="modal-title small"><span>{item.item}</span>Enter {item.unit === 'kg' ? 'kg (and/or) grams' : item.unit === 'ltr' ? 'ltr (and/or) ml' : item.unit === 'unit' ? 'unit(s)' : 'pkt(s)'} values</h4>
+                                                    </div>
+                                                    <div className="modal-body">
+                                                        <ItemCartCal itemUnit={item.unit} setItemUnitValue1={setItemUnitValue1} setItemUnitValue2={setItemUnitValue2} itemUnitValue1={itemUnitValue1} itemUnitValue2={itemUnitValue2} />
+                                                    </div>
+                                                    <div className="modal-footer align-items-center justify-content-center gap-3">
+                                                        <button type="button" className="btn btn-secondary" onClick={handleAddToCartModalCancel}>Cancel</button>
+                                                        <button disabled={itemUnitValue1 + itemUnitValue2 === 0} className="btn" onClick={() => addOptToCart(item)}><span>Add</span></button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>}
-                            </div>) : <h2 className='no-data'>No Recently Ordered Items Found</h2>}
-                        </div>
-                    </PerfectScrollbar>
+                                        </div>}
+                                </div>) : <h2 className='no-data'>No Recently Ordered Items Found</h2>}
+                            </div>
+                        </PerfectScrollbar>
+                    </div>
                 </div>
-            </div>
-            {cart.length > 0 && <div className="cart-summary-badge" onClick={() => navigate("/cart", { replace: true })}>
-                <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
-                <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
-            </div>}
-            <ConfirmModal
-                show={confirm.status}
-                title="Remove Item"
-                message={`Are you sure you want to remove "${confirm.item_name}" from order?`}
-                onConfirm={() => remove(confirm.item_id)}
-                onConfirmLabel="Yes"
-                onCancel={handleCancel}
-            />
+                {cart.length > 0 && <div className="cart-summary-badge" onClick={() => navigate("/cart", { replace: true })}>
+                    <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
+                    <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
+                </div>}
+                <ConfirmModal
+                    show={confirm.status}
+                    title="Remove Item"
+                    message={`Are you sure you want to remove "${confirm.item_name}" from order?`}
+                    onConfirm={() => remove(confirm.item_id)}
+                    onConfirmLabel="Yes"
+                    onCancel={handleCancel}
+                />
+            </main>
         </>
     )
 }

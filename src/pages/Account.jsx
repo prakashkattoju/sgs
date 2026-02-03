@@ -100,47 +100,49 @@ export default function Account() {
                     <button style={{ marginLeft: 'auto' }} className='icon-btn' onClick={() => setShowConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </div>
             </header>
-            {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container search-items-container'>
-                <div style={{ height: `calc(100dvh - ${height + 2}px)` }} className="list scroll">{orders.length > 0 ?
-                    <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
-                        <div className="item-list orders-list">
-                            {orders.map((item, index) => {
-                                const data = item.items;
-                                const titles = data.map(item => item.title);
-                                const visibleTitles = titles.slice(0, 2);
-                                const remainingCount = titles.length - visibleTitles.length;
+            <main className='site-main'>
+                {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container search-items-container'>
+                    <div style={{ height: `calc(100dvh - ${height + 2}px)` }} className="list scroll">{orders.length > 0 ?
+                        <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
+                            <div className="item-list orders-list">
+                                {orders.map((item, index) => {
+                                    const data = item.items;
+                                    const titles = data.map(item => item.title);
+                                    const visibleTitles = titles.slice(0, 2);
+                                    const remainingCount = titles.length - visibleTitles.length;
 
-                                return <div key={index} className="item" onClick={() => navigate('/order-details', { state: item })}>
-                                    <div style={{padding: 0}} className='item-inner'>
-                                        <div className="meta">
-                                            <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20, marginBottom: 5 }}><span>{visibleTitles.map((title, index) => (
-                                                <span className='items-more-title' key={index}>{title}{index < visibleTitles.length - 1 ? ',' : ''}&nbsp;</span>
-                                            ))} {remainingCount > 0 && (<span> +{remainingCount} more</span>)}</span></h2>
-                                            <div className="meta-inner" style={{ fontWeight: 500 }}>
-                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20 }}>
-                                                    <div>Order # {item.token_num}</div>
-                                                    <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
-                                                </div>
-                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
-                                                    <div style={{margin:0}} className="price">{priceDisplay(parseInt(item.total_price))}</div>
-                                                    <div>{StatusChip({ status: item.status })}</div>
+                                    return <div key={index} className="item" onClick={() => navigate('/order-details', { state: item })}>
+                                        <div style={{ padding: 0 }} className='item-inner'>
+                                            <div className="meta">
+                                                <h2 style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20, marginBottom: 5 }}><span>{visibleTitles.map((title, index) => (
+                                                    <span className='items-more-title' key={index}>{title}{index < visibleTitles.length - 1 ? ',' : ''}&nbsp;</span>
+                                                ))} {remainingCount > 0 && (<span> +{remainingCount} more</span>)}</span></h2>
+                                                <div className="meta-inner" style={{ fontWeight: 500 }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', columnGap: 20 }}>
+                                                        <div>Order # {item.token_num}</div>
+                                                        <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
+                                                    </div>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
+                                                        <div style={{ margin: 0 }} className="price">{priceDisplay(parseInt(item.total_price))}</div>
+                                                        <div>{StatusChip({ status: item.status })}</div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            })}
-                        </div>
-                    </PerfectScrollbar> : <h4 className='text-center'>You haven't placed any orders yet.</h4>}
-                </div></div>}
-            <ConfirmModal
-                show={showConfirm}
-                title="Exit!"
-                message={`Are you sure you want to exit?`}
-                onConfirm={() => logoutAccount()}
-                onConfirmLabel="Yes"
-                onCancel={handleCancel}
-            />
+                                })}
+                            </div>
+                        </PerfectScrollbar> : <h4 className='text-center'>You haven't placed any orders yet.</h4>}
+                    </div></div>}
+                <ConfirmModal
+                    show={showConfirm}
+                    title="Exit!"
+                    message={`Are you sure you want to exit?`}
+                    onConfirm={() => logoutAccount()}
+                    onConfirmLabel="Yes"
+                    onCancel={handleCancel}
+                />
+            </main>
         </>
     )
 }
