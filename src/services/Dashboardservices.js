@@ -1,8 +1,10 @@
 import axiosInstance from "../util/axiosInstance";
 
-export const GetUserByID = async (user_id) => {
+
+export const CreateItem = async (itemdata) => {
+
     try {
-        const response = await axiosInstance.get(`/users/?user_id=${user_id}`);
+        const response = await axiosInstance.post('/dashboard/', itemdata);
         return response.data;
     } catch (error) {
         // Check if error response exists and log the error message
@@ -14,9 +16,9 @@ export const GetUserByID = async (user_id) => {
     }
 };
 
-export const GetAdminByID = async (user_id) => {
+export const GetColumns = async (column) => {
     try {
-        const response = await axiosInstance.get(`/users/admin/?userid=${user_id}`);
+        const response = await axiosInstance.get(`/dashboard/?column=${column}`);
         return response.data;
     } catch (error) {
         // Check if error response exists and log the error message
@@ -28,9 +30,9 @@ export const GetAdminByID = async (user_id) => {
     }
 };
 
-export const UpdateUserName = async (uname, user_id) => {
+export const GetColumnIds = async (column_id) => {
     try {
-        const response = await axiosInstance.post("/users/updatename/", { uname, user_id });
+        const response = await axiosInstance.get(`/dashboard/?column_id=${column_id}`);
         return response.data;
     } catch (error) {
         // Check if error response exists and log the error message
@@ -42,9 +44,10 @@ export const UpdateUserName = async (uname, user_id) => {
     }
 };
 
-export const GetAllUsers = async () => {
+export const GetAllItems = async (searchData) => {
+    const queryString = new URLSearchParams(searchData).toString();
     try {
-        const response = await axiosInstance.get(`/users/all/`);
+        const response = await axiosInstance.get(`/dashboard/?${queryString}`);
         return response.data;
     } catch (error) {
         // Check if error response exists and log the error message
@@ -56,9 +59,9 @@ export const GetAllUsers = async () => {
     }
 };
 
-export const DeleteUserByID = async (user_id) => {
+export const DeleteItemByID = async (item_id) => {
     try {
-        const response = await axiosInstance.delete(`/users/?user_id=${user_id}`);
+        const response = await axiosInstance.delete(`/dashboard/?item_id=${item_id}`);
         return response.data;
     } catch (error) {
         // Check if error response exists and log the error message

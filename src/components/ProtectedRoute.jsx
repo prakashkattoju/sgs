@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserDetails } from '../store/userSlice';
 import { decodeToken } from 'react-jwt';
 import { logOut } from '../store/authSlice';
-import { GetUserByID } from '../services/Userservices';
+import { GetUserByID, GetAdminByID } from '../services/Userservices';
 import AlertModal from './AlertModal';
 import BottomNavi from './BottomNavi';
 
@@ -20,8 +20,6 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   const user_role = decodedToken?.user_role;
   const exp = decodedToken?.exp;
 
-  const [loading, setLoading] = useState(false);
-
   const [showAlert, setShowAlert] = useState({
     title: null,
     message: null,
@@ -30,11 +28,19 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
 
   const fetchuser = useCallback(async () => {
     try {
-      const userdata = await GetUserByID(user_id);
-      dispatch(setUserDetails({
-        fullname: user_role === "admin" ? "Ravi Kumar" : userdata?.uname,
-        mobile: user_role === "admin" ? "9491771333" : userdata?.mobile
-      }))
+      if (user_role === 'user') {
+        const userdata = await GetUserByID(user_id);
+        dispatch(setUserDetails({
+          fullname: userdata?.uname,
+          mobile: userdata?.mobile
+        }))
+      } else {
+        const userdata =  await GetAdminByID(user_id);
+        dispatch(setUserDetails({
+          fullname: userdata?.username,
+          mobile: userdata?.mobile
+        }))
+      }
     } catch (error) {
       console.error("Failed to fetch user:", error);
     }
@@ -68,20 +74,18 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
     window.location.reload(true);
   };
 
-  const user = useSelector((state) => state.user);
-
   if (!isLoggedIn) {
     return <Navigate to="/" />;
   }
 
   if (allowedRoles.length && !allowedRoles.includes(user_role)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to={user_role === "Admin" ? "/sgs-support" : "/"} replace />;
   }
 
   return (
     <>
       {children}
-      <BottomNavi />
+      {user_role === "user" && <BottomNavi />}
       <AlertModal
         show={showAlert.show}
         title={showAlert.title}

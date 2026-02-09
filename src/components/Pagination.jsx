@@ -38,19 +38,19 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
             <button
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 text-sm font-semibold text-slate-700"
+                className="px-3 py-1 rounded bg-light"
             >
                 Prev
             </button>
 
             {pages.map((page, i) =>
                 page === "..." ? (
-                    <span key={i} className="px-3 py-1 text-gray-500">...</span>
+                    <span key={i} className="px-3 py-1">...</span>
                 ) : (
                     <button
                         key={i}
                         onClick={() => onPageChange(page)}
-                        className={`px-3 py-1 rounded text-sm font-semibold text-slate-700 ${currentPage === page ? "bg-[#0085db] text-white" : "bg-gray-200"}`}
+                        className={`px-3 py-1 rounded ${currentPage === page ? "bg-warning text-black" : "bg-light text-black"}`}
                     >
                         {page}
                     </button>
@@ -60,7 +60,7 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
             <button
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
-                className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50 text-sm font-semibold text-slate-700"
+                className="px-3 py-1 rounded bg-light"
             >
                 Next
             </button>

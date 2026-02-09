@@ -60,10 +60,98 @@ export const GetCategories = async () => {
     }
 };
 
+export const GetOnlyCategories = async () => {
+    try {
+        const response = await axiosInstance.get(`/categories/?only=true`);
+        return response.data;
+    } catch (error) {
+        // Check if error response exists and log the error message
+        if (error.response) {
+            throw new Error(error.response.data.message); // Throw error message from server
+        } else {
+            throw new Error("Something Went Wrong"); // General error message
+        }
+    }
+};
+
+export const GetSubCategories = async (cat_id) => {
+    try {
+        const response = await axiosInstance.get(`/categories/sub/?cat_id=${cat_id}`);
+        return response.data;
+    } catch (error) {
+        // Check if error response exists and log the error message
+        if (error.response) {
+            throw new Error(error.response.data.message); // Throw error message from server
+        } else {
+            throw new Error("Something Went Wrong"); // General error message
+        }
+    }
+};
+
+export const CheckDuplicate = async (values) => {
+
+    try {
+        const response = await axiosInstance.post(`/categories/check/`, values);
+        return response.data;
+    } catch (error) {
+        // Check if error response exists and log the error message
+        if (error.response) {
+            throw new Error(error.response.data.message); // Throw error message from server
+        } else {
+            throw new Error("Something Went Wrong"); // General error message
+        }
+    }
+};
+
 export const GetCategoryByID = async (cat_id) => {
 
     try {
         const response = await axiosInstance.get(`/categories/?cat_id=${cat_id}`);
+        return response.data;
+    } catch (error) {
+        // Check if error response exists and log the error message
+        if (error.response) {
+            throw new Error(error.response.data.message); // Throw error message from server
+        } else {
+            throw new Error("Something Went Wrong"); // General error message
+        }
+    }
+};
+
+export const CreateCategory = async (itemdata) => {
+
+    try {
+        const response = await axiosInstance.post('/categories/', itemdata);
+        return response.data;
+    } catch (error) {
+        // Check if error response exists and log the error message
+        if (error.response) {
+            throw new Error(error.response.data.message); // Throw error message from server
+        } else {
+            throw new Error("Something Went Wrong"); // General error message
+        }
+    }
+};
+
+export const CheckSubDuplicate = async (values) => {
+
+    try {
+        const response = await axiosInstance.post(`/categories/sub/check/`, values);
+        return response.data;
+    } catch (error) {
+        // Check if error response exists and log the error message
+        if (error.response) {
+            throw new Error(error.response.data.message); // Throw error message from server
+        } else {
+            throw new Error("Something Went Wrong"); // General error message
+        }
+    }
+};
+
+export const CreateSubCategory = async (itemdata) => {
+
+    try {
+        const response = await axiosInstance.post('/categories/sub/', itemdata);
         return response.data;
     } catch (error) {
         // Check if error response exists and log the error message

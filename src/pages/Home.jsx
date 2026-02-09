@@ -76,8 +76,8 @@ export default function Home() {
                                         </div>
                                     </div>
                                 </div>)) : categories?.length > 0 && categories?.map((item, index) => <div key={index} className="item" onClick={() => navigate(`/items/${item.slug}/${item.cat_id}/${item.sub_cats[0].scat_id}`)}>
-                                    <div className='item-inner'>
-                                        <div className="img"><img width="111" height="111" src={`/categories/${item.image}`} alt={item.category} /></div>
+                                    <div className='item-inner' style={{backgroundImage: `url(/categories/default.png)`}}>
+                                        {/* <div className="img"><img width="111" height="111" src={item.image ? `/categories/${item.image}` : `/categories/default.png` } alt={item.category} /></div> */}
                                         <div className="meta">
                                             <h2>{item.category}</h2>
                                         </div>
