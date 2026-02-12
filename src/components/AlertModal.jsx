@@ -4,7 +4,6 @@ export default function AlertModal({ show, title, message, onClose }) {
       className={`dfc-modal modal fade ${show ? "show d-flex" : ""}`}
       id="AlertModal"
       tabIndex="-1"
-      aria-hidden="true"
     >
       <div className="modal-dialog">
         <div className="modal-content">

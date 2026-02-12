@@ -16,6 +16,7 @@ import SearchItems from "./pages/SearchItems";
 import OrderAgain from "./pages/OrderAgain";
 import LoginAdmin from "./pages/LoginAdmin";
 import Dashboard from "./pages/Dashboard";
+import Temp from "./pages/Temp";
 
 function App() {
   const dispatch = useDispatch();
@@ -38,6 +39,9 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Home /></ProtectedRoute> : <Login />} />
+
+      <Route path="/sgs/:list" element={<Temp />} />
+
       <Route path="/sgs-support" element={isLoggedIn ? <ProtectedRoute allowedRoles={["Admin"]}><Dashboard /></ProtectedRoute> : <LoginAdmin/>}  />
 
       <Route path="/items/:slug/:cat_id/:scat_id" element={<ProtectedRoute allowedRoles={["user"]}><Items /></ProtectedRoute>} />

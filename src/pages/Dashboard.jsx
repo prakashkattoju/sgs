@@ -68,6 +68,10 @@ export default function Dashboard() {
     const [subCategory, setSubCategory] = useState({})
     const [parentCategory, setParentCategory] = useState({})
 
+    const [itemsStatus, setItemsStatus] = useState(1)
+    const [active, setActive] = useState("")
+    const [inactive, setInactive] = useState("")
+
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
 
@@ -151,7 +155,7 @@ export default function Dashboard() {
 
     const fetchItems = useCallback(async () => {
 
-        const searchData = query !== "" ? { page: page, limit: limit, search: query } : { page: page, limit: limit }
+        const searchData = query !== "" ? { status: itemsStatus, page: page, limit: limit, search: query } : { status: itemsStatus, page: page, limit: limit }
 
         try {
             setLoading(true)
@@ -163,7 +167,7 @@ export default function Dashboard() {
         } finally {
             setLoading(false)
         }
-    }, [page, limit, query]);
+    }, [itemsStatus, page, limit, query]);
 
     useEffect(() => {
         fetchpackingscolumn()
@@ -174,7 +178,7 @@ export default function Dashboard() {
 
         }, 400);
         return () => clearTimeout(timer);
-    }, [fetchItems, fetchpackingscolumn, fetchcompanycolumn, fetchcategoriescolumn, page, limit, query]);
+    }, [fetchItems, fetchpackingscolumn, fetchcompanycolumn, fetchcategoriescolumn, itemsStatus, page, limit, query]);
 
 
     const packingscolumnSearch = (event) => {
@@ -356,10 +360,10 @@ export default function Dashboard() {
     }
 
     const status = [{
-        label: 'Yes',
+        label: 'Active',
         value: 1
     }, {
-        label: 'No',
+        label: 'Inactive',
         value: 0
     }]
 
@@ -368,13 +372,17 @@ export default function Dashboard() {
             <header ref={headerRef} className="site-header">
                 <div className='search-area d-flex gap-3 align-items-center justify-content-center'>
                     <img className="logo" src='/icon.jpg' alt='' />
-                    <div>
+                    {/* <div>
                         <h1>SIRI GENERAL STORES, Kakinada</h1>
                         <p><small>Hello,</small> {user.fullname ? user.fullname : 'User'}</p>
+                    </div> */}
+                    <div className='d-flex justify-content-between align-items-center gap-3'>
+                        <button onClick={() => setItemsStatus(1)} className={`icon-btn-cart large add ${itemsStatus === 1 ? 'active' : ''}`}>Active <strong>{active}</strong></button>
+                        <button onClick={() => setItemsStatus(0)} className={`icon-btn-cart large del ${itemsStatus === 0 ? 'active' : ''}`}>Inactive <strong>{inactive}</strong></button>
                     </div>
                     <div style={{ maxWidth: 530 }} className="search-form d-flex gap-3 align-items-center justify-content-start">
                         <div className="form-group">
-                            <input className="form-control alt" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search here..." />
+                            <input className="form-control alt" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search Item's here..." />
                             <span className='search-icon'><i className="fa-solid fa-search"></i></span>
                         </div>
                     </div>
@@ -410,9 +418,6 @@ export default function Dashboard() {
                                                     <div>Price</div>
                                                 </th>
                                                 <th>
-                                                    <div>Status</div>
-                                                </th>
-                                                <th>
                                                     <div>Settings</div>
                                                 </th>
                                             </tr>
@@ -426,7 +431,6 @@ export default function Dashboard() {
                                                     {/* <td>{item.comp_id}</td> */}
                                                     <td>{item.unit}</td>
                                                     <td>{priceDisplay(item.price)}</td>
-                                                    <td>{item.status}</td>
                                                     <td width={60}>
                                                         <div className={`d-flex align-items-center justify-content-start gap-3`}>
                                                             {/* Edit Record */}

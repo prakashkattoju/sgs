@@ -2081,16 +2081,32 @@ input:checked+.slider::before {
     font-size: 12px;
 }
 
+.icon-btn-cart.large{
+    padding: 14px 25px !important;
+    border-radius: 25px;
+    font-size: 16px;
+}
+
 .icon-btn-cart.add {
     background-color: #dff3e6;
     color: #194f2d
+}
+
+.icon-btn-cart.add.active {
+    background-color: #194f2d;
+    border-color: #194f2d;
+    color: #dff3e6
 }
 
 .icon-btn-cart.del {
     background-color: rgba(248, 215, 218, 1);
     color: rgb(185, 26, 42);
 }
-
+.icon-btn-cart.del.active {
+    background-color: rgb(185, 26, 42);
+    border-color: rgb(185, 26, 42);
+    color: rgba(248, 215, 218, 1);
+}
 .chip {
     width: 60px;
     display: inline-block;
