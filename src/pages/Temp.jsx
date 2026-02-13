@@ -1,8 +1,8 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { GetAllItems, GetColumns, CreateItem, DeleteItemByID } from '../services/Dashboardservices';
-import { GetOnlyCategories, GetSubCategories } from '../services/Productsservices';
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { GetOnlyCategories } from '../services/Productsservices';
+import { useNavigate, useLocation } from "react-router-dom";
 import { setUserDetails } from '../store/userSlice';
 import { logOut } from '../store/authSlice';
 import ConfirmModal from '../components/ConfirmModal';
@@ -18,13 +18,11 @@ import { format, set } from 'date-fns'
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import AddCategoryModal from '../components/AddCategoryModal';
-import AddSubCategoryModal from '../components/AddSubCategoryModal';
 
 export default function Temp() {
     const dispatch = useDispatch()
     const location = useLocation();
     const navigate = useNavigate();
-    const { list } = useParams();
     const [loading, setLoading] = useState(false);
     const [submitting, setSubmitting] = useState(false);
 
@@ -35,9 +33,8 @@ export default function Temp() {
     const [filteredCompanyColumn, setFilteredCompanyColumn] = useState([])
 
     const [categories, setCategories] = useState([])
-    const [subcategories, setSubcategories] = useState([])
 
-    const [page, setPage] = useState(list);
+    const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(500);
     const [total, setTotal] = useState(0);
     const [query, setQuery] = useState("");
@@ -63,11 +60,6 @@ export default function Temp() {
     const [addCategoryModal, setAddCategoryModal] = useState(false)
     const [editCategory, setEditCategory] = useState(false)
     const [category, setCategory] = useState({})
-
-    const [addSubCategoryModal, setAddSubCategoryModal] = useState(false)
-    const [editSubCategory, setEditSubCategory] = useState(false)
-    const [subCategory, setSubCategory] = useState({})
-    const [parentCategory, setParentCategory] = useState({})
 
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
@@ -114,15 +106,6 @@ export default function Temp() {
         try {
             const data = await GetOnlyCategories();
             setCategories(data);
-        } catch (error) {
-            console.error("Failed to fetch categories data:", error);
-        }
-    }, []);
-
-    const fetchsubcategoriescolumn = useCallback(async (cat_id) => {
-        try {
-            const data = await GetSubCategories(cat_id);
-            setSubcategories(data);
         } catch (error) {
             console.error("Failed to fetch categories data:", error);
         }
@@ -185,6 +168,10 @@ export default function Temp() {
         return () => clearTimeout(timer);
     }, [fetchItems, fetchpackingscolumn, fetchcompanycolumn, fetchcategoriescolumn, page, limit, query]);
 
+    const handlePageChange = (e) => {
+        const { value } = e.target;
+        setPage(value);
+    }
 
     const packingscolumnSearch = (event) => {
         const query = event.query.toLowerCase();
@@ -204,15 +191,6 @@ export default function Temp() {
 
     const handleCategoryDropdownChange = (cat_id) => {
         formik.setFieldValue('cat_id', cat_id);
-        fetchsubcategoriescolumn(cat_id)
-        const pcat = categories.find(item => item.cat_id === cat_id);
-        if (pcat) {
-            setParentCategory(pcat);
-        }
-    };
-
-    const handleSubCategoryDropdownChange = (scat_id) => {
-        formik.setFieldValue('scat_id', scat_id);
     };
 
     function objectToFormData(obj, form = new FormData(), namespace = '') {
@@ -238,7 +216,6 @@ export default function Temp() {
     const initialValues = {
         item_id: '',
         cat_id: '',
-        scat_id: '',
         company: '',
         item: '',
         unit: '',
@@ -256,13 +233,6 @@ export default function Temp() {
                 .test(
                     'not-zero', // Name of the test
                     'Select Category', // Error message
-                    value => value !== 0 // The validation logic
-                ),
-            scat_id: Yup.number()
-                .required('Sub Category is required') // Basic required validation
-                .test(
-                    'not-zero', // Name of the test
-                    'Select Sub Category', // Error message
                     value => value !== 0 // The validation logic
                 ),
             unit: Yup.string()
@@ -310,11 +280,10 @@ export default function Temp() {
 
     useEffect(() => {
         if (editItem && itemData) {
-            const { item_id, cat_id, scat_id, company, item, unit, price, status } = itemData;
+            const { item_id, cat_id, company, item, unit, price, status } = itemData;
             formik.setValues({
                 item_id: item_id ?? '',
                 cat_id: cat_id ?? '',
-                scat_id: scat_id ?? '',
                 company: company ?? '',
                 item: item ?? '',
                 unit: unit ?? '',
@@ -379,6 +348,31 @@ export default function Temp() {
         value: 0
     }]
 
+    const units = [{
+        label: 'PC',
+        value: 'PC'
+    }, {
+        label: 'BOTTLE',
+        value: 'BOTTLE'
+    }, {
+        label: 'BOX',
+        value: 'BOX'
+    }, {
+        label: 'BAG',
+        value: 'BAG'
+    }, {
+        label: 'KG',
+        value: 'KG'
+    }];
+
+    const pages = []
+    for (let i = 1; i <= (total / limit).toFixed(0); i++) {
+        pages.push({
+            name: i,
+            value: i
+        });
+    }
+
     return (
         <>
             <header ref={headerRef} className="site-header">
@@ -437,39 +431,18 @@ export default function Temp() {
                                 <div className="input-error">{formik.errors.cat_id}</div>
                             ) : null}
                         </div>
-                        <div className='relative'>
-                            <label htmlFor='scat_id' className='text-xs'>Sub Category {formik.values.cat_id && <small>| <span onClick={() => setAddSubCategoryModal(true)} style={{ color: '#f68b09', cursor: 'pointer' }}>Add New</span></small>}</label>
-                            <Dropdown
-                                id='scat_id'
-                                name="scat_id"
-                                value={formik.values.scat_id}
-                                options={subcategories}
-                                onChange={(e) => handleSubCategoryDropdownChange(e.value)}
-                                filter
-                                filterBy="scategory"
-                                filterMatchMode="startsWith"
-                                optionLabel="scategory"
-                                optionValue="scat_id"
-                                showClear
-                                placeholder="Select Sub Category"
-                                className="form-control small"
-                                disabled={!formik.values.cat_id}
-                            />
-                            {formik.touched.scat_id && formik.errors.scat_id ? (
-                                <div className="input-error">{formik.errors.scat_id}</div>
-                            ) : null}
-                        </div>
                         <div className='d-flex justify-content-between align-items-start gap-1'>
                             <div className='relative' style={{ width: 'calc(100% - 90px)' }}>
                                 <label htmlFor='unit' className='text-xs'>Packing</label>
-                                <AutoComplete
+                                <Dropdown
                                     id='unit'
+                                    name="unit"
                                     value={formik.values.unit}
-                                    suggestions={filteredPackingsColumn}
-                                    completeMethod={packingscolumnSearch}
-                                    placeholder="Select or enter packing"
-                                    dropdown
-                                    onChange={(e) => formik.setFieldValue("unit", e.value)}
+                                    options={units}
+                                    onChange={formik.handleChange}
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Select Unit"
                                     className="form-control small"
                                 />
                                 {formik.touched.unit && formik.errors.unit ? (
@@ -532,7 +505,15 @@ export default function Temp() {
                                         <tr>
                                             <th style={{ backgroundColor: '#f2f2f2', color: '#000', textAlign: 'left' }}>
                                                 <div className='d-flex justify-content-between align-items-center'>
-                                                    <label>Items</label>
+                                                     <Dropdown
+                                                        value={page}
+                                                        options={pages}
+                                                        onChange={handlePageChange}
+                                                        optionLabel="name"
+                                                        optionValue="value"
+                                                        className="form-control small"
+                                                        style={{width: 70, margin: 0}}
+                                                    />
                                                     <div className='d-flex justify-content-between align-items-center gap-1'>
                                                         <button onClick={() => setEditStatus(0)} className={`icon-btn-cart small del ${editStatus === 0 ? 'active' : ''}`}>Pending ({pending})</button>
                                                         <button onClick={() => setEditStatus(1)} className={`icon-btn-cart small add ${editStatus === 1 ? 'active' : ''}`}>Completed ({complete})</button>
@@ -546,7 +527,7 @@ export default function Temp() {
                                             return (<tr key={item.item_id} className={item.item_id === itemData?.item_id ? 'active' : ''}>
                                                 <td>
                                                     <div className='d-flex justify-content-between align-items-center gap-1'>
-                                                        <div>{item.item}<small><br />Packing: {item.unit}&nbsp;&nbsp;&middot;&nbsp;&nbsp;Price: {item.price}<br/ >{item.category && item.scategory && `${item.category} | ${item.scategory}`}</small></div>
+                                                        <div>{item.item}<small><br />Packing: {item.unit}&nbsp;&nbsp;&middot;&nbsp;&nbsp;Price: {item.price}<br />{item.category && `${item.category}`}</small></div>
 
                                                         <div className={`d-flex align-items-center justify-content-between gap-3`}>
                                                             {/* Edit Record */}
@@ -597,8 +578,6 @@ export default function Temp() {
                     })}
                 />
                 <AddCategoryModal show={addCategoryModal} fetchcategoriescolumn={fetchcategoriescolumn} updatecategory={handleCategoryDropdownChange} editCategory={editCategory} category={category} onCancel={() => setAddCategoryModal(false)} />
-
-                <AddSubCategoryModal show={addSubCategoryModal} fetchcategoriescolumn={fetchsubcategoriescolumn} updatecategory={handleSubCategoryDropdownChange} editCategory={editSubCategory} category={subCategory} parentCategory={parentCategory} onCancel={() => setAddSubCategoryModal(false)} />
 
             </main>
         </>
