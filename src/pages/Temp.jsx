@@ -35,7 +35,7 @@ export default function Temp() {
     const [categories, setCategories] = useState([])
 
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(500);
+    const [limit, setLimit] = useState(100);
     const [total, setTotal] = useState(0);
     const [query, setQuery] = useState("");
 
@@ -218,6 +218,7 @@ export default function Temp() {
         cat_id: '',
         company: '',
         item: '',
+        packing: '',
         unit: '',
         price: '',
         status: 1,
@@ -236,7 +237,7 @@ export default function Temp() {
                     value => value !== 0 // The validation logic
                 ),
             unit: Yup.string()
-                .required("Packing is required"),
+                .required("Units is required"),
             price: Yup.string()
                 .required("Price is required"),
         }),
@@ -280,12 +281,13 @@ export default function Temp() {
 
     useEffect(() => {
         if (editItem && itemData) {
-            const { item_id, cat_id, company, item, unit, price, status } = itemData;
+            const { item_id, cat_id, company, item, packing, unit, price, status } = itemData;
             formik.setValues({
                 item_id: item_id ?? '',
                 cat_id: cat_id ?? '',
                 company: company ?? '',
                 item: item ?? '',
+                packing: packing ?? '',
                 unit: unit ?? '',
                 price: price ?? '',
                 status: parseInt(status) ?? 1,
@@ -367,8 +369,10 @@ export default function Temp() {
 
     const pages = []
     for (let i = 1; i <= (total / limit).toFixed(0); i++) {
+        const start = (i - 1) * limit + 1;
+        const end = Math.min(i * limit, total);
         pages.push({
-            name: i,
+            name: `${start} to ${end}`,
             value: i
         });
     }
@@ -397,18 +401,35 @@ export default function Temp() {
                                 <div className="input-error">{formik.errors.item}</div>
                             ) : null}
                         </div>
-                        <div className='relative'>
-                            <label htmlFor='company' className='text-xs'>Company</label>
-                            <AutoComplete
-                                id='company'
-                                value={formik.values.company}
-                                suggestions={filteredCompanyColumn}
-                                completeMethod={companycolumnSearch}
-                                placeholder="Select or enter company"
-                                dropdown
-                                onChange={(e) => formik.setFieldValue("company", e.value)}
-                                className="form-control small"
-                            />
+                        <div className='d-flex justify-content-between align-items-start gap-1'>
+                            <div className='relative' style={{ width: '33%' }}>
+                                <label htmlFor='packing' className='text-xs'>Packing</label>
+                                <input id='packing' name="packing" type="text" className="form-control small" value={formik.values.packing} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                            </div>
+                            <div className='relative' style={{ width: '33%' }}>
+                                <label htmlFor='unit' className='text-xs'>Units</label>
+                                <Dropdown
+                                    id='unit'
+                                    name="unit"
+                                    value={formik.values.unit}
+                                    options={units}
+                                    onChange={formik.handleChange}
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Select Unit"
+                                    className="form-control small"
+                                />
+                                {formik.touched.unit && formik.errors.unit ? (
+                                    <div className="input-error">{formik.errors.unit}</div>
+                                ) : null}
+                            </div>
+                            <div className='relative' style={{ width: '33%' }}>
+                                <label htmlFor='price' className='text-xs'>Price</label>
+                                <input id='price' name="price" type="text" className="form-control small" value={formik.values.price} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                                {formik.touched.price && formik.errors.price ? (
+                                    <div className="input-error">{formik.errors.price}</div>
+                                ) : null}
+                            </div>
                         </div>
                         <div className='relative'>
                             <label htmlFor='cat_id' className='text-xs'>Category <small>| <span onClick={() => setAddCategoryModal(true)} style={{ color: '#f68b09', cursor: 'pointer' }}>Add New</span></small></label>
@@ -431,31 +452,18 @@ export default function Temp() {
                                 <div className="input-error">{formik.errors.cat_id}</div>
                             ) : null}
                         </div>
-                        <div className='d-flex justify-content-between align-items-start gap-1'>
-                            <div className='relative' style={{ width: 'calc(100% - 90px)' }}>
-                                <label htmlFor='unit' className='text-xs'>Packing</label>
-                                <Dropdown
-                                    id='unit'
-                                    name="unit"
-                                    value={formik.values.unit}
-                                    options={units}
-                                    onChange={formik.handleChange}
-                                    optionLabel="label"
-                                    optionValue="value"
-                                    placeholder="Select Unit"
-                                    className="form-control small"
-                                />
-                                {formik.touched.unit && formik.errors.unit ? (
-                                    <div className="input-error">{formik.errors.unit}</div>
-                                ) : null}
-                            </div>
-                            <div className='relative' style={{ width: 90 }}>
-                                <label htmlFor='price' className='text-xs'>Price</label>
-                                <input id='price' name="price" type="text" className="form-control small" value={formik.values.price} onChange={formik.handleChange} onBlur={formik.handleBlur} />
-                                {formik.touched.price && formik.errors.price ? (
-                                    <div className="input-error">{formik.errors.price}</div>
-                                ) : null}
-                            </div>
+                        <div className='relative'>
+                            <label htmlFor='company' className='text-xs'>Company</label>
+                            <AutoComplete
+                                id='company'
+                                value={formik.values.company}
+                                suggestions={filteredCompanyColumn}
+                                completeMethod={companycolumnSearch}
+                                placeholder="Select or enter company"
+                                dropdown
+                                onChange={(e) => formik.setFieldValue("company", e.value)}
+                                className="form-control small"
+                            />
                         </div>
                         <div className='d-flex justify-content-between align-items-end gap-1'>
                             <div className='relative' style={{ width: '33%' }}>
@@ -504,20 +512,18 @@ export default function Temp() {
                                     <thead>
                                         <tr>
                                             <th style={{ backgroundColor: '#f2f2f2', color: '#000', textAlign: 'left' }}>
-                                                <div className='d-flex justify-content-between align-items-center'>
-                                                     <Dropdown
+                                                <div className='d-flex justify-content-between align-items-center gap-1'>
+                                                    <Dropdown
                                                         value={page}
                                                         options={pages}
                                                         onChange={handlePageChange}
                                                         optionLabel="name"
                                                         optionValue="value"
                                                         className="form-control small"
-                                                        style={{width: 70, margin: 0}}
+                                                        style={{ width: '35%', margin: 0 }}
                                                     />
-                                                    <div className='d-flex justify-content-between align-items-center gap-1'>
-                                                        <button onClick={() => setEditStatus(0)} className={`icon-btn-cart small del ${editStatus === 0 ? 'active' : ''}`}>Pending ({pending})</button>
-                                                        <button onClick={() => setEditStatus(1)} className={`icon-btn-cart small add ${editStatus === 1 ? 'active' : ''}`}>Completed ({complete})</button>
-                                                    </div>
+                                                    <button style={{ width: '32%' }} onClick={() => setEditStatus(0)} className={`icon-btn-cart small del ${editStatus === 0 ? 'active' : ''}`}>Pending ({pending})</button>
+                                                    <button style={{ width: '32%' }} onClick={() => setEditStatus(1)} className={`icon-btn-cart small add ${editStatus === 1 ? 'active' : ''}`}>Completed ({complete})</button>
                                                 </div>
                                             </th>
                                         </tr>
@@ -527,7 +533,7 @@ export default function Temp() {
                                             return (<tr key={item.item_id} className={item.item_id === itemData?.item_id ? 'active' : ''}>
                                                 <td>
                                                     <div className='d-flex justify-content-between align-items-center gap-1'>
-                                                        <div>{item.item}<small><br />Packing: {item.unit}&nbsp;&nbsp;&middot;&nbsp;&nbsp;Price: {item.price}<br />{item.category && `${item.category}`}</small></div>
+                                                        <div>{item.item}<small><br />{item.packing && `${item.packing} | `} {item.price} {item.category && ` | ${item.category}`}</small></div>
 
                                                         <div className={`d-flex align-items-center justify-content-between gap-3`}>
                                                             {/* Edit Record */}

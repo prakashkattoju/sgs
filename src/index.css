@@ -2073,7 +2073,7 @@ input:checked+.slider::before {
 }
 
 .icon-btn-cart.small {
-    padding: 6px !important;
+    padding: 9px !important;
     border-radius: 3px;
 }
 
