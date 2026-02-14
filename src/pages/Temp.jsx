@@ -18,6 +18,7 @@ import { format, set } from 'date-fns'
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import AddCategoryModal from '../components/AddCategoryModal';
+import companies from '../companies';
 
 export default function Temp() {
     const dispatch = useDispatch()
@@ -96,7 +97,7 @@ export default function Temp() {
     const fetchcompanycolumn = useCallback(async () => {
         try {
             const data = await GetColumns('company');
-            setCompany(data);
+            setCompany(data.length > companies.length ? data : companies);
         } catch (error) {
             console.error("Failed to fetch company data:", error);
         }
@@ -172,14 +173,6 @@ export default function Temp() {
         const { value } = e.target;
         setPage(value);
     }
-
-    const packingscolumnSearch = (event) => {
-        const query = event.query.toLowerCase();
-        let results = packings?.filter((item) =>
-            item.toLowerCase().includes(query)
-        );
-        setFilteredPackingsColumn(results);
-    };
 
     const companycolumnSearch = (event) => {
         const query = event.query.toLowerCase();
