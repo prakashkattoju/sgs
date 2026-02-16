@@ -34,7 +34,7 @@ const Header = ({ headerRef, title, subtitle }) => {
                         <h2>{title}</h2>
                         {subtitle && <p>{subtitle}</p>}
                     </div>
-                    <button style={{ marginLeft: 'auto' }} onClick={() => navigate('/search-items')} className='search-icon-btn'><i className="fa-solid fa-magnifying-glass"></i></button>
+                    <button style={{ marginLeft: 'auto' }} onClick={() => navigate('/search-items')} className='search-icon-btn'><Lottie animationData={search} loop={true} autoplay={true} style={{ width: 18, height: 18 }} /></button>
                 </div>
             }
         </header>

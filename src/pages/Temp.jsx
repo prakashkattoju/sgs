@@ -490,7 +490,7 @@ export default function Temp() {
                                     className="btn btn-secondary"
                                     style={{ width: '100%' }}
                                 >
-                                    Cancel/Back
+                                    Cancel / Back
                                 </button>
                             </div>
                         </div>
