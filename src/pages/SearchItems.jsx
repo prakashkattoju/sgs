@@ -24,6 +24,7 @@ export default function SearchItems() {
     const [itemLoading, setItemLoading] = useState(false);
 
     const headerRef = useRef(null);
+    const inputRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
     const [AddToCartModalIndex, setAddToCartModalIndex] = useState(null)
 
@@ -37,6 +38,8 @@ export default function SearchItems() {
     });
 
     useEffect(() => {
+        inputRef.current?.focus();
+        
         const updateHeight = () => {
             if (headerRef.current) {
                 setHeaderHeight(headerRef.current.offsetHeight);
@@ -147,7 +150,7 @@ export default function SearchItems() {
                     <div className="search-form d-flex gap-3 align-items-center justify-content-start">
                         <button className='icon-btn' onClick={onClose}><i className="fa-solid fa-arrow-left"></i></button>
                         <div className="form-group">
-                            <input className="form-control alt" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search here..." />
+                            <input ref={inputRef} className="form-control alt" type="text" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search here..." />
                             <span className='search-icon'><i className="fa-solid fa-search"></i></span>
                         </div>
                     </div>

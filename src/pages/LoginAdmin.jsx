@@ -34,7 +34,7 @@ export default function LoginAdmin() {
         const data = await verifyAdmin(values.mobile, values.password);
         if (data.status) {
           dispatch(setCredentials(data));
-          navigate("/sgs-support", { replace: true });
+          navigate("/sgs", { replace: true });
           window.location.reload(true);
         }
       } catch (error) {

@@ -4,6 +4,7 @@ import { GetOrders } from '../services/Billservices';
 import { useNavigate, useLocation } from "react-router-dom";
 import { setUserDetails } from '../store/userSlice';
 import { logOut } from '../store/authSlice';
+import Header from '../components/Header';
 import ConfirmModal from '../components/ConfirmModal';
 import priceDisplay from '../util/priceDisplay';
 import { format } from 'date-fns'
@@ -87,19 +88,7 @@ export default function Account() {
 
     return (
         <>
-            <header ref={headerRef} className="site-header">
-                <div className='search-area d-flex gap-3 align-items-center justify-content-start'>
-                    <button className='icon-btn' onClick={onClose}><i className="fa-solid fa-arrow-left"></i></button>
-                    <div>
-                        <h1><small>Hello,</small> {user.fullname ? user.fullname : 'User'}</h1>
-                        <p>{`You have ${orders.length} order(s)`}</p>
-                    </div>
-                    {/* <button style={{marginBottom: 'auto'}} className='btn'>
-                        <i className="fa-solid fa-edit"></i>
-                    </button> */}
-                    <button style={{ marginLeft: 'auto' }} className='icon-btn' onClick={() => setShowConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
-                </div>
-            </header>
+            <Header headerRef={headerRef} title={user.fullname ? user.fullname : 'User'} subtitle={`You have ${orders.length} order(s)`} />
             <main className='site-main'>
                 {loading ? <div className="list"><div className='loading'>Loading...</div></div> : <div className='items-container search-items-container'>
                     <div style={{ height: `calc(100dvh - ${height + 2}px)` }} className="list scroll">{orders.length > 0 ?

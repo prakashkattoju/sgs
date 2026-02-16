@@ -1,15 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { GetAllItems, GetColumns, CreateItem, DeleteItemByID } from '../services/Dashboardservices';
-import { GetOnlyCategories } from '../services/Productsservices';
 import { useNavigate, useLocation } from "react-router-dom";
 import { setUserDetails } from '../store/userSlice';
 import { logOut } from '../store/authSlice';
 import ConfirmModal from '../components/ConfirmModal';
 import AlertModal from '../components/AlertModal';
-import Pagination from '../components/Pagination';
 import { Dropdown } from 'primereact/dropdown';
-import { AutoComplete } from "primereact/autocomplete";
 import { FaSpinner } from "react-icons/fa";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -17,8 +14,6 @@ import priceDisplay from '../util/priceDisplay';
 import { format, set } from 'date-fns'
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
-import AddCategoryModal from '../components/AddCategoryModal';
-import companies from '../companies';
 
 export default function Temp() {
     const dispatch = useDispatch()
@@ -29,11 +24,6 @@ export default function Temp() {
 
     const [packings, setPackings] = useState([])
     const [filteredPackingsColumn, setFilteredPackingsColumn] = useState([])
-
-    const [company, setCompany] = useState([])
-    const [filteredCompanyColumn, setFilteredCompanyColumn] = useState([])
-
-    const [categories, setCategories] = useState([])
 
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(100);
@@ -58,10 +48,6 @@ export default function Temp() {
         show: false
     });
 
-    const [addCategoryModal, setAddCategoryModal] = useState(false)
-    const [editCategory, setEditCategory] = useState(false)
-    const [category, setCategory] = useState({})
-
     const headerRef = useRef(null);
     const [height, setHeaderHeight] = useState(0);
 
@@ -69,7 +55,6 @@ export default function Temp() {
     const [filteredData, setFilteredData] = useState([]);
     const [complete, setComplete] = useState(0)
     const [pending, setPending] = useState(0)
-
 
     useEffect(() => {
         const updateHeight = () => {
@@ -94,24 +79,6 @@ export default function Temp() {
         }
     }, []);
 
-    const fetchcompanycolumn = useCallback(async () => {
-        try {
-            const data = await GetColumns('company');
-            setCompany(data.length > companies.length ? data : companies);
-        } catch (error) {
-            console.error("Failed to fetch company data:", error);
-        }
-    }, []);
-
-    const fetchcategoriescolumn = useCallback(async () => {
-        try {
-            const data = await GetOnlyCategories();
-            setCategories(data);
-        } catch (error) {
-            console.error("Failed to fetch categories data:", error);
-        }
-    }, []);
-
     const ItemDeleteHandle = async (item_id) => {
         try {
             const data = await DeleteItemByID(item_id);
@@ -127,7 +94,6 @@ export default function Temp() {
                     show: true
                 })
                 fetchpackingscolumn()
-                fetchcompanycolumn()
                 fetchItems()
             }
         } catch (error) {
@@ -160,31 +126,17 @@ export default function Temp() {
 
     useEffect(() => {
         fetchpackingscolumn()
-        fetchcompanycolumn()
-        fetchcategoriescolumn()
         const timer = setTimeout(() => {
             fetchItems()
 
         }, 400);
         return () => clearTimeout(timer);
-    }, [fetchItems, fetchpackingscolumn, fetchcompanycolumn, fetchcategoriescolumn, page, limit, query]);
+    }, [fetchItems, fetchpackingscolumn, page, limit, query]);
 
     const handlePageChange = (e) => {
         const { value } = e.target;
         setPage(value);
     }
-
-    const companycolumnSearch = (event) => {
-        const query = event.query.toLowerCase();
-        let results = company?.filter((item) =>
-            item.toLowerCase().includes(query)
-        );
-        setFilteredCompanyColumn(results);
-    };
-
-    const handleCategoryDropdownChange = (cat_id) => {
-        formik.setFieldValue('cat_id', cat_id);
-    };
 
     function objectToFormData(obj, form = new FormData(), namespace = '') {
         for (let key in obj) {
@@ -208,13 +160,16 @@ export default function Temp() {
 
     const initialValues = {
         item_id: '',
-        cat_id: '',
-        company: '',
         item: '',
         packing: '',
         unit: '',
         price: '',
+        bprice: '',
+        fprice: '',
+        sprice: '',
+        tprice: '',
         status: 1,
+        showhome: 0
     }
     // Formik initialization
     const formik = useFormik({
@@ -222,17 +177,37 @@ export default function Temp() {
         validationSchema: Yup.object({
             item: Yup.string()
                 .required("Item Name is required"),
-            cat_id: Yup.number()
-                .required('Category is required') // Basic required validation
-                .test(
-                    'not-zero', // Name of the test
-                    'Select Category', // Error message
-                    value => value !== 0 // The validation logic
-                ),
             unit: Yup.string()
                 .required("Units is required"),
             price: Yup.string()
-                .required("Price is required"),
+                .required("Price is required")
+                .matches(/^\d+(\.\d+)?$/, {
+                    message: "Enter a valid price",
+                }),
+            bprice: Yup.string()
+                .matches(/^\d+(\.\d+)?$/, {
+                    message: "Enter a valid basic price",
+                    excludeEmptyString: true
+                })
+                .notRequired(),
+            fprice: Yup.string()
+                .matches(/^\d+(\.\d+)?$/, {
+                    message: "Enter a valid first opt price",
+                    excludeEmptyString: true
+                })
+                .notRequired(),
+            sprice: Yup.string()
+                .matches(/^\d+(\.\d+)?$/, {
+                    message: "Enter a valid second opt price",
+                    excludeEmptyString: true
+                })
+                .notRequired(),
+            tprice: Yup.string()
+                .matches(/^\d+(\.\d+)?$/, {
+                    message: "Enter a valid third opt price",
+                    excludeEmptyString: true
+                })
+                .notRequired()
         }),
         onSubmit: async (values, { resetForm }) => {
             try {
@@ -251,7 +226,6 @@ export default function Temp() {
                     }
                     resetForm();
                     fetchpackingscolumn()
-                    fetchcompanycolumn()
                     fetchItems()
                 } else {
                     setShowAlert({
@@ -274,15 +248,18 @@ export default function Temp() {
 
     useEffect(() => {
         if (editItem && itemData) {
-            const { item_id, cat_id, company, item, packing, unit, price, status } = itemData;
+            const { item_id, item, packing, unit, price, bprice, fprice, sprice, tprice, showhome, status } = itemData;
             formik.setValues({
                 item_id: item_id ?? '',
-                cat_id: cat_id ?? '',
-                company: company ?? '',
                 item: item ?? '',
                 packing: packing ?? '',
                 unit: unit ?? '',
                 price: price ?? '',
+                bprice: bprice ?? '',
+                fprice: fprice ?? '',
+                sprice: sprice ?? '',
+                tprice: tprice ?? '',
+                showhome: parseInt(showhome) ?? 0,
                 status: parseInt(status) ?? 1,
             })
         } else {
@@ -305,9 +282,7 @@ export default function Temp() {
     const handleEditItem = (record) => {
         setEditItem(true)
         setItemData(record)
-        handleCategoryDropdownChange(record.cat_id)
     }
-
 
     const logoutAccount = () => {
         dispatch(logOut()); // Dispatch the logout action to clear user state
@@ -340,6 +315,14 @@ export default function Temp() {
         value: 1
     }, {
         label: 'Inactive',
+        value: 0
+    }]
+
+    const showhome = [{
+        label: 'Yes',
+        value: 1
+    }, {
+        label: 'No',
         value: 0
     }]
 
@@ -395,11 +378,11 @@ export default function Temp() {
                             ) : null}
                         </div>
                         <div className='d-flex justify-content-between align-items-start gap-1'>
-                            <div className='relative' style={{ width: '33%' }}>
+                            <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='packing' className='text-xs'>Packing</label>
                                 <input id='packing' name="packing" type="text" className="form-control small" value={formik.values.packing} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                             </div>
-                            <div className='relative' style={{ width: '33%' }}>
+                            <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='unit' className='text-xs'>Units</label>
                                 <Dropdown
                                     id='unit'
@@ -416,50 +399,50 @@ export default function Temp() {
                                     <div className="input-error">{formik.errors.unit}</div>
                                 ) : null}
                             </div>
-                            <div className='relative' style={{ width: '33%' }}>
-                                <label htmlFor='price' className='text-xs'>Price</label>
+                        </div>
+                        <div className='d-flex justify-content-between align-items-start gap-1'>
+                            <div className='relative' style={{ width: '49%' }}>
+                                <label htmlFor='price' className='text-xs'>Price (MRP)</label>
                                 <input id='price' name="price" type="text" className="form-control small" value={formik.values.price} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                                 {formik.touched.price && formik.errors.price ? (
                                     <div className="input-error">{formik.errors.price}</div>
                                 ) : null}
                             </div>
+                            <div className='relative' style={{ width: '49%' }}>
+                                <label htmlFor='bprice' className='text-xs'>Basic Price</label>
+                                <input id='bprice' name="bprice" type="text" className="form-control small" value={formik.values.bprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                                {formik.touched.bprice && formik.errors.bprice ? (
+                                    <div className="input-error">{formik.errors.bprice}</div>
+                                ) : null}
+                            </div>
                         </div>
-                        <div className='relative'>
-                            <label htmlFor='cat_id' className='text-xs'>Category <small>| <span onClick={() => setAddCategoryModal(true)} style={{ color: '#f68b09', cursor: 'pointer' }}>Add New</span></small></label>
-                            <Dropdown
-                                id='cat_id'
-                                name="cat_id"
-                                value={formik.values.cat_id}
-                                options={categories}
-                                onChange={(e) => handleCategoryDropdownChange(e.value)}
-                                filter
-                                filterBy="category"
-                                filterMatchMode="startsWith"
-                                optionLabel="category"
-                                optionValue="cat_id"
-                                showClear
-                                placeholder="Select Category"
-                                className="form-control small"
-                            />
-                            {formik.touched.cat_id && formik.errors.cat_id ? (
-                                <div className="input-error">{formik.errors.cat_id}</div>
-                            ) : null}
+                        <div className='d-flex justify-content-between align-items-start gap-1'>
+                            <div className='relative' style={{ width: '49%' }}>
+                                <label htmlFor='fprice' className='text-xs'>1st Opt Price</label>
+                                <input id='fprice' name="fprice" type="text" className="form-control small" value={formik.values.fprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                                {formik.touched.fprice && formik.errors.fprice ? (
+                                    <div className="input-error">{formik.errors.fprice}</div>
+                                ) : null}
+                            </div>
+                            <div className='relative' style={{ width: '49%' }}>
+                                <label htmlFor='sprice' className='text-xs'>2nd Opt Price</label>
+                                <input id='sprice' name="sprice" type="text" className="form-control small" value={formik.values.sprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                                {formik.touched.sprice && formik.errors.sprice ? (
+                                    <div className="input-error">{formik.errors.sprice}</div>
+                                ) : null}
+                            </div>
                         </div>
-                        <div className='relative'>
-                            <label htmlFor='company' className='text-xs'>Company</label>
-                            <AutoComplete
-                                id='company'
-                                value={formik.values.company}
-                                suggestions={filteredCompanyColumn}
-                                completeMethod={companycolumnSearch}
-                                placeholder="Select or enter company"
-                                dropdown
-                                onChange={(e) => formik.setFieldValue("company", e.value)}
-                                className="form-control small"
-                            />
+                        <div className='d-flex justify-content-between align-items-start gap-1'>
+                            <div className='relative' style={{ width: '49%' }}>
+                                <label htmlFor='tprice' className='text-xs'>3rd Opt Price</label>
+                                <input id='tprice' name="tprice" type="text" className="form-control small" value={formik.values.tprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
+                                {formik.touched.tprice && formik.errors.tprice ? (
+                                    <div className="input-error">{formik.errors.tprice}</div>
+                                ) : null}
+                            </div>
                         </div>
-                        <div className='d-flex justify-content-between align-items-end gap-1'>
-                            <div className='relative' style={{ width: '33%' }}>
+                        <div className='d-flex justify-content-between align-items-end gap-1 mb-3'>
+                            <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='status' className='text-xs'>Status</label>
                                 <Dropdown
                                     id='status'
@@ -476,8 +459,23 @@ export default function Temp() {
                                     <div className="input-error">{formik.errors.status}</div>
                                 ) : null}
                             </div>
-
-                            <div className='relative form-group' style={{ width: '33%' }}>
+                            <div className='relative' style={{ width: '49%' }}>
+                                <label htmlFor='showhome' className='text-xs'>Top Selling Item</label>
+                                <Dropdown
+                                    id='showhome'
+                                    name="showhome"
+                                    value={formik.values.showhome}
+                                    options={showhome}
+                                    onChange={formik.handleChange}
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Select Option"
+                                    className="form-control small"
+                                />
+                            </div>
+                        </div>
+                        <div className='d-flex justify-content-between align-items-start gap-1'>
+                            <div className='relative form-group' style={{ width: '49%' }}>
                                 <button
                                     type="submit"
                                     className="btn"
@@ -485,7 +483,7 @@ export default function Temp() {
                                 >{submitting && <FaSpinner className="animate-spin" />} {'Submit'}
                                 </button>
                             </div>
-                            <div className='relative form-group' style={{ width: '33%' }}>
+                            <div className='relative form-group' style={{ width: '49%' }}>
                                 <button
                                     onClick={handleFormCancel}
                                     type="button"
@@ -526,7 +524,7 @@ export default function Temp() {
                                             return (<tr key={item.item_id} className={item.item_id === itemData?.item_id ? 'active' : ''}>
                                                 <td>
                                                     <div className='d-flex justify-content-between align-items-center gap-1'>
-                                                        <div>{item.item}<small><br />{item.packing && `${item.packing} | `} {item.price} {item.category && ` | ${item.category}`}</small></div>
+                                                        <div>{item.item}<small><br />{item.packing && `${item.packing} | `} {item.price}</small></div>
 
                                                         <div className={`d-flex align-items-center justify-content-between gap-3`}>
                                                             {/* Edit Record */}
@@ -576,8 +574,6 @@ export default function Temp() {
                         show: false
                     })}
                 />
-                <AddCategoryModal show={addCategoryModal} fetchcategoriescolumn={fetchcategoriescolumn} updatecategory={handleCategoryDropdownChange} editCategory={editCategory} category={category} onCancel={() => setAddCategoryModal(false)} />
-
             </main>
         </>
     )

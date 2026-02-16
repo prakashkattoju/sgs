@@ -11,11 +11,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Bill from "./pages/Bill";
 import Account from "./pages/Account";
 import OrderDetails from "./pages/OrderDetails";
-import Items from "./pages/Items";
 import SearchItems from "./pages/SearchItems";
 import OrderAgain from "./pages/OrderAgain";
 import LoginAdmin from "./pages/LoginAdmin";
-import Dashboard from "./pages/Dashboard";
 import Temp from "./pages/Temp";
 
 function App() {
@@ -42,9 +40,8 @@ function App() {
 
       <Route path="/sgs" element={<Temp />} />
 
-      {/* <Route path="/sgs-support" element={isLoggedIn ? <ProtectedRoute allowedRoles={["Admin"]}><Dashboard /></ProtectedRoute> : <LoginAdmin/>}  /> */}
+      {/* <Route path="/sgs" element={isLoggedIn ? <ProtectedRoute allowedRoles={["Admin"]}><Temp /></ProtectedRoute> : <LoginAdmin/>}  /> */}
 
-      <Route path="/items/:slug/:cat_id/:scat_id" element={<ProtectedRoute allowedRoles={["user"]}><Items /></ProtectedRoute>} />
       <Route path="/search-items" element={<ProtectedRoute allowedRoles={["user"]}><SearchItems /></ProtectedRoute>} />
       <Route path="/order-again" element={<ProtectedRoute allowedRoles={["user"]}><OrderAgain /></ProtectedRoute>} />
       <Route path="/cart" element={<ProtectedRoute allowedRoles={["user"]}><Cart /></ProtectedRoute>} />

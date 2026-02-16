@@ -9,10 +9,21 @@ const Header = ({ headerRef, title, subtitle }) => {
 
     return (
         <header ref={headerRef} className="site-header">
-            {title === '' ?
-                <div className='site-header-top d-flex gap-2 align-items-center justify-content-start'>
-                    <img className="logo" src='/icon.jpg' alt='' />
-                    <h1>SIRI GENERAL STORES, Kakinada</h1>
+            {pathname === '/' ?
+                <div className="site-header-top">
+                    <div className='d-flex gap-2 align-items-center justify-content-start mb-2'>
+                        <img className="logo" src='/icon.jpg' alt='' />
+                        <h1>SIRI GENERAL STORES, Kakinada</h1>
+                        <a role='button' href='tel:9177965769' className='bottom-navi-btn large'><i className="fa-solid fa-mobile-screen"></i></a>
+                    </div>
+                    <hr/>
+                    <div className="search-form d-flex gap-3 align-items-start justify-content-between">
+                        <div>
+                            <h2>{title}</h2>
+                            {subtitle && <p>{subtitle}</p>}
+                        </div>
+                        <button onClick={() => navigate('/search-items')} className='search-icon-btn'><i className="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
                 </div> :
                 <div className='search-area d-flex gap-3 align-items-center justify-content-start'>
                     {pathname !== '/' && <button className='icon-btn' onClick={onClose}><i className="fa-solid fa-arrow-left"></i></button>}
@@ -20,6 +31,7 @@ const Header = ({ headerRef, title, subtitle }) => {
                         <h2>{title}</h2>
                         {subtitle && <p>{subtitle}</p>}
                     </div>
+                    <button style={{marginLeft: 'auto'}} onClick={() => navigate('/search-items')} className='search-icon-btn'><i className="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             }
         </header>

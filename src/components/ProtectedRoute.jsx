@@ -79,7 +79,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   }
 
   if (allowedRoles.length && !allowedRoles.includes(user_role)) {
-    return <Navigate to={user_role === "Admin" ? "/sgs-support" : "/"} replace />;
+    return <Navigate to={user_role === "Admin" ? "/sgs" : "/"} replace />;
   }
 
   return (
