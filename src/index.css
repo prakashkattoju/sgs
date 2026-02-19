@@ -455,8 +455,9 @@ h4 {
 
 .search-icon-btn {
     font-size: 18px;
-    line-height: 1;
+    line-height: 21px;
     font-weight: 500;
+    text-transform: uppercase;
     color: #FFFFFF;
     border: 1px solid #ce760a;
     background-color: #f68b09;
@@ -468,7 +469,12 @@ h4 {
     gap: 10px;
 }
 
-.search-icon-btn svg path{
+.search-icon-btn>div {
+    position: relative;
+    top: -3px;
+}
+
+.search-icon-btn svg path {
     stroke: #FFFFFF;
 }
 
@@ -531,7 +537,7 @@ h4 {
 .search-icon {
     position: absolute;
     right: 5px;
-    top: 8px;
+    top: 5px;
     padding: 8px 12px;
     line-height: 1;
     font-size: 18px;
@@ -991,7 +997,7 @@ hr {
 
 .list .item-list.cart-list .item h2 {
     text-align: left;
-    margin-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .list .item-list.cart-list .item .meta .cart-action {
@@ -1047,6 +1053,7 @@ hr {
     display: block;
     text-align: center;
     width: 100%;
+    margin-top: 10px;
 }
 
 .list .item .meta .cart-action.alter {
@@ -1065,10 +1072,10 @@ hr {
 
 .list .item-list .item .meta .cart-action .btnAddAction,
 .list .item-list .item .meta .cart-action .opt button:not(.remove-item) {
-    width: 55px;
+    width: 32px;
     border: 0;
     padding: 5px;
-    border-radius: 3px;
+    border-radius: 0;
     background: #194f2d;
     color: #ffffff;
     font-weight: 600;
@@ -1110,8 +1117,8 @@ hr {
 
 .list .item-list .item .meta .cart-action .btnAddAction.init {
     width: 100%;
-    padding: 12px 12px;
     text-transform: uppercase;
+    border-radius: 3px;
 }
 
 .list .item-list .item .meta .cart-action .opt {
@@ -1418,9 +1425,9 @@ form.list button:hover {
     bottom: 60px;
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;
-    padding: 12px 25px;
-    border-radius: 45px;
+    width: 50%;
+    padding: 10px 10px 10px 20px;
+    border-radius: 25px;
     background-color: #194f2d;
     color: #FFFFFF;
     z-index: 9;
@@ -1433,12 +1440,12 @@ form.list button:hover {
     color: #FFFFFF;
 }
 
-/* .cart-summary-badge button {
+.cart-summary-badge button {
     display: inline-block;
     border: 0;
-    padding: 6px;
-    border-radius: 3px;
-    background: #FFFFFF;
+    padding: 8px 10px;
+    border-radius: 35px;
+    background-color: #dff3e6;
     color: #194f2d;
     font-weight: 500;
     cursor: pointer;
@@ -1448,7 +1455,7 @@ form.list button:hover {
 .cart-summary-badge button:hover {
     background: #FFFFFF;
     color: #194f2d;
-} */
+}
 
 .cart-summary-badge .continue {
     position: relative;
@@ -1631,6 +1638,9 @@ form.list button:hover {
     font-weight: 600;
     text-align: center;
 }
+.addmore button {
+    display: inline-block;
+}
 
 .login-user {
     display: flex;
@@ -1679,7 +1689,7 @@ form.list button:hover {
     font-weight: 600;
 }
 
-.bottom-navi-btn.large i{
+.bottom-navi-btn.large i {
     font-size: 24px;
     color: #f68b09;
 }
@@ -1830,6 +1840,11 @@ form.list button:hover {
     font-weight: 500;
     cursor: pointer;
     text-transform: uppercase;
+}
+
+.btn.disabled, .btn:disabled, fieldset:disabled .btn{
+    background: #194f2d;
+    color: #ffffff;
 }
 
 .btn.btn-secondary {
@@ -2146,6 +2161,10 @@ input:checked+.slider::before {
 .icon-btn-cart.add {
     background-color: #dff3e6;
     color: #194f2d
+}
+
+.icon-btn-cart.init {
+    width: 100%;
 }
 
 .icon-btn-cart.add.active {

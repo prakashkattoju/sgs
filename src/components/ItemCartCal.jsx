@@ -10,7 +10,7 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
 
     const setHandleValue1 = (value) => {
         setValue1(value);
-        setItemUnitValue1(itemUnit === 'kg' || itemUnit === 'ltr' ? value * 1000 : value)
+        setItemUnitValue1(itemUnit === 'KG' ? value * 1000 : value)
     }
 
     const setHandleValue2 = (value) => {
@@ -23,12 +23,12 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
     return (
         <div className='d-flex flex-column align-items-center justify-content-center gap-3'>
             <div className='unit-input'>
-                <label className="unit-placeholder">{itemUnit === 'kg' ? 'Kg' : itemUnit === 'ltr' ? 'Ltr' : itemUnit === 'unit' ? 'Unit' : 'PKT'}</label>
+                <label className="unit-placeholder">Kg</label>
                 <InputNumber
                     value={value1}
                     onValueChange={(e) => setHandleValue1(e.value)}
                     useGrouping={false}
-                    placeholder={itemUnit === 'kg' ? 'Enter kgs' : itemUnit === 'ltr' ? 'Enter ltrs' : itemUnit === 'unit' ? 'Enter units' : 'Enter pkts'}
+                    placeholder="Enter Kgs"
                     showButtons
                     buttonLayout="horizontal"
                     incrementButtonIcon="fa-solid fa-plus"
@@ -38,14 +38,14 @@ const ItemCartCal = ({ itemUnit, setItemUnitValue1, setItemUnitValue2, itemUnitV
                 />
 
             </div>
-            {itemUnit === 'kg' || itemUnit === 'ltr' ?
+            {itemUnit === 'KG' ?
                 <div className='unit-input'>
-                    <label className="unit-placeholder">{itemUnit === 'kg' ? 'G' : itemUnit === 'ltr' && 'ML'}</label>
+                    <label className="unit-placeholder">G</label>
                     <InputNumber
                         value={value2}
                         onValueChange={(e) => setHandleValue2(e.value)}
                         useGrouping={false}
-                        placeholder={itemUnit === 'kg' ? 'Enter grams' : itemUnit === 'ltr' && 'Enter ml'}
+                        placeholder='Enter Grams'
                         showButtons
                         buttonLayout="horizontal"
                         incrementButtonIcon="fa-solid fa-plus"

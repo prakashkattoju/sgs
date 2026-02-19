@@ -15,6 +15,7 @@ import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import Header from '../components/Header';
 import ConfirmModal from '../components/ConfirmModal';
+import Units from '../components/Units';
 
 export default function Cart() {
     const user = useSelector((state) => state.user);
@@ -77,12 +78,8 @@ export default function Cart() {
     });
 
     const getCartQuantity = () => {
-        return cart.reduce(total => total + 1, 0);
+        return cart.reduce((total, item) => total + 1, 0);
     };
-
-    const getCartAmount = () => {
-        return priceDisplay(cart.reduce((total, item) => total + item.totalPrice * 1, 0));
-    }
 
     const remove = (item_id) => {
         dispatch(removeFromCart(item_id));
@@ -130,29 +127,28 @@ export default function Cart() {
                 <div style={{ height: `calc(100dvh - ${cart.length > 0 ? (height + 64) : (height + 2)}px)` }} className="list scroll">
                     <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }} className='alter'>
                         <div className={`item-list ${cart.length > 0 ? 'cart-list' : 'empty-list'}`}>
-                            {cart?.length > 0 && cart.map((item, index) =>
-                                <div key={index} className="item">
+                            {cart?.length > 0 && cart.map((item, index) => {
+                                const { item_id, title, price, totalPrice, itemUnit, itemUnitValue } = item;
+                                return (<div key={index} className="item">
                                     <div style={{ padding: 0 }} className='item-inner'>
                                         <div className="meta">
-                                            <h2>{item.title}</h2>
                                             <div className="meta-inner">
                                                 <div className="meta-info">
-                                                    <div className="price">{priceDisplay(parseInt(item.price)).replace("₹", "")}</div>
+                                                    <h2>{title}</h2>
                                                 </div>
-                                                <div className="cart-action">
-                                                    <div className="qty">{item.itemUnit === 'g' || item.itemUnit === 'ml' ? item.itemUnitValue * 1000 : item.itemUnitValue} {`${item.itemUnit === 'unit' || item.itemUnit === 'pkt' ? `${item.itemUnit}(s)` : item.itemUnit}`}</div>
-                                                    <div style={{ margin: 0 }} className="price">{priceDisplay(parseInt(item.totalPrice)).replace("₹", "")}</div>
+                                                <div style={{width: '65px', fontSize: 12, textAlign: 'left'}}>
+                                                    {itemUnit === 'KG' || itemUnit === 'G' ? itemUnitValue > 1 ? itemUnitValue : itemUnitValue * 1000 : itemUnitValue} {itemUnit === 'KG' || itemUnit === 'G' ? `${itemUnitValue > 1 ? 'KG' : 'G'}` : `${itemUnitValue > 1 ? `${itemUnit}'S` : itemUnit}`}
                                                 </div>
                                                 <button className='remove-item' onClick={() => setConfirm({
                                                     status: true,
-                                                    item_id: item.item_id,
-                                                    item_name: item.title
+                                                    item_id: item_id,
+                                                    item_name: title
                                                 })}><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="red"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z" /></svg></button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            )}
+                                </div>)
+                            })}
                             {cart?.length > 0 ? <div className="addmore"><p>If you want add more items.</p><button type="button" className="btn toggle" onClick={() => navigate("/", { replace: true })}>Add More</button></div> :
                                 <div className="cart-summary-review">
                                     <div className="tbl-cart show-cart">
@@ -164,8 +160,8 @@ export default function Cart() {
                 </div>
             </div>
             {cart.length > 0 && <div className="cart-summary-badge" onClick={() => setShowPromptModal(true)}>
-                <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
-                <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
+                <div className="cart-bottom-bar">SUBMIT</div>
+                <button><i className="fa-solid fa-arrow-right"></i></button>
             </div>}
             <div
                 className={`dfc-modal modal fade ${showPromptModal ? "show d-flex" : ""}`}

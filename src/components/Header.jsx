@@ -24,7 +24,7 @@ const Header = ({ headerRef, title, subtitle }) => {
                             <h2>{title}</h2>
                             {subtitle && <p>{subtitle}</p>}
                         </div>
-                        <button onClick={() => navigate('/search-items')} className='search-icon-btn'><Lottie animationData={search} loop={true} autoplay={true} style={{ width: 18, height: 18 }} />
+                        <button onClick={() => navigate('/search-items')} className='search-icon-btn'><span>Search</span><Lottie animationData={search} loop={true} autoplay={true} style={{ width: 18, height: 18 }} />
                         </button>
                     </div>
                 </div> :
@@ -34,7 +34,7 @@ const Header = ({ headerRef, title, subtitle }) => {
                         <h2>{title}</h2>
                         {subtitle && <p>{subtitle}</p>}
                     </div>
-                    <button style={{ marginLeft: 'auto' }} onClick={() => navigate('/search-items')} className='search-icon-btn'><Lottie animationData={search} loop={true} autoplay={true} style={{ width: 18, height: 18 }} /></button>
+                    <button style={{ marginLeft: 'auto' }} onClick={() => navigate('/search-items')} className='search-icon-btn'><span>Search</span><Lottie animationData={search} loop={true} autoplay={true} style={{ width: 18, height: 18 }} /></button>
                 </div>
             }
         </header>

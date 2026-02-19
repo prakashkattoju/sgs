@@ -22,7 +22,7 @@ export default function Login() {
     },
     validationSchema: Yup.object({
       mobile: Yup.string()
-        .required("Mobile number is required")
+        .required("WhatsApp Number is required")
         .matches(/^[6-9]\d{9}$/, 'Enter a valid 10-digit Mobile number'),
     }),
     onSubmit: async (values) => {
@@ -58,7 +58,7 @@ export default function Login() {
                   <input
                     type="tel"
                     name="mobile"
-                    placeholder="Enter your mobile number"
+                    placeholder="Enter WhatsApp Number"
                     value={formik.values.mobile}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
