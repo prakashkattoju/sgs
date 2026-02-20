@@ -46,8 +46,8 @@ const ItemCard = ({ index, item }) => {
         const cartItem = {
             'item_id': parseInt(item.item_id),
             'title': item.item,
-            'price': parseInt(item.price),
-            'totalPrice': parseInt(itemTotal),
+            'price': parseFloat(item.price),
+            'totalPrice': parseFloat(itemTotal),
             'itemUnit': itemUnit,
             'itemUnitValue': itemUnitValue,
         }
@@ -85,12 +85,33 @@ const ItemCard = ({ index, item }) => {
         });
     };
 
+    function toTitleCase(str) {
+        // 1. Convert the entire string to lowercase for consistency
+        str = str.toLowerCase();
+
+        // 2. Split the string into an array of words based on spaces
+        const words = str.split(' ');
+
+        // 3. Map over the words array, capitalizing the first letter of each word
+        const titleCasedWords = words.map(word => {
+            // Check if the word is not empty to avoid errors with extra spaces
+            if (word.length > 0) {
+                // Capitalize the first character and add the rest of the word in lowercase
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            }
+            return ''; // Return empty string for extra spaces (if any)
+        });
+
+        // 4. Join the array of title cased words back into a single string
+        return titleCasedWords.join(' ');
+    }
+
     return (
         <>
             <div key={index} className="item">
                 <div className='item-inner' role='button'>
                     <div className="meta">
-                        <h2>{item.item} {item.packing && ` - ${item.packing}`}</h2>
+                        <h2>{toTitleCase(item.item)} {item.packing && ` - ${item.packing}`}</h2>
                     </div>
                     {/* <div className='price'>{priceDisplay(item.price)}</div> */}
                     <div className="meta" style={{ marginTop: 'auto' }}>
@@ -102,11 +123,12 @@ const ItemCard = ({ index, item }) => {
                                     <div className="qty">{getQuantity(parseInt(item.item_id))}</div>
                                     <button className="icon-btn-cart add" onClick={() => increment(parseInt(item.item_id))}><i className="fa-solid fa-plus"></i></button>
                                 </div>) :
-                                <button className="btnAddAction init" onClick={() => addOptToCart(item)}>Add</button> : checkForAdd(parseInt(item.item_id)) ? <button onClick={() => setConfirm({
+                                <button className="btnAddAction init" onClick={() => addOptToCart(item)}>Add</button> : checkForAdd(parseInt(item.item_id)) ? 
+                                    <button onClick={() => setConfirm({
                                     status: true,
                                     item_id: item.item_id,
                                     item_name: item.item
-                                })} className='icon-btn-cart del'><i className="fa-solid fa-trash-can"></i></button> : <button onClick={() => addToCartModalOpen(item)} className='btnAddAction init'>ADD</button>}
+                                })} className='btnAddAction init remove'>REMOVE <i className="fa-solid fa-trash-can"></i></button> : <button onClick={() => addToCartModalOpen(item)} className='btnAddAction init'>ADD</button>}
                         </div>
                     </div>
                 </div>

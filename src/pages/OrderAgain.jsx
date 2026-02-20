@@ -84,10 +84,9 @@ export default function OrderAgain() {
                     </div>
                 </div>
                 {cart.length > 0 && <div className="cart-summary-badge" onClick={() => navigate("/cart", { replace: true })}>
-                    <div className="cart-bottom-bar"><strong className="total-count">{getCartQuantity()} items</strong> | <strong className="total-cart">{getCartAmount()}</strong></div>
-                    <button className="icon-btn alt"><i className="fa-solid fa-arrow-right"></i></button>
+                    <div className="cart-bottom-bar">CONTINUE</div>
+                    <button><i className="fa-solid fa-arrow-right"></i></button>
                 </div>}
-                
             </main>
         </>
     )

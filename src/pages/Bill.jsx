@@ -47,7 +47,7 @@ export default function Bill() {
                     <button className='icon-btn' onClick={onClose}><i className="fa-solid fa-arrow-left"></i></button>
                     <div>
                         <h1>Order No: {token_num}</h1>
-                        <p>{getCartQuantity()} item(s) ordered</p>
+                        <p>{cart.length} item(s) ordered</p>
                     </div>
                 </div>
             </header>

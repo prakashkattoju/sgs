@@ -16,7 +16,7 @@ const Header = ({ headerRef, title, subtitle }) => {
                     <div className='d-flex gap-2 align-items-center justify-content-start mb-2'>
                         <img className="logo" src='/icon.jpg' alt='' />
                         <h1>SIRI GENERAL STORES, Kakinada</h1>
-                        <a role='button' href='tel:9177965769' className='bottom-navi-btn large'><i className="fa-solid fa-mobile-screen"></i></a>
+                        <a role='button' href='tel:9177965769' className='bottom-navi-btn large' style={{marginLeft:'auto'}}><i className="fa-solid fa-mobile-screen"></i></a>
                     </div>
                     <hr />
                     <div className="search-form d-flex gap-3 align-items-start justify-content-between">
@@ -24,7 +24,7 @@ const Header = ({ headerRef, title, subtitle }) => {
                             <h2>{title}</h2>
                             {subtitle && <p>{subtitle}</p>}
                         </div>
-                        <button onClick={() => navigate('/search-items')} className='search-icon-btn'><span>Search</span><Lottie animationData={search} loop={true} autoplay={true} style={{ width: 18, height: 18 }} />
+                        <button onClick={() => navigate('/search-items')} className='search-icon-btn'><span>Search</span><Lottie animationData={search} loop={true} autoplay={true} style={{  width: 18, height: 18 }} />
                         </button>
                     </div>
                 </div> :
