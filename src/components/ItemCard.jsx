@@ -46,8 +46,9 @@ const ItemCard = ({ index, item }) => {
         const cartItem = {
             'item_id': parseInt(item.item_id),
             'title': item.item,
-            'price': parseFloat(item.price),
-            'totalPrice': parseFloat(itemTotal),
+            'price': parseFloat(item.price).toFixed(2),
+            'actualPrice': parseFloat(item.price).toFixed(2),
+            'totalPrice': parseFloat(itemTotal).toFixed(2),
             'itemUnit': itemUnit,
             'itemUnitValue': itemUnitValue,
         }
