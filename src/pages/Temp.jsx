@@ -364,6 +364,7 @@ export default function Temp() {
                             <span className='search-icon'><i className="fa-solid fa-search"></i></span>
                         </div>
                     </div>
+                    <button style={{ marginLeft: 'auto' }} className='icon-btn' onClick={() => setShowLogoutConfirm(true)}><i className="fa-solid fa-arrow-right-from-bracket"></i></button>
                 </div>
             </header>
             <main className='site-main'>
@@ -513,8 +514,8 @@ export default function Temp() {
                                                         className="form-control small"
                                                         style={{ width: '35%', margin: 0 }}
                                                     />
-                                                    <button style={{ width: '32%' }} onClick={() => setEditStatus(0)} className={`icon-btn-cart small del ${editStatus === 0 ? 'active' : ''}`}>Pending ({pending})</button>
-                                                    <button style={{ width: '32%' }} onClick={() => setEditStatus(1)} className={`icon-btn-cart small add ${editStatus === 1 ? 'active' : ''}`}>Completed ({complete})</button>
+                                                    <button style={{ width: '32%' }} onClick={() => setEditStatus(0)} className={`icon-btn-cart small del ${editStatus === 0 ? 'active' : ''}`}>PEND ({pending})</button>
+                                                    <button style={{ width: '32%' }} onClick={() => setEditStatus(1)} className={`icon-btn-cart small add ${editStatus === 1 ? 'active' : ''}`}>COMP ({complete})</button>
                                                 </div>
                                             </th>
                                         </tr>
