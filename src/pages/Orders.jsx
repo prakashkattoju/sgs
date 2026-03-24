@@ -111,9 +111,9 @@ export default function Orders() {
                                                         <div>Order # {item.token_num}</div>
                                                         <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
                                                     </div>
-                                                    {/* <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
                                                         <div>{StatusChip({ status: item.status })}</div>
-                                                    </div> */}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
