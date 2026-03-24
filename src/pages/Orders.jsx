@@ -112,7 +112,7 @@ export default function Orders() {
                                                         <div><i className="fa-regular fa-calendar-days"></i> {format(new Date(item.dcreated_on), 'dd-MM-yyyy')}</div>
                                                     </div>
                                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', columnGap: 20 }}>
-                                                        <div>{StatusChip({ status: item.status })}</div>
+                                                        <div>{StatusChip({ status: item.paid })}</div>
                                                     </div>
                                                 </div>
                                             </div>
