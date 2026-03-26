@@ -378,6 +378,7 @@ export default function Temp() {
             <main className='site-main'>
                 {(editItem || addItem) ? <form onSubmit={formik.handleSubmit} style={{ padding: 15, height: `calc(100dvh - ${(height)}px)` }}>
                     <input type='hidden' name='item_id' value={formik.values.item_id} />
+                    <h2>{editItem ? 'Edit Item' : 'Add Item'}</h2>
                     <div className='d-flex flex-column justify-content-center align-items-strecth gap-1'>
                         <div className='relative'>
                             <label htmlFor='item' className='text-xs'>Item Name</label>
