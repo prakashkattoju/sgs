@@ -31,6 +31,7 @@ export default function Temp() {
     const [query, setQuery] = useState("");
 
     const [items, setItems] = useState([])
+    const [addItem, setAddItem] = useState(false);
     const [editItem, setEditItem] = useState(false);
     const [itemData, setItemData] = useState({});
 
@@ -284,6 +285,12 @@ export default function Temp() {
         setItemData(record)
     }
 
+    const handleAddItem = () => {
+        setAddItem(true)
+        setEditItem(false)
+        setItemData(initialValues)
+    }
+
     const logoutAccount = () => {
         dispatch(logOut()); // Dispatch the logout action to clear user state
         dispatch(setUserDetails({
@@ -306,6 +313,7 @@ export default function Temp() {
 
     const handleFormCancel = () => {
         setEditItem(false)
+        setAddItem(false)
         setItemData(initialValues)
         formik.resetForm();
     }
@@ -368,7 +376,7 @@ export default function Temp() {
                 </div>
             </header>
             <main className='site-main'>
-                {editItem ? <form onSubmit={formik.handleSubmit} style={{ padding: 15, height: `calc(100dvh - ${(height)}px)` }}>
+                {(editItem || addItem) ? <form onSubmit={formik.handleSubmit} style={{ padding: 15, height: `calc(100dvh - ${(height)}px)` }}>
                     <input type='hidden' name='item_id' value={formik.values.item_id} />
                     <div className='d-flex flex-column justify-content-center align-items-strecth gap-1'>
                         <div className='relative'>
@@ -499,7 +507,7 @@ export default function Temp() {
                 </form> :
                     <div style={{ height: `calc(100dvh - ${(height)}px)` }} className='items-list'>
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
-                            <div className='items-list-inner'>
+                            <div className='items-list-inner' style={{maxHeight: '100%'}}>
                                 <table className="table table-bordered mb-3">
                                     <thead>
                                         <tr>
@@ -516,6 +524,7 @@ export default function Temp() {
                                                     />
                                                     <button style={{ width: '32%' }} onClick={() => setEditStatus(0)} className={`icon-btn-cart small del ${editStatus === 0 ? 'active' : ''}`}>PEND ({pending})</button>
                                                     <button style={{ width: '32%' }} onClick={() => setEditStatus(1)} className={`icon-btn-cart small add ${editStatus === 1 ? 'active' : ''}`}>COMP ({complete})</button>
+                                                    <button onClick={handleAddItem} className="icon-btn-cart small add active" type="button"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></button>
                                                 </div>
                                             </th>
                                         </tr>

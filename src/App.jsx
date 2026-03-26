@@ -41,7 +41,7 @@ function App() {
 
       {/* <Route path="/sgs" element={<Temp />} /> */}
 
-      <Route path="/sgs" element={isLoggedIn ? <ProtectedRoute allowedRoles={["Admin"]}><Temp /></ProtectedRoute> : <LoginAdmin/>}  />
+      <Route path="/sgs" element={isLoggedIn ? <ProtectedRoute allowedRoles={["Admin", "Emp"]}><Temp /></ProtectedRoute> : <LoginAdmin/>}  />
 
       <Route path="/search-items" element={<ProtectedRoute allowedRoles={["user"]}><SearchItems /></ProtectedRoute>} />
       <Route path="/order-again" element={<ProtectedRoute allowedRoles={["user"]}><OrderAgain /></ProtectedRoute>} />
