@@ -356,11 +356,11 @@ export default function Temp() {
                             ) : null}
                         </div>
                         <div className='d-flex justify-content-between align-items-start gap-1'>
-                            <div className='relative' style={{ width: '49%' }}>
+                            <div className='relative' style={{ width: '33%' }}>
                                 <label htmlFor='packing' className='text-xs'>Packing</label>
                                 <input id='packing' name="packing" type="text" className="form-control small" value={formik.values.packing} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                             </div>
-                            <div className='relative' style={{ width: '49%' }}>
+                            <div className='relative' style={{ width: '33%' }}>
                                 <label htmlFor='unit' className='text-xs'>Units</label>
                                 <Dropdown
                                     id='unit'
@@ -377,23 +377,24 @@ export default function Temp() {
                                     <div className="input-error">{formik.errors.unit}</div>
                                 ) : null}
                             </div>
-                        </div>
-                        <div className='d-flex justify-content-between align-items-start gap-1'>
-                            <div className='relative' style={{ width: '49%' }}>
+                            <div className='relative' style={{ width: '33%' }}>
                                 <label htmlFor='price' className='text-xs'>Price</label>
                                 <input id='price' name="price" type="text" className="form-control small" value={formik.values.price} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                                 {formik.touched.price && formik.errors.price ? (
                                     <div className="input-error">{formik.errors.price}</div>
                                 ) : null}
                             </div>
-                            {/* <div className='relative' style={{ width: '49%' }}>
+                        </div>
+                        {/* <div className='d-flex justify-content-between align-items-start gap-1'>
+                            
+                             <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='bprice' className='text-xs'>Basic Price</label>
                                 <input id='bprice' name="bprice" type="text" className="form-control small" value={formik.values.bprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                                 {formik.touched.bprice && formik.errors.bprice ? (
                                     <div className="input-error">{formik.errors.bprice}</div>
                                 ) : null}
-                            </div> */}
-                        </div>
+                            </div> 
+                        </div> */}
                         {/* <div className='d-flex justify-content-between align-items-start gap-1'>
                             <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='fprice' className='text-xs'>1st Opt Price</label>
@@ -476,7 +477,7 @@ export default function Temp() {
                 </form> :
                     <div style={{ height: `calc(100dvh - ${(height)}px)` }} className='items-list'>
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
-                            <div className='items-list-inner' style={{maxHeight: '100%'}}>
+                            <div className='items-list-inner' style={{ maxHeight: '100%' }}>
                                 <table className="table table-bordered mb-3">
                                     <thead>
                                         <tr>
@@ -493,7 +494,7 @@ export default function Temp() {
                                                     />
                                                     <button style={{ width: '32%' }} onClick={() => setEditStatus(0)} className={`icon-btn-cart small del ${editStatus === 0 ? 'active' : ''}`}>PEND ({pending})</button>
                                                     <button style={{ width: '32%' }} onClick={() => setEditStatus(1)} className={`icon-btn-cart small add ${editStatus === 1 ? 'active' : ''}`}>COMP ({complete})</button>
-                                                    <button onClick={handleAddItem} className="icon-btn-cart small add active" type="button"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></button>
+                                                    <button onClick={handleAddItem} className="icon-btn-cart small add active" type="button"><svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" fill="currentColor"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" /></svg></button>
                                                 </div>
                                             </th>
                                         </tr>
