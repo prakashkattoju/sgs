@@ -188,11 +188,11 @@ export default function Temp() {
                 const formData = objectToFormData(values);
                 const data = await CreateItem(formData);
                 if (data.status) {
-                    setShowAlert({
+                    /* setShowAlert({
                         title: 'Success',
                         message: data.message,
                         show: true
-                    })
+                    }) */
                     if (editItem) {
                         setEditItem(false)
                         setItemData({})
@@ -504,7 +504,7 @@ export default function Temp() {
                                             return (<tr key={item.item_id} className={item.item_id === itemData?.item_id ? 'active' : ''}>
                                                 <td>
                                                     <div className='d-flex justify-content-between align-items-center gap-1'>
-                                                        <div>{item.item}<small><br />{item.packing && `${item.packing} -- `} {item.price}{item.packing && ` -- ${item.unit}`}</small></div>
+                                                        <div>{item.item}<small><br />{item.packing && `${item.packing} — `} {item.price}{item.packing && ` — ${item.unit}`}</small></div>
 
                                                         <div className={`d-flex align-items-center justify-content-between gap-3`}>
                                                             {/* Edit Record */}
