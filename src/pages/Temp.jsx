@@ -165,10 +165,6 @@ export default function Temp() {
         packing: '',
         unit: '',
         price: '',
-        bprice: '',
-        fprice: '',
-        sprice: '',
-        tprice: '',
         status: 1,
         showhome: 0
     }
@@ -185,30 +181,6 @@ export default function Temp() {
                 .matches(/^\d+(\.\d+)?$/, {
                     message: "Enter a valid price",
                 }),
-            bprice: Yup.string()
-                .matches(/^\d+(\.\d+)?$/, {
-                    message: "Enter a valid basic price",
-                    excludeEmptyString: true
-                })
-                .notRequired(),
-            fprice: Yup.string()
-                .matches(/^\d+(\.\d+)?$/, {
-                    message: "Enter a valid first opt price",
-                    excludeEmptyString: true
-                })
-                .notRequired(),
-            sprice: Yup.string()
-                .matches(/^\d+(\.\d+)?$/, {
-                    message: "Enter a valid second opt price",
-                    excludeEmptyString: true
-                })
-                .notRequired(),
-            tprice: Yup.string()
-                .matches(/^\d+(\.\d+)?$/, {
-                    message: "Enter a valid third opt price",
-                    excludeEmptyString: true
-                })
-                .notRequired()
         }),
         onSubmit: async (values, { resetForm }) => {
             try {
@@ -249,17 +221,13 @@ export default function Temp() {
 
     useEffect(() => {
         if (editItem && itemData) {
-            const { item_id, item, packing, unit, price, bprice, fprice, sprice, tprice, showhome, status } = itemData;
+            const { item_id, item, packing, unit, price, showhome, status } = itemData;
             formik.setValues({
                 item_id: item_id ?? '',
                 item: item ?? '',
                 packing: packing ?? '',
                 unit: unit ?? '',
                 price: price ?? '',
-                bprice: bprice ?? '',
-                fprice: fprice ?? '',
-                sprice: sprice ?? '',
-                tprice: tprice ?? '',
                 showhome: parseInt(showhome) ?? 0,
                 status: parseInt(status) ?? 1,
             })
@@ -412,21 +380,21 @@ export default function Temp() {
                         </div>
                         <div className='d-flex justify-content-between align-items-start gap-1'>
                             <div className='relative' style={{ width: '49%' }}>
-                                <label htmlFor='price' className='text-xs'>Price (MRP)</label>
+                                <label htmlFor='price' className='text-xs'>Price</label>
                                 <input id='price' name="price" type="text" className="form-control small" value={formik.values.price} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                                 {formik.touched.price && formik.errors.price ? (
                                     <div className="input-error">{formik.errors.price}</div>
                                 ) : null}
                             </div>
-                            <div className='relative' style={{ width: '49%' }}>
+                            {/* <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='bprice' className='text-xs'>Basic Price</label>
                                 <input id='bprice' name="bprice" type="text" className="form-control small" value={formik.values.bprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
                                 {formik.touched.bprice && formik.errors.bprice ? (
                                     <div className="input-error">{formik.errors.bprice}</div>
                                 ) : null}
-                            </div>
+                            </div> */}
                         </div>
-                        <div className='d-flex justify-content-between align-items-start gap-1'>
+                        {/* <div className='d-flex justify-content-between align-items-start gap-1'>
                             <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='fprice' className='text-xs'>1st Opt Price</label>
                                 <input id='fprice' name="fprice" type="text" className="form-control small" value={formik.values.fprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
@@ -441,8 +409,8 @@ export default function Temp() {
                                     <div className="input-error">{formik.errors.sprice}</div>
                                 ) : null}
                             </div>
-                        </div>
-                        <div className='d-flex justify-content-between align-items-start gap-1'>
+                        </div> */}
+                        {/* <div className='d-flex justify-content-between align-items-start gap-1'>
                             <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='tprice' className='text-xs'>3rd Opt Price</label>
                                 <input id='tprice' name="tprice" type="text" className="form-control small" value={formik.values.tprice} onChange={formik.handleChange} onBlur={formik.handleBlur} />
@@ -450,7 +418,7 @@ export default function Temp() {
                                     <div className="input-error">{formik.errors.tprice}</div>
                                 ) : null}
                             </div>
-                        </div>
+                        </div> */}
                         <div className='d-flex justify-content-between align-items-end gap-1 mb-3'>
                             <div className='relative' style={{ width: '49%' }}>
                                 <label htmlFor='status' className='text-xs'>Status</label>
@@ -470,7 +438,7 @@ export default function Temp() {
                                 ) : null}
                             </div>
                             <div className='relative' style={{ width: '49%' }}>
-                                <label htmlFor='showhome' className='text-xs'>Top Selling Item</label>
+                                <label htmlFor='showhome' className='text-xs'>Down Item</label>
                                 <Dropdown
                                     id='showhome'
                                     name="showhome"
