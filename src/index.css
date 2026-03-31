@@ -1122,7 +1122,7 @@ hr {
     border-radius: 3px;
 }
 
-.list .item-list .item .meta .cart-action .btnAddAction.init.remove{
+.list .item-list .item .meta .cart-action .btnAddAction.init.remove {
     background-color: #b92e03;
 }
 
@@ -1643,6 +1643,7 @@ form.list button:hover {
     font-weight: 600;
     text-align: center;
 }
+
 .addmore button {
     display: inline-block;
 }
@@ -1847,7 +1848,9 @@ form.list button:hover {
     text-transform: uppercase;
 }
 
-.btn.disabled, .btn:disabled, fieldset:disabled .btn{
+.btn.disabled,
+.btn:disabled,
+fieldset:disabled .btn {
     background: #194f2d;
     color: #ffffff;
 }
@@ -2163,12 +2166,13 @@ input:checked+.slider::before {
     font-size: 16px;
 }
 
-.cart-action .icon-btn-cart{
+.cart-action .icon-btn-cart {
     padding: 7px 15px;
     height: 35px;
     width: 100%;
 }
-.cart-action .icon-btn-cart i{
+
+.cart-action .icon-btn-cart i {
     font-size: 14px;
 }
 

@@ -57,7 +57,7 @@ export default function Bill() {
                         <div className='bill-details'>
                             <table>
                                 <thead>
-                                    <tr><th className='pb-0'>Date</th><th className='pb-0'>:</th><th className='pb-0'>{new Date().toLocaleDateString('en-IN')}</th></tr>
+                                    <tr><th colSpan={2} className='pb-0'>Date:</th><th className='pb-0'>{new Date().toLocaleDateString('en-IN')}</th></tr>
                                     <tr><th colSpan={3} className='sep pb-0'></th></tr>
                                     <tr><th className='pname'>Items</th><th>&nbsp;</th><th>No. of Items</th></tr>
                                 </thead>
@@ -66,7 +66,7 @@ export default function Bill() {
                                     <tr key={index}>
                                         <td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnit === 'KG' || item.itemUnit === 'G' ? item.itemUnitValue > 1 ? item.itemUnitValue : item.itemUnitValue * 1000 : item.itemUnitValue} {item.itemUnit === 'KG' || item.itemUnit === 'G' ? `${item.itemUnitValue > 1 ? 'KG' : 'G'}` : `${item.itemUnitValue > 1 ? `${item.itemUnit}'S` : item.itemUnit}`}</td></tr>)}
                                     <tr><td className='sep' colSpan={3}></td></tr>
-                                    <tr><td style={{ color: 'red' }} colSpan={3}>Note:<br/>You can get the updated bill with prices via WhatsApp later.</td></tr>
+                                    <tr><td style={{ color: 'red' }} colSpan={3}>Note:<br/>You will receive a WhatsApp message if the prices for this order are updated.</td></tr>
                                     <tr><td className='sep' colSpan={3}></td></tr>
                                     <tr><td colSpan={3}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr>
                                 </tbody>

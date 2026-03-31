@@ -10,7 +10,7 @@ export default function OrderDetails() {
     const navigate = useNavigate();
     const user = useSelector((state) => state.user);
 
-    const { token_num, total_quantity, total_price, items: orderDetails } = location.state || 0;
+    const { token_num, total_quantity, total_price, items: orderDetails, status } = location.state || 0;
 
     const getCartQuantity = () => {
         return orderDetails.reduce(total => total + total_price, 0);
@@ -57,18 +57,18 @@ export default function OrderDetails() {
                         <div className='bill-details'>
                             <table>
                                 <thead>
-                                    <tr><th className='pb-0'>Date</th><th className='pb-0'>:</th><th className='pb-0'>{new Date().toLocaleDateString('en-IN')}</th></tr>
-                                    <tr><th colSpan={3} className='sep pb-0'></th></tr>
-                                    <tr><th className='pname'>Items</th><th>&nbsp;</th><th>No. of Items</th></tr>
+                                    <tr><th colSpan={2} className='pb-0'>Date:</th><th colSpan={2} className='pb-0'>{new Date().toLocaleDateString('en-IN')}</th></tr>
+                                    <tr><th colSpan={4} className='sep pb-0'></th></tr>
+                                    <tr><th colSpan={2} className='pname'>Items</th><th>No. of Items</th><th style={{textAlign:'right'}}>I./T. Price</th></tr>
                                 </thead>
                                 <tbody>
                                     {orderDetails.map((item, index) =>
                                         <tr key={index}>
-                                        <td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnit === 'KG' || item.itemUnit === 'G' ? item.itemUnitValue > 1 ? item.itemUnitValue : item.itemUnitValue * 1000 : item.itemUnitValue} {item.itemUnit === 'KG' || item.itemUnit === 'G' ? `${item.itemUnitValue > 1 ? 'KG' : 'G'}` : `${item.itemUnitValue > 1 ? `${item.itemUnit}'S` : item.itemUnit}`}</td></tr>)}
-                                    <tr><td className='sep' colSpan={3}></td></tr>
-                                    <tr><td style={{ color: 'red' }} colSpan={3}>Note:<br />You can get the updated bill with prices via whatsapp later.</td></tr>
-                                    <tr><td className='sep' colSpan={3}></td></tr>
-                                    <tr><td colSpan={3}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr>
+                                        <td colSpan={2} className='pname'>{item.title}</td><td>{item.itemUnit === 'KG' || item.itemUnit === 'G' ? item.itemUnitValue > 1 ? item.itemUnitValue : item.itemUnitValue * 1000 : item.itemUnitValue} {item.itemUnit === 'KG' || item.itemUnit === 'G' ? `${item.itemUnitValue > 1 ? 'KG' : 'G'}` : `${item.itemUnitValue > 1 ? `${item.itemUnit}'S` : item.itemUnit}`}</td>{status == 0 ? <td style={{textAlign:'right'}}>-</td> : <td style={{textAlign:'right'}}>{priceDisplay(item.price).replace('₹', '')}<br/>{priceDisplay(item.totalPrice).replace('₹', '')}</td>}</tr>)}
+                                    <tr><td className='sep' colSpan={4}></td></tr>
+                                    {status == 0 ? <tr><td style={{ color: 'red' }} colSpan={4}>Note:<br />You will receive a WhatsApp message if the prices for this order are updated.</td></tr> : <tr><th colSpan={2} className='pb-0'>Total Quantity: {total_quantity}</th><th colSpan={2} className='pb-0' style={{textAlign:'right'}}>Total Price: {priceDisplay(total_price)}</th></tr>}
+                                    <tr><td className='sep' colSpan={4}></td></tr>
+                                    <tr><td colSpan={4}><h4 className='pt-4 text-center'>*** THANK YOU ***</h4></td></tr>
                                 </tbody>
                             </table>
                         </div>
