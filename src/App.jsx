@@ -8,8 +8,8 @@ import { useDispatch } from 'react-redux';
 import { getToken } from './util/Cookies'
 import { checkAndRemoveExpiredToken, fetchUserRole } from "./util/authUtils";
 import ProtectedRoute from './components/ProtectedRoute';
-import LoginAdmin from "./pages/LoginAdmin";
-import Temp from "./pages/Temp";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 function App() {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={isLoggedIn ? <ProtectedRoute allowedRoles={["Admin", "Emp"]}><Temp /></ProtectedRoute> : <LoginAdmin/>}  />
+      <Route path="/" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Home /></ProtectedRoute> : <Login />}  />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
