@@ -133,7 +133,9 @@ const ItemCard = ({ index, item }) => {
                                         item_name: item.item
                                     })} className='btnAddAction init remove'>REMOVE <i className="fa-solid fa-trash-can"></i></button>
                                     :  */
-                                <button onClick={() => addToCartModalOpen(item)} className='btnAddAction init'>ADD</button>
+                                <button onClick={() => addToCartModalOpen(item)} className='btnAddAction init'>{
+                                    checkForAdd(parseInt(item.item_id)) ? 'ADD MORE' : 'ADD'
+                                }</button>
                             }
                         </div>
                     </div>

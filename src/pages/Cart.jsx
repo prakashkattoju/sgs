@@ -149,7 +149,7 @@ export default function Cart() {
                                     </div>
                                 </div>)
                             })}
-                            {cart?.length > 0 ? <div className="addmore"><p>If you want add more items.</p><button type="button" className="btn toggle" onClick={() => navigate("/", { replace: true })}>Add More</button></div> :
+                            {cart?.length > 0 ? <div className="addmore"><button type="button" className="btn toggle" onClick={() => navigate("/", { replace: true })}>Add More Items</button></div> :
                                 <div className="cart-summary-review">
                                     <div className="tbl-cart show-cart">
                                         <div className="addmore"><p>Your cart is empty.</p><button type="button" className="btn toggle" onClick={() => navigate("/", { replace: true })}>Add Items</button></div>
