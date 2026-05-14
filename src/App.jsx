@@ -10,6 +10,13 @@ import { checkAndRemoveExpiredToken, fetchUserRole } from "./util/authUtils";
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Cart from "./pages/Cart";
+import OrderAgain from "./pages/OrderAgain";
+import SearchItems from "./pages/SearchItems";
+import Orders from "./pages/Orders";
+import OrderDetails from "./pages/OrderDetails";
+import Account from "./pages/Account";
+import Bill from "./pages/Bill";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +39,13 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Home /></ProtectedRoute> : <Login />}  />
+      <Route path="/cart" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Cart /></ProtectedRoute> : <Login />} />
+      <Route path="/order-again" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><OrderAgain /></ProtectedRoute> : <Login />} />
+      <Route path="/search" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><SearchItems /></ProtectedRoute> : <Login />} />
+      <Route path="/orders" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Orders /></ProtectedRoute> : <Login />} />
+      <Route path="/order-details" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><OrderDetails /></ProtectedRoute> : <Login />} />
+      <Route path="/account" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Account /></ProtectedRoute> : <Login />} />
+      <Route path="/bill" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Bill /></ProtectedRoute> : <Login />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
