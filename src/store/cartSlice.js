@@ -9,7 +9,7 @@ export const cartSlice = createSlice({
         addToCart: (state, action) => {
             const optInCart = state.cart.find((opt) => opt.item_id === action.payload.item_id);
             if (optInCart) {
-                optInCart.itemUnitValue = action.payload.itemUnit === "KG" || action.payload.itemUnit === "G" ? optInCart.itemUnitValue : optInCart.itemUnitValue++;
+                optInCart.itemUnitValue = action.payload.itemUnit === "KG" || action.payload.itemUnit === "G" ? optInCart.itemUnitValue + action.payload.itemUnitValue : optInCart.itemUnitValue++;
             } else {
                 state.cart.push({ ...action.payload, itemUnitValue: action.payload.itemUnit === "KG" || action.payload.itemUnit === "G" ? action.payload.itemUnitValue : 1 });
             }
