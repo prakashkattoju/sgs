@@ -1,8 +1,5 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Home from "./pages/Home";
-import Cart from "./pages/Cart";
 import { setCredentials } from './store/authSlice';
 import { useDispatch } from 'react-redux';
 import { getToken } from './util/Cookies'
@@ -41,8 +38,8 @@ function App() {
       <Route path="/" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Home /></ProtectedRoute> : <Login />}  />
       <Route path="/cart" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Cart /></ProtectedRoute> : <Login />} />
       <Route path="/order-again" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><OrderAgain /></ProtectedRoute> : <Login />} />
-      <Route path="/search" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><SearchItems /></ProtectedRoute> : <Login />} />
-      <Route path="/orders" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Orders /></ProtectedRoute> : <Login />} />
+      <Route path="/search-items" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><SearchItems /></ProtectedRoute> : <Login />} />
+      <Route path="/account/orders" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Orders /></ProtectedRoute> : <Login />} />
       <Route path="/order-details" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><OrderDetails /></ProtectedRoute> : <Login />} />
       <Route path="/account" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Account /></ProtectedRoute> : <Login />} />
       <Route path="/bill" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Bill /></ProtectedRoute> : <Login />} />
