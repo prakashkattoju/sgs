@@ -88,7 +88,7 @@ export default function Orders() {
 
     return (
         <>
-            <Header headerRef={headerRef} title={user.fullname ? user.fullname : 'User'} subtitle={`You have ${orders.length} order(s)`} />
+            <Header headerRef={headerRef} title={user.mobile === '1143' ? 'Siri General Stores' : user.fullname ? user.fullname : 'User'} subtitle={`You have ${orders.length} order(s)`} />
             <main className='site-main'>
                 <div className='items-container search-items-container'>
                     <div style={{ height: `calc(100dvh - ${height + 2}px)` }} className="list scroll">
