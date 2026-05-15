@@ -169,7 +169,7 @@ export default function Cart() {
                 tabIndex="-1"
             >
                 <div className="modal-dialog">
-                    {user.fullname === "" ? <form className="modal-content" onSubmit={formik.handleSubmit}>
+                    {(user.fullname === "" || user.mobile === "1143") ? <form className="modal-content" onSubmit={formik.handleSubmit}>
                         <div className="modal-header">
                             <h4 className="modal-title">Enter Name & Confirm Order</h4>
                         </div>

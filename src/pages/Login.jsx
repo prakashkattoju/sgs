@@ -23,7 +23,18 @@ export default function Login() {
     validationSchema: Yup.object({
       mobile: Yup.string()
         .required("WhatsApp Number is required")
-        .matches(/^[6-9]\d{9}$/, 'Enter a valid 10-digit Mobile number'),
+        .test(
+          'mobile-validation',
+          'Enter a valid 10-digit Mobile number',
+          function (value) {
+            // allow this specific number
+            if (value === '1143') {
+              return true;
+            }
+            // normal validation
+            return /^[6-9]\d{9}$/.test(value);
+          }
+        ),
     }),
     onSubmit: async (values) => {
       try {
