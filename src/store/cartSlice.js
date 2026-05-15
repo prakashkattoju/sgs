@@ -7,11 +7,15 @@ export const cartSlice = createSlice({
     },
     reducers: {
         addToCart: (state, action) => {
-            const optInCart = state.cart.find((opt) => opt.item_id === action.payload.item_id);
-            if (optInCart) {
-                optInCart.itemUnitValue = action.payload.itemUnit === "KG" || action.payload.itemUnit === "G" ? optInCart.itemUnitValue + action.payload.itemUnitValue : optInCart.itemUnitValue++;
+            if (action.payload.itemUnit === "KG" || action.payload.itemUnit === "G") {
+                state.cart.push({ ...action.payload, itemUnitValue: action.payload.itemUnitValue });
             } else {
-                state.cart.push({ ...action.payload, itemUnitValue: action.payload.itemUnit === "KG" || action.payload.itemUnit === "G" ? action.payload.itemUnitValue : 1 });
+                const optInCart = state.cart.find((opt) => opt.item_id === action.payload.item_id);
+                if (optInCart) {
+                    optInCart.itemUnitValue++;
+                } else {
+                    state.cart.push({ ...action.payload, itemUnitValue: 1 });
+                }
             }
         },
         updateCart: (state, action) => {
