@@ -53,6 +53,8 @@ const ItemCard = ({ index, item }) => {
             'itemUnitValue': itemUnitValue,
         }
         dispatch(addToCart(cartItem))
+        setItemUnitValue1(0)
+        setItemUnitValue2(0)
         handleAddToCartModalCancel()
     }
 
