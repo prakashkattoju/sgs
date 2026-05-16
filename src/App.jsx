@@ -13,6 +13,7 @@ import SearchItems from "./pages/SearchItems";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import Account from "./pages/Account";
+import EditUserDetails from "./pages/EditUserDetails";
 import Bill from "./pages/Bill";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
       <Route path="/account/orders" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Orders /></ProtectedRoute> : <Login />} />
       <Route path="/order-details" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><OrderDetails /></ProtectedRoute> : <Login />} />
       <Route path="/account" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Account /></ProtectedRoute> : <Login />} />
+      <Route path="/account/update-details" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><EditUserDetails /></ProtectedRoute> : <Login />} />
       <Route path="/bill" element={isLoggedIn ? <ProtectedRoute allowedRoles={["user"]}><Bill /></ProtectedRoute> : <Login />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

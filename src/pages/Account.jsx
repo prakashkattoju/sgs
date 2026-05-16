@@ -94,6 +94,17 @@ export default function Account() {
                     <div style={{ height: `calc(100dvh - ${height + 2}px)` }} className="list scroll">
                         <PerfectScrollbar options={{ suppressScrollX: true, wheelPropagation: false }}>
                             <div className={`item-list orders-list`}>
+                                <div role='button' className="item" onClick={() => navigate('/account/update-details')}>
+                                    <div style={{ padding: '8px 5px'}} className='item-inner'>
+                                        <div className="meta">
+                                            <div className="meta-inner" style={{justifyContent: 'flex-start', columnGap: 20, fontWeight: 500 }}>
+                                                <div><i className="fa-solid fa-user-pen"></i></div>
+                                                <div>Edit your details</div>
+                                                <div style={{marginLeft: 'auto'}}><i className="fas fa-chevron-right"></i></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div role='button' className="item" onClick={() => navigate('/account/orders')}>
                                     <div style={{ padding: '8px 5px'}} className='item-inner'>
                                         <div className="meta">

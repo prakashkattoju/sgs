@@ -14,9 +14,9 @@ export const GetUserByID = async (user_id) => {
     }
 };
 
-export const UpdateUserName = async (uname, user_id) => {
+export const UpdateUserDetails = async (userdata) => {
     try {
-        const response = await axiosInstance.post("/users/updatename/", { uname, user_id });
+        const response = await axiosInstance.post("/users/updatename/", userdata);
         return response.data;
     } catch (error) {
         // Check if error response exists and log the error message

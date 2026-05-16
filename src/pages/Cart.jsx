@@ -9,7 +9,7 @@ import { setUserDetails } from '../store/userSlice';
 import { useNavigate, Link } from "react-router-dom";
 import { decodeToken } from 'react-jwt';
 import { CreateBill } from '../services/Billservices';
-import { UpdateUserName } from '../services/Userservices';
+import { UpdateUserDetails } from '../services/Userservices';
 import { FaSpinner } from "react-icons/fa";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
@@ -63,7 +63,7 @@ export default function Cart() {
         onSubmit: async (values) => {
             try {
                 setLoading(true)
-                const data = await UpdateUserName(values.uname, user_id);
+                const data = await UpdateUserDetails({ fullname: values.uname }, user_id);
                 if (data.status) {
                     dispatch(setUserDetails({
                         ...user,
