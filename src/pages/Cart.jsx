@@ -63,7 +63,7 @@ export default function Cart() {
         onSubmit: async (values) => {
             try {
                 setLoading(true)
-                const data = await UpdateUserDetails({ fullname: values.uname }, user_id);
+                const data = await UpdateUserDetails({ fullname: values.uname, mobile: user.mobile, user_id: user_id });
                 if (data.status) {
                     dispatch(setUserDetails({
                         ...user,
